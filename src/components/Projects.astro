@@ -4,28 +4,38 @@ import NextJS from "./icons/NextJS.astro"
 import Tailwind from "./icons/Tailwind.astro"
 import Link from "./icons/Link.astro"
 import LinkButton from "./LinkButton.astro"
+import css from "styled-jsx/css"
 
 const TAGS = {
   NEXT: {
-    name: "",
+    name: "next.js",
     class: "bg-black text-white",
     icon: NextJS,
   },
   TAILWIND: {
-    name: "",
+    name: "Tailwind",
     class: "bg-[#003159] text-white",
     icon: Tailwind,
   },
 }
-const PROJECTS = [
+interface Project {
+  title: string;
+  description: string;
+  link: string;
+  github?: string;
+  image: string;
+  tags: { name: string; class: string; icon: any }[];
+}
+
+const PROJECTS: Project[] = [
   {
-    title: "",
+    title: "Tesla Clone",
     description:
-      "",
-    link: "",
-    github: "",
-    image: "",
-    tags: [TAGS.NEXT, TAGS.TAILWIND],
+      "Página interesante de desarrollar: es un clon del sitio web oficial de Tesla. Me llamaron la atención sus animaciones, el botón del encabezado, la suave transición de colores en el encabezado y el desplazamiento de la página. Fue un desafío recrear el JavaScript para que se pareciera lo más posible al sitio oficial.",
+    link: "https://copytesla.netlify.app/",
+    github: "https://github.com/Yeisonfjrd/Clon-tesla",
+    image: "./public/projects/clone-tesla.avif",
+    tags: [TAGS.TAILWIND],
   },
   {
     title: "",
@@ -39,12 +49,11 @@ const PROJECTS = [
 ---
 
 <div class="flex flex-col gap-y-16">
-  {
-    PROJECTS.map(({ image, title, description, tags, link, github }) => (
+  {PROJECTS.map(({ image, title, description, tags, link, github }) => (
     <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
   <div class="w-full md:w-1/2">
     <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
-      <img alt="Recién llegado vs 5 años en Nueva Zelanda" class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105" loading="lazy" src={image} />
+      <img alt="Clone-tesla" class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105" loading="lazy" src={image} />
     </div>
   </div>
 
