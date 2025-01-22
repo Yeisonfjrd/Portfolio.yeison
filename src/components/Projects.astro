@@ -2,9 +2,18 @@
 import GitHub from "./icons/GitHub.astro"
 import NextJS from "./icons/NextJS.astro"
 import Tailwind from "./icons/Tailwind.astro"
+import ReactIcon from "./icons/ReactIcon.astro"
+import TypeScriptIcon from "./icons/TypeScriptIcon.astro"
+import JavaScriptIcon from "./icons/JavaScriptIcon.astro"
+import CSSIcon from "./icons/CSSIcon.astro"
+import NodeJSIcon from "./icons/NodeJSIcon.astro"
+import MySQLIcon from "./icons/MySQLIcon.astro"
+import HTMLIcon from "./icons/HTMLIcon.astro"
+import GitIcon from "./icons/GitIcon.astro"
+import AstroIcon from "./icons/AstroIcon.astro"
+import PostgreSQLIcon from "./icons/PostgreSQLIcon.astro"
 import Link from "./icons/Link.astro"
 import LinkButton from "./LinkButton.astro"
-import css from "styled-jsx/css"
 
 const TAGS = {
   NEXT: {
@@ -14,20 +23,61 @@ const TAGS = {
   },
   TAILWIND: {
     name: "Tailwind",
-    class: "bg-[#003159] text-white",
+    class: "bg-[#38BDF8] text-white",
     icon: Tailwind,
   },
+  REACT: {
+    name: "React",
+    class: "bg-[#61DAFB] text-black",
+    icon: ReactIcon,
+  },
+  TYPESCRIPT: {
+    name: "TypeScript",
+    class: "bg-[#3178C6] text-white",
+    icon: TypeScriptIcon,
+  },
+  JAVASCRIPT: {
+    name: "JavaScript",
+    class: "bg-[#F7DF1E] text-black",
+    icon: JavaScriptIcon,
+  },
+  HTML: {
+    name: "HTML",
+    class: "bg-[#E34F26] text-white",
+    icon: HTMLIcon,
+  },
+  CSS: {
+    name: "CSS",
+    class: "bg-[#1572B6] text-white",
+    icon: CSSIcon,
+  },
+  NODE: {
+    name: "Node.js",
+    class: "bg-[#339933] text-white",
+    icon: NodeJSIcon,
+  },
+  MYSQL: {
+    name: "MySQL",
+    class: "bg-[#4479A1] text-white",
+    icon: MySQLIcon,
+  },
+  POSTGRESQL: {
+    name: "PostgreSQL",
+    class: "bg-[#336791] text-white",
+    icon: PostgreSQLIcon,
+  },
+  GIT: {
+    name: "Git",
+    class: "bg-[#F05032] text-white",
+    icon: GitIcon,
+  },
+  ASTRO: {
+    name: "Astro",
+    class: "bg-[#F05032] text-white",
+    icon: AstroIcon,
+  },
 }
-interface Project {
-  title: string;
-  description: string;
-  link: string;
-  github?: string;
-  image: string;
-  tags: { name: string; class: string; icon: any }[];
-}
-
-const PROJECTS: Project[] = [
+const PROJECTS = [
   {
     title: "Tesla Clone",
     description:
@@ -35,25 +85,53 @@ const PROJECTS: Project[] = [
     link: "https://copytesla.netlify.app/",
     github: "https://github.com/Yeisonfjrd/Clon-tesla",
     image: "./public/projects/clone-tesla.avif",
-    tags: [TAGS.TAILWIND],
+    tags: [TAGS.TAILWIND, TAGS.JAVASCRIPT, TAGS.ASTRO],
   },
   {
-    title: "",
+    title: "Xjson",
     description:
-      "",
-    link: "",
+      "Es un clon de Twitter, ahora llamado X. En este proyecto, desarrollé una base de datos funcional que admite el registro e inicio de sesión de usuarios, la gestión de sesiones con funcionalidad de cierre de sesión y la capacidad de interactuar con las publicaciones agregando comentarios.",
+    link: "https://x-json-kha7.vercel.app/",
+    github: "https://github.com/Yeisonfjrd/Xjson",
     image: "",
-    tags: [TAGS.NEXT, TAGS.TAILWIND],
+    tags: [TAGS.TYPESCRIPT, TAGS.JAVASCRIPT, TAGS.CSS],
+  },
+  {
+    title: "Google-translate",
+    description:
+      "Es un clon de Twitter, ahora llamado X. En este proyecto, desarrollé una base de datos funcional que admite el registro e inicio de sesión de usuarios, la gestión de sesiones con funcionalidad de cierre de sesión y la capacidad de interactuar con las publicaciones agregando comentarios.",
+    link: "https://google-translate-lhm8pbben-yeisonfjrds-projects.vercel.app/",
+    github: "https://github.com/Yeisonfjrd/Xjson",
+    image: "",
+    tags: [TAGS.TYPESCRIPT, TAGS.JAVASCRIPT, TAGS.CSS, TAGS.HTML],
+  },
+  {
+    title: "SQL-X",
+    description:
+      "Este script SQL configura una base de datos similar a Twitter con tablas para usuarios, seguidores, tweets y me gusta, lo que garantiza la integridad de los datos con claves externas. Un disparador impide que los usuarios se sigan a sí mismos. Inserta datos de muestra y proporciona consultas para encontrar a los usuarios más seguidos y contar los me gusta de los tweets, lo que ofrece una base sencilla para realizar pruebas o para el desarrollo futuro.",
+    github: "https://github.com/Yeisonfjrd/SQL-X",
+    image: "",
+    tags: [TAGS.POSTGRESQL, TAGS.MYSQL],
+  },
+  {
+    title: "MercadoComic",
+    description:
+      "Este sitio web es perfecto para los fanáticos de los cómics, ya que ofrece cómics de Marvel, DC y Star Wars. Cuenta con un sistema de carrito de compras fácil de usar, información detallada de los productos, actualizaciones de precios en tiempo real y pago seguro con Stripe. El diseño es compatible con dispositivos móviles con modos claro y oscuro para mayor comodidad. Ya sea que te gusten los superhéroes o Star Wars, este sitio hace que comprar cómics sea simple y divertido.",
+    github: "https://github.com/Yeisonfjrd/MercadoComic-frontend",
+    link: "https://mercado-comic-frontend.vercel.app/",
+    image: "",
+    tags: [TAGS.TYPESCRIPT, TAGS.JAVASCRIPT, TAGS.CSS],
   },
 ]
 ---
 
 <div class="flex flex-col gap-y-16">
-  {PROJECTS.map(({ image, title, description, tags, link, github }) => (
+  {
+    PROJECTS.map(({ image, title, description, tags, link, github }) => (
     <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
   <div class="w-full md:w-1/2">
     <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
-      <img alt="Clone-tesla" class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105" loading="lazy" src={image} />
+      <img alt="Image" class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105" loading="lazy" src={image} />
     </div>
   </div>
 
@@ -81,7 +159,6 @@ const PROJECTS: Project[] = [
             <LinkButton href={github}>
               <GitHub class="size-6" />
               Code
-              
             </LinkButton>
           )}
           {link && (
@@ -97,6 +174,3 @@ const PROJECTS: Project[] = [
     ))
   }
 </div>
-
-
-
