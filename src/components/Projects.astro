@@ -1,6 +1,6 @@
 ---
-// Importaciones necesarias
-import { fetchProjects, Project } from '../../supabase';
+import { fetchProjects } from '../../supabase';
+import type { Project } from '../../src/types/index';  // Cambiamos la importación del tipo
 import GitHub from "./icons/GitHub.astro";
 import NextJS from "./icons/NextJS.astro";
 import Tailwind from "./icons/Tailwind.astro";
@@ -17,12 +17,8 @@ import PostgreSQLIcon from "./icons/PostgreSQLIcon.astro";
 import Link from "./icons/Link.astro";
 import LinkButton from "./LinkButton.astro";
 
-// Obtener los proyectos desde Supabase
-let projects: Project[] = await fetchProjects();
-
-// Definir la constante TAGS con los íconos y estilos
 const TAGS = {
-  NEXT: { name: "next.js", class: "bg-black text-white", icon: NextJS },
+  NEXT: { name: "Next.js", class: "bg-black text-white", icon: NextJS },
   TAILWIND: { name: "Tailwind", class: "bg-[#38BDF8] text-white", icon: Tailwind },
   REACT: { name: "React", class: "bg-[#61DAFB] text-black", icon: ReactIcon },
   TYPESCRIPT: { name: "TypeScript", class: "bg-[#3178C6] text-white", icon: TypeScriptIcon },
@@ -34,55 +30,80 @@ const TAGS = {
   POSTGRESQL: { name: "PostgreSQL", class: "bg-[#336791] text-white", icon: PostgreSQLIcon },
   GIT: { name: "Git", class: "bg-[#F05032] text-white", icon: GitIcon },
   ASTRO: { name: "Astro", class: "bg-[#F05032] text-white", icon: AstroIcon },
-};
+} as const;
+
+type TagsType = keyof typeof TAGS;
+
+const projects = (await fetchProjects()) as Project[];
 ---
 
-<div class="flex flex-col gap-y-16">
-  {projects.map(({ id, image, title, description, tags, link, github }) => (
-    <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
-      <div class="w-full md:w-1/2">
-        <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
-          <img alt={title} class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105" loading="lazy" src={image} />
-        </div>
-      </div>
+{Boolean(projects.length) ? (
+  <div class="flex flex-col gap-y-16">
+    {projects?.map((project: Project) => {
+      const { id, image, title, description, tags, link, github } = project;
+      return (
+        <article class="flex flex-col space-x-0 space-y-8 group md:flex-row md:space-x-8 md:space-y-0">
+                    <div class="w-full md:w-1/2">
+            <div class="relative flex flex-col items-center col-span-6 row-span-5 gap-8 transition duration-500 ease-in-out transform shadow-xl overflow-clip rounded-xl sm:rounded-xl md:group-hover:-translate-y-1 md:group-hover:shadow-2xl lg:border lg:border-gray-800 lg:hover:border-gray-700 lg:hover:bg-gray-800/50">
+              <img
+                alt={title}
+                class="object-cover object-top w-full h-56 transition duration-500 sm:h-full md:scale-110 md:group-hover:scale-105"
+                loading="lazy"
+                src={image}
+              />
+            </div>
+          </div>
 
-      <div class="w-full md:w-1/2 md:max-w-lg">
-        <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
-          {title}
-        </h3>
-        <div class="flex flex-wrap mt-2">
-          <ul class="flex flex-row mb-2 gap-x-2">
-            {tags.map((tag) => {
-              const tagData = TAGS[tag.toUpperCase()]; // Buscar el tag en TAGS
-              if (!tagData) return null; // Si el tag no está definido, ignorarlo
-              return (
-                <li key={tag}>
-                  <span class={`flex items-center gap-x-2 rounded-full text-xs ${tagData.class} py-1 px-2`}>
-                    <tagData.icon class="w-4 h-4" />
-                    {tagData.name}
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
+          <div class="w-full md:w-1/2 md:max-w-lg">
+            <h3 class="text-2xl font-bold text-gray-800 dark:text-gray-100">
+              {title}
+            </h3>
+            <div class="flex flex-wrap mt-2">
+              <ul class="flex flex-row flex-wrap mb-2 gap-x-2 gap-y-2">
+                {tags?.map((tag) => {
+                  const upperTag = tag.toUpperCase() as TagsType;
+                  const tagData = TAGS[upperTag];
 
-          <div class="mt-2 text-gray-700 dark:text-gray-400">{description}</div>
-          <footer class="flex items-end justify-start mt-4 gap-x-4">
-            {github && (
-              <LinkButton href={github}>
-                <GitHub class="size-6" />
-                Code
-              </LinkButton>
-            )}
-            {link && (
-              <LinkButton href={link}>
-                <Link class="size-4" />
-                Preview
-              </LinkButton>
-            )}
-          </footer>
-        </div>
-      </div>
-    </article>
-  ))}
-</div>
+                  if (!tagData) return null;
+
+                  return (
+                    <li>
+                      <span
+                        class={`flex items-center gap-x-2 rounded-full text-xs ${tagData.class} py-1 px-2`}
+                      >
+                        <tagData.icon class="w-4 h-4" />
+                        {tagData.name}
+                      </span>
+                    </li>
+                  );
+                })}
+              </ul>
+
+              <div class="mt-2 text-gray-700 dark:text-gray-400">
+                {description}
+              </div>
+              <footer class="flex items-end justify-start mt-4 gap-x-4">
+                {github && (
+                  <LinkButton href={github}>
+                    <GitHub class="w-6 h-6" />
+                    Code
+                  </LinkButton>
+                )}
+                {link && (
+                  <LinkButton href={link}>
+                    <Link class="w-4 h-4" />
+                    Preview
+                  </LinkButton>
+                )}
+              </footer>
+            </div>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+) : (
+  <div class="text-center py-10">
+    <p class="text-gray-600 dark:text-gray-400">No hay proyectos disponibles</p>
+  </div>
+)}
