@@ -15,7 +15,7 @@ graph LR
             direction TB
             astroFolder(".astro")
             style astroFolder fill:#e0e0e0,stroke:#333,stroke-width:1px
-            settingsJsonAstro(".astro/\nsettings.json")
+            settingsJsonAstro(".astro/settings.json")
             style settingsJsonAstro fill:#f9f,stroke:#333,stroke-width:1px
             astroFolder --> settingsJsonAstro
         end
@@ -24,11 +24,11 @@ graph LR
             direction TB
             vscodeFolder(".vscode")
             style vscodeFolder fill:#e0e0e0,stroke:#333,stroke-width:1px
-            extensionsJsonVSCode(".vscode/\nextensions.json")
+            extensionsJsonVSCode(".vscode/extensions.json")
             style extensionsJsonVSCode fill:#f9f,stroke:#333,stroke-width:1px
-            launchJsonVSCode(".vscode/\nlaunch.json")
+            launchJsonVSCode(".vscode/launch.json")
             style launchJsonVSCode fill:#f9f,stroke:#333,stroke-width:1px
-            settingsJsonVSCode(".vscode/\nsettings.json")
+            settingsJsonVSCode(".vscode/settings.json")
             style settingsJsonVSCode fill:#f9f,stroke:#333,stroke-width:1px
             vscodeFolder --> extensionsJsonVSCode
             vscodeFolder --> launchJsonVSCode
@@ -39,7 +39,6 @@ graph LR
             direction TB
             distFolder("dist")
             style distFolder fill:#e0e0e0,stroke:#333,stroke-width:1px
-            note over distFolder: Contenido compilado del sitio
         end
 
         subgraph Carpeta src
@@ -50,7 +49,6 @@ graph LR
                 direction TB
                 assetsFolder("assets")
                 style assetsFolder fill:#d0f0d0,stroke:#333,stroke-width:1px
-                note over assetsFolder: Imágenes,\nfuentes, etc.
             end
             srcFolder --> assetsFolder
         end
@@ -59,14 +57,12 @@ graph LR
             direction TB
             publicFolder("public")
             style publicFolder fill:#c0e0c0,stroke:#333,stroke-width:1px
-            note over publicFolder: Archivos\nestáticos
         end
 
         subgraph Carpeta node_modules
             direction TB
             nodeModulesFolder("node_modules")
             style nodeModulesFolder fill:#e0e0e0,stroke:#333,stroke-width:1px
-            note over nodeModulesFolder: Dependencias\ndel proyecto
         end
 
         gitignoreFile(".gitignore")
