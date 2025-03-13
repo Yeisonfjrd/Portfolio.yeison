@@ -1,25 +1,53 @@
 ---
- const personalImageAlt = "Yeison Fajardo"
+const personalImageAlt = "Yeison Fajardo";
 ---
 
-<article class="flex flex-col items-center justify-center gap-8 text-gray-700 dark:text-gray-300 md:flex-row">
-  <div
-    class="[&>p]:mb-4 [&>p>strong]:text-yellow-500 dark:[&>p>strong]:text-yellow-100 [&>p>strong]:font-normal [&>p>strong]:font-mono text-pretty order-2 md:order-1"
-  >
-    <p>Soy Yeison Fajardo, un estudiante universitario en la carrera de Desarrollo de Software.
-       Mi interés por la programación comenzó a los 16 años, 
-       y con 19 años he tenido la oportunidad de realizar varios cursos 
-       donde, en varias ocasiones,
-      <strong
-        >asumí el rol de líder, organizando y 
-        testeando el trabajo del equipo.
-        He aprendido en profundidad tecnologías como JavaScript, React, bases de datos, MongoDB, Vite y Astro.</strong
-      >.
-      Mi pasión por seguir aprendiendo y mejorar constantemente 
-      me impulsa a seguir creciendo en este emocionante mundo.
+<article class="flex flex-col items-center justify-center gap-8 text-slate-300 md:flex-row reveal">
+  <div class="[&>p]:mb-4 [&>p>strong]:text-violet-400 [&>p>strong]:font-medium text-pretty order-2 md:order-1 md:w-2/3">
+    <p class="text-lg leading-relaxed">
+      Soy Yeison Fajardo, estudiante de Desarrollo de Software. 
+      Desde los 16 años, mi pasión por programar me ha llevado a 
+      liderar equipos en proyectos fullstack a mis 19. He trabajado con 
+      <strong>
+        JavaScript, Node.js, Express, Go, Spring Boot, React, NeonDB 
+        y MongoDB
+      </strong>, 
+      destacándome especialmente en 
+      <strong>TypeScript</strong>. 
+      Proyectos como una plataforma de trading de criptomonedas y 
+      un acortador de URLs reflejan mi enfoque en soluciones escalables.
+    </p>
+    <p class="text-lg leading-relaxed">
+      Mi compromiso con el aprendizaje continuo me impulsa a buscar 
+      nuevos desafíos para crecer en este fascinante mundo tecnológico.
     </p>
   </div>
 
-  <img width="200" height="200" src="\Yeison-fajardo.webp" alt={personalImageAlt} class="order-1 object-cover w-64 h-full p-1 md:order-2 rotate-3 lg:p-2 lg:w-64 aspect-square rounded-2xl bg-black/20 dark:bg-yellow-500/5 ring-1 ring-black/70 dark:ring-white/20 " style="object-position: 50% 50%">
-
+  <div class="order-1 md:order-2 perspective-1000">
+    <img 
+      width="200" 
+      height="200" 
+      src="/Yeison-fajardo.webp" 
+      alt={personalImageAlt} 
+      class="w-64 h-64 object-cover rounded-2xl transition-transform duration-500 hover:scale-105 hover:rotate-3 shadow-xl ring-1 ring-violet-700/20 dark:ring-violet-500/20 shadow-[0_0_25px_rgba(139,92,246,0.2)]"
+      style="object-position: 50% 50%"
+    />
+  </div>
 </article>
+
+<style>
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .perspective-1000 img {
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .perspective-1000 img:hover {
+      transform: rotate3d(1, 1, 0, 15deg);
+    }
+  }
+</style>

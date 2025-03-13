@@ -1,0 +1,144 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import SectionContainer from "@/components/SectionContainer.astro";
+import ProjectCard from "@/components/ProjectCard.astro";
+import { getProjects } from "@/lib/supabase";
+import { siteConfig } from "@/data/site";
+
+const projects = await getProjects();
+
+const allProjects = projects.length > 0 ? projects : [
+  {
+    id: 1,
+    title: "RoadEra",
+    description: "Este sitio web es perfecto para alquileres de coches de lujo. Los usuarios pueden registrarse e iniciar sesión para navegar por los coches disponibles, mientras que los administradores pueden añadir, editar y gestionar los listados de vehículos. Los clientes pueden reservar coches fácilmente con actualizaciones de disponibilidad en tiempo real y pagos seguros a través de Stripe. La plataforma cuenta con un panel intuitivo que permite a los administradores realizar un seguimiento de las reservas y gestionar los precios. Construido con una base de datos robusta, garantiza un rendimiento fluido, almacenando perfiles de usuario, historial de alquileres y detalles de transacciones. Con un diseño elegante y compatible con dispositivos móviles, ¡este sitio hace que alquilar coches de alta gama sea simple, seguro y conveniente!",
+    image: "https://pojsouizkkvpmzknwpwc.supabase.co/storage/v1/object/public/Images//926shots_so.png",
+    tags: ["TYPESCRIPT", "JAVASCRIPT", "CSS"],
+    link: "https://rental-cars-three.vercel.app/",
+    github: "https://github.com/Yeisonfjrd/rental-cars",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: 2,
+    title: "Tesla Clone",
+    description: "Página interesante de desarrollar: es un clon del sitio web oficial de Tesla. Me llamaron la atención sus animaciones, el botón del encabezado, la suave transición de colores en el encabezado y el desplazamiento de la página. Fue un desafío recrear el JavaScript para que se pareciera lo más posible al sitio oficial.",
+    image: "/projects/tesla.webp",
+    tags: ["JavaScript", "HTML", "CSS"],
+    link: "https://copytesla.netlify.app/",
+    github: "https://github.com/Yeisonfjrd/Clon-tesla",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: 3,
+    title: "X (Twitter) Clone",
+    description: "Es un clon de Twitter, ahora llamado X. En este proyecto, desarrollé una base de datos funcional que admite el registro e inicio de sesión de usuarios, la gestión de sesiones con funcionalidad de cierre de sesión y la capacidad de interactuar con las publicaciones agregando comentarios.",
+    image: "/projects/twitter.webp",
+    tags: ["JavaScript", "Node.js", "MongoDB"],
+    link: "https://x-json-kha7.vercel.app/",
+    github: "https://github.com/Yeisonfjrd/Xjson",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: 4,
+    title: "Google Translate Clone",
+    description: "Este código es un traductor de IA que utiliza la API de OpenAI. Puede cambiar texto de un idioma a otro o detectar el idioma si se establece en 'auto'. Espera y reintenta si se envían demasiadas solicitudes. La función de traducción toma el texto de entrada, el idioma de inicio y el idioma de destino para dar el resultado.",
+    image: "/projects/translate.webp",
+    tags: ["React", "OpenAI API", "JavaScript"],
+    link: "https://google-translate-lhm8pbben-yeisonfjrds-projects.vercel.app/",
+    github: "https://github.com/Yeisonfjrd/google-translate",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: 5,
+    title: "SQL-X",
+    description: "Este script SQL configura una base de datos similar a Twitter con tablas para usuarios, seguidores, tweets y me gusta, lo que garantiza la integridad de los datos con claves externas. Un disparador impide que los usuarios se sigan a sí mismos. Inserta datos de muestra y proporciona consultas para encontrar a los usuarios más seguidos y contar los me gusta de los tweets.",
+    image: "/projects/sql.webp",
+    tags: ["SQL", "Database Design", "PostgreSQL"],
+    link: "#",
+    github: "https://github.com/Yeisonfjrd/SQL-X",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  },
+  {
+    id: 6,
+    title: "MercadoComic",
+    description: "Este sitio web es perfecto para los fanáticos de los cómics, ofreciendo cómics de Marvel, DC y Star Wars. Cuenta con un sistema de carrito de compras fácil de usar, información detallada de los productos, actualizaciones de precios en tiempo real y pago seguro con Stripe.",
+    image: "/projects/comic.webp",
+    tags: ["React", "Node.js", "Stripe", "MongoDB"],
+    link: "https://mercado-comic-frontend.vercel.app/",
+    github: "https://github.com/Yeisonfjrd/MercadoComic-frontend",
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  }
+];
+---
+
+<Layout 
+  title={`Proyectos - ${siteConfig.name}`}
+  description="Explora mi portafolio de proyectos de desarrollo web, aplicaciones y soluciones digitales."
+>
+  <SectionContainer class="py-12">
+    <div>
+      <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-6 text-center">Mis Proyectos</h1>
+      <p class="text-lg text-slate-600 dark:text-slate-400 mb-12 text-center max-w-3xl mx-auto">
+        Una colección de mis trabajos más destacados que muestran mi experiencia en desarrollo web, 
+        diseño de interfaces y soluciones digitales.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {allProjects.map((project, index) => (
+          <ProjectCard 
+            title={project.title}
+            description={project.description}
+            image={project.image}
+            tags={project.tags}
+            link={project.link}
+            github={project.github}
+            index={index}
+          />
+        ))}
+      </div>
+    </div>
+  </SectionContainer>
+
+  <SectionContainer class="py-12 reveal">
+    <div class="bg-gradient-to-r from-slate-900/80 to-slate-800/80 rounded-3xl p-8 md:p-12 border border-slate-700/50 shadow-[0_0_25px_rgba(139,92,246,0.15)]">
+      <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold text-white mb-4">¿Tienes un proyecto en mente?</h2>
+        <p class="text-lg text-slate-300 max-w-3xl mx-auto">
+          Estoy disponible para colaborar en nuevos proyectos. Si tienes una idea o necesitas ayuda con un proyecto existente, ¡hablemos!
+        </p>
+      </div>
+      
+      <div class="flex justify-center">
+        <a 
+          href={`https://mail.google.com/mail/?view=cm&fs=1&to=${siteConfig.links.email}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group inline-flex items-center gap-2 px-6 py-3 text-lg font-medium transition-all duration-300 rounded-full
+          bg-gradient-to-r from-violet-600 to-indigo-600 text-white hover:from-violet-700 hover:to-indigo-700
+          focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900 shadow-[0_0_15px_rgba(139,92,246,0.5)]"
+        >
+          Contactar ahora
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            class="size-5 transition-transform duration-300 group-hover:translate-x-1" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14"></path>
+            <path d="m12 5 7 7-7 7"></path>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </SectionContainer>
+</Layout>

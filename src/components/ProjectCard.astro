@@ -1,0 +1,99 @@
+---
+import type { Project } from "@/types";
+import LinkButton from "./LinkButton.astro";
+import GitHubIcon from "./icons/GitHub.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  link: string;
+  github: string;
+  image: string;
+  tags: string[];
+  index: number;
+}
+
+const { title, description, link, github, image, tags, index } = Astro.props;
+---
+
+<article class="group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 shadow-lg hover:shadow-xl transition-all duration-300 h-full reveal stagger-delay-{index + 1} border border-slate-700/50 backdrop-blur-sm">
+  <div class="relative h-48 overflow-hidden">
+    <img 
+      src={image || "/placeholder.svg?height=400&width=600"}
+      alt={`Captura de pantalla del proyecto ${title}`} 
+      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+      loading="lazy"
+    />
+    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+  </div>
+  
+  <div class="flex flex-col flex-grow p-6">
+    <h3 class="text-xl font-bold mb-2 text-white group-hover:text-violet-400 transition-colors">
+      {title}
+    </h3>
+    
+    <p class="text-slate-300 mb-4 flex-grow line-clamp-3">
+      {description}
+    </p>
+    
+    <div class="flex flex-wrap gap-2 mb-4">
+      {tags.map((tag) => (
+        <span class="px-2 py-1 text-xs font-medium rounded-full bg-violet-900/50 text-violet-300 border border-violet-700/50 transition-colors">
+          {tag}
+        </span>
+      ))}
+    </div>
+    
+    <footer class="flex gap-x-4 mt-auto">
+      {github && (
+        <LinkButton href={github}>
+          <GitHubIcon class="size-5" />
+          Código
+        </LinkButton>
+      )}
+      
+      {link && (
+        <LinkButton href={link}>
+          <svg 
+            width="20" 
+            height="20" 
+            viewBox="0 0 24 24" 
+            stroke-width="1.5" 
+            stroke="currentColor" 
+            fill="none" 
+            stroke-linecap="round" 
+            stroke-linejoin="round"
+          >
+            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+            <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
+            <path d="M11 13l9 -9" />
+            <path d="M15 4h5v5" />
+          </svg>
+          Demo
+        </LinkButton>
+      )}
+    </footer>
+  </div>
+</article>
+
+<style>
+  article {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  article.reveal.active {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

@@ -1,15 +1,14 @@
 ---
-import Badge from "@/components/Badge.astro";
-import SectionContainer from "@/components/SectionContainer.astro";
-import SocialPill from "@/components/SocialPill.astro";
-import LinkedInIcon from "@/components/icons/LinkedIn.astro";
-import Layout from "@/layouts/Layout.astro";
-import { siteConfig } from "@/data/site";
+import Badge from "../components/Badge.astro";
+import SectionContainer from "../components/SectionContainer.astro";
+import SocialPill from "../components/SocialPill.astro";
+import LinkedInIcon from "../components/icons/LinkedIn.astro";
+import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout
-  title={`Componentes - ${siteConfig.name}`}
-  description="Catálogo de componentes del portfolio"
+  title="Design System porfolio"
+  description="El catálogo de componentes de nuestro porfolio"
 >
   <SectionContainer class="py-20 flex flex-col gap-y-10">
     <article class="mb-10">
@@ -24,12 +23,12 @@ import { siteConfig } from "@/data/site";
     <article class="mb-10">
       <h1 class="mb-4 text-xl font-semibold text-slate-900 dark:text-white">&lt;SocialPill /&gt;</h1>
       <div class="flex flex-wrap gap-2">
-        <SocialPill href="https://www.linkedin.com/in/yeison-fajardo-105871341/">
+        <SocialPill href="https://www.linkedin.com/in/yeison-fajardo">
           <LinkedInIcon class="size-4 md:size-5" />
           LinkedIn
         </SocialPill>
         
-        <SocialPill href="https://github.com/yeisonfjrd">
+        <SocialPill href="https://github.com">
           <svg
             width="20"
             height="20"

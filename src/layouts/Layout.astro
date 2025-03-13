@@ -1,20 +1,20 @@
 ---
-import "@fontsource-variable/onest"
-
-import Header from "../components/Header.astro"
-import Footer from "../components/Footer.astro"
-import { ViewTransitions } from "astro:transitions"
+import "@fontsource-variable/outfit";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { ViewTransitions } from "astro:transitions";
+import BackgroundAnimation from "@/components/BackgroundAnimation";
 
 interface Props {
-  title: string
-  description: string
+  title: string;
+  description: string;
 }
 
-const { description, title } = Astro.props
+const { description, title } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang="es" class="scroll-smooth dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
@@ -24,90 +24,90 @@ const { description, title } = Astro.props
     <title>{title}</title>
     <ViewTransitions />
   </head>
-
-  <body class="relative text-black dark:text-white">
-    <div
-      class="absolute top-0 bottom-0 z-[-2] min-h-screen w-full absolute inset-0 bg-fuchsia-400 bg-[size:20px_20px] opacity-20 blur-[100px]"
-    >
+  <body class="relative text-slate-300 bg-gradient-to-b from-[#0f0f1a] via-[#1a1a2e] to-[#2a1a3a]">
+    <BackgroundAnimation client:load />
+    
+    <div class="relative z-10">
+      <Header />
+      <main class="min-h-screen px-4 pt-16 pb-16 sm:px-6 lg:px-8">
+        <slot />
+      </main>
+      <Footer />
     </div>
-    <Header />
-    <slot />
-    <Footer />
+
     <style is:global>
       :root {
-        color-scheme: light dark;
+        color-scheme: dark;
+        --accent-light: #7c3aed;
+        --accent-dark: #8b5cf6;
       }
 
       html {
-        font-family: "Onest Variable", system-ui, sans-serif;
-        scroll-behavior: smooth;
+        font-family: "Outfit Variable", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
 
       body {
-        color: black;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
+        transition: background-color 0.5s ease, color 0.5s ease;
         overscroll-behavior: none;
       }
 
+      ::selection {
+        @apply bg-violet-500/30;
+      }
+
+      .reveal {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .stagger-delay-1 { transition-delay: 0.1s; }
+      .stagger-delay-2 { transition-delay: 0.2s; }
+      .stagger-delay-3 { transition-delay: 0.3s; }
+      .stagger-delay-4 { transition-delay: 0.4s; }
+      .stagger-delay-5 { transition-delay: 0.5s; }
+
       @media (prefers-reduced-motion: reduce) {
-        html {
-          scroll-behavior: auto;
+        *, ::before, ::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+        .reveal {
+          opacity: 1;
+          transform: translateY(0);
         }
       }
 
-      @media (prefers-color-scheme: dark) {
-        body {
-          color: rgba(255, 255, 255, 0.9);
-        }
-      }
-
-      #header-nav {
-        animation: blur linear both 0.5s;
-        animation-timeline: scroll();
-        animation-range: 0 500px;
-      }
-
-      @keyframes blur {
-        to {
-          backdrop-filter: blur(20px);
-          border-width: 1px;
-          border-color: rgba(0, 0, 0);
-          padding: 0.25rem 0.75rem;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          background-color: rgb(229, 229, 229);
-          border-radius: 9999px;
-        }
-      }
-
-      @media (prefers-color-scheme: dark) {
-        @keyframes blur {
-          from {
-            border: 0px;
-          }
-          to {
-            box-shadow:
-              0px 5px 50px -5px rgba(0, 0, 0, 0.1),
-              0px 0px 0 1px rgba(0, 0, 0, 0.3);
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(20px);
-            border-width: 1px;
-            border-color: rgba(0, 0, 0);
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-            padding-top: 0.25rem;
-            padding-bottom: 0.25rem;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 9999px;
-          }
-        }
+      .gradient-text {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-indigo-400;
       }
     </style>
+
+    <script>
+      document.addEventListener('astro:page-load', () => {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('active');
+            }
+          });
+        }, { 
+          threshold: 0.1,
+          rootMargin: '0px 0px -100px 0px'
+        });
+
+        document.querySelectorAll('.reveal').forEach((element) => {
+          observer.observe(element);
+        });
+      });
+    </script>
   </body>
 </html>
