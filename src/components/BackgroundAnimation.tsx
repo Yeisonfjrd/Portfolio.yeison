@@ -135,18 +135,16 @@ const BackgroundAnimation = () => {
     let animationFrameId: number
 
     const animate = () => {
-      if (!ctx) return
-      ctx.fillStyle = createBackgroundGradient()
-      ctx.fillRect(0, 0, width, height)
-
-      nebulas.forEach((nebula) => {
-        drawNebula(nebula.x, nebula.y, nebula.size, nebula.color)
-      })
-
-      particles.forEach((particle) => {
-        particle.update()
-        particle.draw()
-      })
+      if (!ctx) return;
+      
+      const gradient = createBackgroundGradient();
+      if (gradient) {
+        ctx.fillStyle = gradient;
+      } else {
+        ctx.fillStyle = "#0f0f1a";
+      }
+      
+      ctx.fillRect(0, 0, width, height);
 
       particles.forEach((p1, i) => {
         particles.slice(i + 1).forEach((p2) => {
