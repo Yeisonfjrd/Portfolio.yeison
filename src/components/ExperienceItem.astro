@@ -1,33 +1,38 @@
 ---
-import LinkInline from "./LinkInline.astro"
+import LinkInline from "./LinkInline.astro";
 
 interface Props {
-  title: string
-  company: string
-  description: string
-  link?: string
-  date: string
+  title: string;
+  company: string;
+  description: string;
+  link?: string;
+  date: string;
+  isLast?: boolean;
 }
 
-const { title, company, description, link, date } = Astro.props
+const { title, company, description, link, date, isLast = false } = Astro.props;
 ---
 
-<div
-  class="relative mx-12 pb-12 grid before:absolute before:left-[-35px] before:block before:h-full before:border-l-2 before:border-black/20 dark:before:border-white/15 before:content-[''] md:grid-cols-5 md:gap-10 md:space-x-4]"
->
-  <div class="relative pb-12 md:col-span-2">
-    <div class="sticky top-0">
-      <span class="text-yellow-400 -left-[42px] absolute rounded-full text-5xl"
-        >&bull;</span
-      >
+<div class:list={[
+  "relative experience-item pl-8 pb-12 grid before:absolute before:left-[-5px] before:block before:h-full before:border-l-2 before:border-violet-500/30 before:content-[''] md:grid-cols-5 md:gap-10 md:space-x-4",
+  { "before:h-1/2": isLast }
+]}>
+  <div class="relative pb-10 md:col-span-2">
+    <div class="relative">
+      <span 
+        class="absolute -left-[14px] top-2 w-4 h-4 rounded-full bg-violet-600 dark:bg-violet-500 border-3 border-slate-950 z-10 timeline-dot shadow-[0_0_10px_rgba(139,92,246,0.7)]"
+      ></span>
 
-      <h3 class="text-xl font-bold text-yellow-400">{title}</h3>
-      <h4 class="font-semibold text-xl text-gray-600 dark:text-white">{company}</h4>
-      <time class="p-0 m-0 text-sm text-gray-600/80 dark:text-white/80">{date}</time>
+      <div class="pl-4">
+        <h3 class="mb-1 text-xl font-bold text-violet-400">{title}</h3>
+        <h4 class="text-lg font-semibold text-white">{company}</h4>
+        <time class="text-sm text-slate-400">{date}</time>
+      </div>
     </div>
   </div>
-  <div class="relative flex flex-col gap-2 pb-4 text-gray-600 dark:text-gray-300 md:col-span-3">
-    {description}
+  
+  <div class="relative flex flex-col gap-2 pb-4 text-slate-300 md:col-span-3">
+    <p>{description}</p>
     {
       link && (
         <LinkInline href={link}>
@@ -54,3 +59,14 @@ const { title, company, description, link, date } = Astro.props
     }
   </div>
 </div>
+
+<style>
+  .timeline-dot {
+    transition: transform 0.3s ease;
+  }
+  
+  .experience-item:hover .timeline-dot {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.9);
+  }
+</style>
