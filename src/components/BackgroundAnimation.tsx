@@ -123,14 +123,14 @@ const BackgroundAnimation = () => {
       particles.push(new Particle())
     }
 
-    const createBackgroundGradient = () => {
-      if (!ctx) return
-      const gradient = ctx.createLinearGradient(0, 0, 0, height)
-      gradient.addColorStop(0, "#0f0f1a")
-      gradient.addColorStop(0.5, "#1a1a2e")
-      gradient.addColorStop(1, "#2a1a3a")
-      return gradient
-    }
+    const createBackgroundGradient = (): CanvasGradient | null => {
+      if (!ctx) return null;
+      const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      gradient.addColorStop(0, "#0f0f1a");
+      gradient.addColorStop(0.5, "#1a1a2e");
+      gradient.addColorStop(1, "#2a1a3a");
+      return gradient;
+    };    
 
     let animationFrameId: number
 
