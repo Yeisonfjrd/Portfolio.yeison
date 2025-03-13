@@ -15,12 +15,4 @@ export const projects = [
       link: "#",
       github: "#",
     },
-    {
-      title: "App de Fitness",
-      description: "Aplicación móvil para seguimiento de entrenamientos, nutrición y progreso físico.",
-      image: "/projects/fitness.webp",
-      tags: ["React Native", "Redux", "Node.js", "MongoDB"],
-      link: "#",
-      github: "#",
-    },
   ] as const  
