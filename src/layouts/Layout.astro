@@ -3,7 +3,6 @@ import "@fontsource-variable/outfit";
 import Header from "@/components/Header.astro";
 import Footer from "@/components/Footer.astro";
 import { ViewTransitions } from "astro:transitions";
-import BackgroundAnimation from "@/components/BackgroundAnimation";
 
 interface Props {
   title: string;
@@ -24,9 +23,13 @@ const { description, title } = Astro.props;
     <title>{title}</title>
     <ViewTransitions />
   </head>
-  <body class="relative text-slate-300 bg-gradient-to-b from-[#0f0f1a] via-[#1a1a2e] to-[#2a1a3a]">
-    <BackgroundAnimation client:load />
-    
+  <body class="relative text-slate-300 bg-[#0f0f1a]">
+    <div class="fixed inset-0 -z-10 bg-gradient-to-br from-[#0f0f1a] via-[#14102b] to-[#0f0f1a]"></div>
+    <div
+      class="fixed inset-0 -z-10 opacity-30"
+      style="background-image: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(124,58,237,0.25), transparent);"
+    ></div>
+
     <div class="relative z-10">
       <Header />
       <main class="min-h-screen px-4 pt-16 pb-16 sm:px-6 lg:px-8">
