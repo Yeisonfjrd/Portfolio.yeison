@@ -5,49 +5,32 @@ const personalImageAlt = "Yeison Fajardo";
 <article class="flex flex-col items-center justify-center gap-8 text-slate-300 md:flex-row reveal">
   <div class="[&>p]:mb-4 [&>p>strong]:text-violet-400 [&>p>strong]:font-medium text-pretty order-2 md:order-1 md:w-2/3">
     <p class="text-lg leading-relaxed">
-      Soy Yeison Fajardo, estudiante de Desarrollo de Software. 
-      Desde los 16 años, mi pasión por programar me ha llevado a 
-      liderar equipos en proyectos fullstack a mis 19. He trabajado con 
-      <strong>
-        JavaScript, Node.js, Express, Go, Spring Boot, React, NeonDB 
-        y MongoDB
-      </strong>, 
-      destacándome especialmente en 
-      <strong>TypeScript</strong>. 
-      Proyectos como una plataforma de trading de criptomonedas y 
-      un acortador de URLs reflejan mi enfoque en soluciones escalables.
+      Soy Yeison Fajardo, estudiante de Desarrollo de Software en la
+      <strong>Universidad Provincial de Ezeiza</strong>.
+      Me especializo en backend: APIs REST, microservicios, modelado de datos y testing.
+      Construyo sistemas orientados a resolver problemas reales con foco en
+      calidad técnica, mantenibilidad y escalabilidad.
     </p>
     <p class="text-lg leading-relaxed">
-      Mi compromiso con el aprendizaje continuo me impulsa a buscar 
-      nuevos desafíos para crecer en este fascinante mundo tecnológico.
+      Trabajo principalmente con <strong>TypeScript, Java, Node.js, Spring Boot,
+      PostgreSQL y MongoDB</strong>. Mi objetivo es seguir profundizando en
+      arquitectura de sistemas, diseño de datos y automatización de pruebas.
+    </p>
+    <p class="text-lg leading-relaxed">
+      Combino la carrera universitaria con práctica constante en proyectos reales
+      y cursos especializados en <strong>algoritmos, estructuras de datos y
+      patrones de arquitectura</strong>.
     </p>
   </div>
 
-  <div class="order-1 md:order-2 perspective-1000">
-    <img 
-      width="200" 
-      height="200" 
-      src="/Yeison-fajardo.webp" 
-      alt={personalImageAlt} 
-      class="w-64 h-64 object-cover rounded-2xl transition-transform duration-500 hover:scale-105 hover:rotate-3 shadow-xl ring-1 ring-violet-700/20 dark:ring-violet-500/20 shadow-[0_0_25px_rgba(139,92,246,0.2)]"
-      style="object-position: 50% 50%"
+  <div class="order-1 md:order-2 flex-shrink-0">
+    <img
+      width="200"
+      height="200"
+      src="/Yeison-fajardo.webp"
+      alt={personalImageAlt}
+      class="w-56 h-56 object-cover rounded-2xl shadow-xl ring-1 ring-violet-700/30 shadow-[0_0_25px_rgba(139,92,246,0.15)]"
+      style="object-position: 50% 30%"
     />
   </div>
 </article>
-
-<style>
-  .perspective-1000 {
-    perspective: 1000px;
-  }
-
-  .perspective-1000 img {
-    transform-style: preserve-3d;
-    backface-visibility: hidden;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .perspective-1000 img:hover {
-      transform: rotate3d(1, 1, 0, 15deg);
-    }
-  }
-</style>

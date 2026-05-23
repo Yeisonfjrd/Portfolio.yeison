@@ -1,0 +1,161 @@
+---
+---
+
+<div class="terminal-panel">
+  <div class="terminal-bar">
+    <span class="dot" style="background:#ff5f57"></span>
+    <span class="dot" style="background:#febc2e"></span>
+    <span class="dot" style="background:#28c840"></span>
+    <span class="terminal-title">yeison@fajardo ~ status</span>
+  </div>
+
+  <div class="terminal-body">
+    <div class="t-row">
+      <span class="t-key">current_focus</span>
+      <span class="t-arr">→</span>
+      <span class="t-val accent">Building systems that stay maintainable</span>
+    </div>
+
+    <div class="t-divider"></div>
+
+    <div class="t-row">
+      <span class="t-key">stack</span>
+      <span class="t-arr">→</span>
+      <span class="t-val">TypeScript &nbsp;Java &nbsp;Node.js &nbsp;PostgreSQL &nbsp;Spring Boot &nbsp;MongoDB &nbsp;Go</span>
+    </div>
+
+    <div class="t-divider"></div>
+
+    <div class="t-row">
+      <span class="t-key">latest_build</span>
+      <span class="t-arr">→</span>
+      <span class="t-build">
+        <span class="build-dot"></span>
+        <span class="t-val green">passing</span>
+        <span class="t-val dim">&nbsp;· DocSearch · local RAG · citation tracing</span>
+      </span>
+    </div>
+
+    <div class="t-divider"></div>
+
+    <div class="t-row">
+      <span class="t-key">current_project</span>
+      <span class="t-arr">→</span>
+      <span class="t-val amber">backend · testing · data models · architecture</span>
+    </div>
+
+    <div class="t-divider"></div>
+
+    <div class="t-row" style="align-items:flex-start">
+      <span class="t-key">principles</span>
+      <span class="t-arr">→</span>
+      <div class="t-principles">
+        <div class="t-principle"><span class="t-comment">// </span>simple &gt; flashy</div>
+        <div class="t-principle"><span class="t-comment">// </span>correctness before scale</div>
+        <div class="t-principle"><span class="t-comment">// </span>good data model, fewer bugs</div>
+      </div>
+    </div>
+
+    <div class="t-divider"></div>
+
+    <div class="t-prompt-row">
+      <span class="t-sym">$</span>
+      <span class="t-typed" id="sf-typed"></span>
+      <span class="t-cursor"></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .terminal-panel {
+    font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+    background: rgba(10, 10, 20, 0.85);
+    border: 1px solid rgba(124, 58, 237, 0.22);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 520px;
+    backdrop-filter: blur(8px);
+    text-align: left;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 14px;
+    background: rgba(255,255,255,0.02);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .terminal-title {
+    margin-left: 8px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.22);
+    letter-spacing: 0.07em;
+  }
+
+  .terminal-body { padding: 18px 20px 14px; display: flex; flex-direction: column; gap: 10px; }
+
+  .t-row { display: flex; align-items: center; }
+  .t-key { font-size: 11px; color: rgba(124,58,237,0.8); min-width: 150px; flex-shrink: 0; letter-spacing: 0.03em; }
+  .t-arr { font-size: 11px; color: rgba(255,255,255,0.15); margin-right: 10px; }
+  .t-val { font-size: 11.5px; color: rgba(255,255,255,0.65); }
+  .t-val.accent { color: rgba(167,139,250,0.9); }
+  .t-val.green { color: #34d399; }
+  .t-val.amber { color: #fbbf24; }
+  .t-val.dim { color: rgba(255,255,255,0.3); }
+
+  .t-build { display: flex; align-items: center; gap: 7px; }
+  .build-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #34d399; flex-shrink: 0;
+    animation: bdpulse 2.2s ease-in-out infinite;
+  }
+
+  .t-divider { border: none; border-top: 1px solid rgba(255,255,255,0.04); margin: 0; }
+
+  .t-principles { display: flex; flex-direction: column; gap: 3px; }
+  .t-principle { font-size: 11px; color: rgba(255,255,255,0.38); }
+  .t-comment { color: rgba(124,58,237,0.45); }
+
+  .t-prompt-row { display: flex; align-items: center; gap: 8px; padding-top: 2px; }
+  .t-sym { font-size: 12px; color: rgba(124,58,237,0.55); }
+  .t-typed { font-size: 11px; color: rgba(255,255,255,0.25); }
+  .t-cursor {
+    display: inline-block; width: 7px; height: 13px;
+    background: rgba(124,58,237,0.6); border-radius: 1px;
+    animation: tblink 1.1s step-end infinite;
+  }
+
+  @keyframes tblink { 0%,100%{opacity:1} 50%{opacity:0} }
+  @keyframes bdpulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(52,211,153,0.5); }
+    50% { box-shadow: 0 0 0 5px rgba(52,211,153,0); }
+  }
+</style>
+
+<script>
+  const phrases = [
+    'location → Buenos Aires, AR',
+    'open_to → fulltime / freelance',
+    'languages → TypeScript · Java · Go',
+    'approach → test first, ship with evidence',
+  ];
+  let pi = 0, ci = 0, deleting = false;
+  const el = document.getElementById('sf-typed');
+  if (el) {
+    const typedEl = el;
+    function tick() {
+      const phrase = phrases[pi];
+      if (!deleting) {
+        if (ci < phrase.length) { typedEl.textContent += phrase[ci++]; setTimeout(tick, 42 + Math.random() * 28); }
+        else { deleting = true; setTimeout(tick, 2000); }
+      } else {
+        if (ci > 0) { typedEl.textContent = phrase.slice(0, --ci); setTimeout(tick, 16); }
+        else { deleting = false; pi = (pi + 1) % phrases.length; setTimeout(tick, 400); }
+      }
+    }
+    setTimeout(tick, 900);
+  }
+</script>

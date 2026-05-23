@@ -13,29 +13,29 @@ import { siteConfig } from "@/data/site"
 ---
 
 <Layout
-  title={`${siteConfig.name} - Desarrollador Web con 3 años de experiencia`}
+  title={`${siteConfig.name} — Backend Engineer`}
   description={siteConfig.description}
 >
   <main>
     <SectionContainer class="py-12 md:py-24">
       <Hero />
     </SectionContainer>
-  
-    <div class="space-y-16">
-      <SectionContainer id="experiencia" class="pt-8">
-        <TitleSection>
-          <Briefcase class="size-8" />
-          Experiencia
-        </TitleSection>
-        <Experience />
-      </SectionContainer>
 
+    <div class="space-y-16">
       <SectionContainer id="proyectos" class="pt-8">
         <TitleSection>
           <CodeIcon class="size-7" />
           Proyectos
         </TitleSection>
         <Projects />
+      </SectionContainer>
+
+      <SectionContainer id="experiencia" class="pt-8">
+        <TitleSection>
+          <Briefcase class="size-8" />
+          Experiencia & Formación
+        </TitleSection>
+        <Experience />
       </SectionContainer>
 
       <SectionContainer id="sobre-mi" class="pt-8">
