@@ -1,8 +1,9 @@
 # Portfolio de Yeison Fajardo
 
-[![project](https://github.com/user-attachments/assets/4ad0368a-e266-4a93-b135-07b65f9d493b)](https://yeisonfjrd.netlify.app/)
+[![project](https://github.com/user-attachments/assets/a6c29cdc-0841-46da-8440-6c3b83ad3daa)](https://yeisonfjrd.netlify.app/)
 
 ## Diagrama de Arquitectura del Portafolio (Estilizado)
+
 
 ```mermaid
 graph LR
