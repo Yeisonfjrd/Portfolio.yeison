@@ -1,7 +1,6 @@
 # Node.js and related files
 node_modules/
 package-lock.json
-pnpm-lock.yaml
 yarn.lock
 
 # Environment variables (si usas)
