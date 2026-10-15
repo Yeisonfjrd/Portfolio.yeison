@@ -50,41 +50,40 @@ const stack = [
       <span class="line"><span data-line class="two" style="--i:1">Fajardo</span></span>
     </h1>
     <div class="hero-foot">
-      <p>Desarrollador backend en Buenos Aires. Encuentro el bug que nadie vio y lo dejo con un test.</p>
-      <a class="btn" href={mail}>Escribime</a>
+      <div class="intro">
+        <img class="face" src="/Yeison-fajardo.webp" alt="Yeison Fajardo" width="96" height="96" />
+        <p>Desarrollador backend en Buenos Aires. Encuentro el bug que nadie vio y lo dejo con un test. Busco mi primer trabajo.</p>
+      </div>
+      <p class="reach">
+        <a class="btn" href={mail}>Escribime</a>
+        <a href={siteConfig.links.linkedin} rel="noopener">LinkedIn</a>
+        <a href={siteConfig.links.github} rel="noopener">GitHub</a>
+        <a href="/cv-yeison-fajardo.pdf">CV</a>
+      </p>
     </div>
   </header>
 
   <main>
     <section class="work" id="arreglos" aria-labelledby="work-title">
-      <h2 class="section-title" id="work-title" data-reveal>Lo que arreglé</h2>
+      <h2 class="section-title" id="work-title">Lo que arreglé</h2>
+      <p class="work-hint">Elegí un proyecto para ver el bug que tenía y el código con el que lo arreglé.</p>
       <div class="work-grid">
         <ol class="work-list">
           {work.map((p, i) => (
-            <li data-reveal style={`--d:${i}`}>
-              <a class="work-row" href={p.commit ?? p.link ?? p.github ?? "#"} aria-current={i === 0 ? "true" : "false"} data-slug={p.slug}>
-                <div class="preview inline-preview">
-                  {shots[p.slug] && <div class="shot"><img src={shots[p.slug].src} alt={shots[p.slug].alt} loading="lazy" width="1280" height="800" /></div>}
-                  {p.bug && <p class="bug">{p.bug}</p>}
-                  {p.diff && (
-                    <figure class="diff">
-                      <figcaption><code>{p.diff.file}</code></figcaption>
-                      <pre>{p.diff.lines.map((l) => <code class={l.t === "+" ? "add" : l.t === "-" ? "del" : ""}>{l.t} {l.c}</code>)}</pre>
-                    </figure>
-                  )}
-                  <p class="story">{p.story ?? p.summary}</p>
-                </div>
+            <li>
+              <button type="button" class="work-row" aria-pressed={i === 0 ? "true" : "false"} aria-controls={`pv-${p.slug}`} data-slug={p.slug}>
                 <span class="wname">{p.title}</span>
                 <span class="wmeta">{p.discipline}</span>
-              </a>
-            </li>
-          ))}
-        </ol>
-        <div class="frame" aria-hidden="true">
-          {work.map((p, i) => (
-            <div class="preview" data-slug={p.slug} data-active={i === 0 ? "" : undefined}>
-              {shots[p.slug] && <div class="shot"><img src={shots[p.slug].src} alt="" loading="lazy" width="1280" height="800" /></div>}
+              </button>
+              <div class="preview inline-preview">
+              {shots[p.slug] && <div class="shot"><img src={shots[p.slug].src} alt={shots[p.slug].alt} loading="lazy" width="1280" height="800" /></div>}
               {p.bug && <p class="bug">{p.bug}</p>}
+              <p class="tags">{p.tags.join(", ")}</p>
+              <p class="links">
+                {p.github && <a class="btn small" href={p.github} rel="noopener">Código</a>}
+                {p.link && <a class="btn small ghost" href={p.link} rel="noopener">Demo</a>}
+                {p.commit && <a href={p.commit} rel="noopener">Ver el arreglo</a>}
+              </p>
               {p.diff && (
                 <figure class="diff">
                   <figcaption><code>{p.diff.file}</code></figcaption>
@@ -92,7 +91,28 @@ const stack = [
                 </figure>
               )}
               <p class="story">{p.story ?? p.summary}</p>
-              <span class="commit">{p.commit ? "Ver el commit" : "Ver la demo"}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <div class="frame">
+          {work.map((p, i) => (
+            <div class="preview" id={`pv-${p.slug}`} data-slug={p.slug} data-active={i === 0 ? "" : undefined}>
+              {shots[p.slug] && <div class="shot"><img src={shots[p.slug].src} alt={shots[p.slug].alt} loading="lazy" width="1280" height="800" /></div>}
+              {p.bug && <p class="bug">{p.bug}</p>}
+              <p class="tags">{p.tags.join(", ")}</p>
+              <p class="links">
+                {p.github && <a class="btn small" href={p.github} rel="noopener">Código</a>}
+                {p.link && <a class="btn small ghost" href={p.link} rel="noopener">Demo</a>}
+                {p.commit && <a href={p.commit} rel="noopener">Ver el arreglo</a>}
+              </p>
+              {p.diff && (
+                <figure class="diff">
+                  <figcaption><code>{p.diff.file}</code></figcaption>
+                  <pre>{p.diff.lines.map((l) => <code class={l.t === "+" ? "add" : l.t === "-" ? "del" : ""}>{l.t} {l.c}</code>)}</pre>
+                </figure>
+              )}
+              <p class="story">{p.story ?? p.summary}</p>
             </div>
           ))}
         </div>
@@ -185,15 +205,16 @@ const stack = [
     document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
 
     // Work index: hover or focus a name to show its diff in the frame
-    const rows = [...document.querySelectorAll<HTMLAnchorElement>(".work-row")];
+    const rows = [...document.querySelectorAll<HTMLButtonElement>(".work-row")];
     const previews = [...document.querySelectorAll<HTMLElement>(".frame .preview")];
     const activate = (slug: string) => {
-      rows.forEach((r) => r.setAttribute("aria-current", String(r.dataset.slug === slug)));
+      rows.forEach((r) => r.setAttribute("aria-pressed", String(r.dataset.slug === slug)));
       previews.forEach((p) => p.toggleAttribute("data-active", p.dataset.slug === slug));
     };
     rows.forEach((r) => {
       r.addEventListener("mouseenter", () => activate(r.dataset.slug!));
       r.addEventListener("focus", () => activate(r.dataset.slug!));
+      r.addEventListener("click", () => activate(r.dataset.slug!));
     });
 
     // The live thing: replay two simultaneous purchases of the last mouse

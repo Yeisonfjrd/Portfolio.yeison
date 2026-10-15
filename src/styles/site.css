@@ -109,24 +109,25 @@ code, pre { font-family: var(--mono); }
   grid-template-columns: repeat(12, 1fr);
   padding-bottom: 40px;
 }
-.hero-foot p {
-  grid-column: 9 / 13;
-  justify-self: end;
-  max-width: 30ch;
-  margin: 0;
-  text-align: right;
-  font-size: var(--step-lead);
-  line-height: 1.3;
-  font-weight: 500;
-}
-.hero-foot .btn { display: none; }
+.hero-foot { align-items: end; }
+.hero-foot .reach { grid-column: 1 / 7; grid-row: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 0; font-weight: 500; }
+.hero-foot .intro { grid-column: 8 / 13; display: flex; align-items: flex-end; gap: 20px; justify-content: flex-end; }
+.hero-foot .intro p { max-width: 30ch; margin: 0; font-size: var(--step-lead); line-height: 1.3; font-weight: 500; }
+.hero-foot .face { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; flex-shrink: 0; }
 
 /* ---------- Work: big names, fixed preview ---------- */
 .work { padding: var(--gap-section) var(--m) 0; }
 .section-title { margin: 0 0 48px; font-size: var(--step-lead); font-weight: 500; letter-spacing: -0.01em; }
 .work-grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; }
 .work-list { grid-column: 1 / 9; margin: 0; padding: 0; list-style: none; }
+.work-hint { margin: -32px 0 40px; max-width: 60ch; }
 .work-row {
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -143,22 +144,21 @@ code, pre { font-family: var(--mono); }
   letter-spacing: -0.035em;
 }
 .work-row .wmeta { font-size: var(--step-small); font-weight: 500; text-align: right; }
-.work-row[aria-current="true"] { color: var(--ink); }
-.work-row[aria-current="true"] .wmeta { color: var(--violet); }
-.work-row .inline-preview { display: none; }
+.work-row[aria-pressed="true"] { color: var(--ink); }
+.work-row[aria-pressed="true"] .wmeta { color: var(--violet); }
+.work-list .inline-preview { display: none; }
+.preview, .preview > * { min-width: 0; max-width: 100%; }
 
 .frame {
   grid-column: 9 / 13;
   position: sticky;
   top: 15vh;
   align-self: start;
-  aspect-ratio: 4 / 5;
+  display: grid;
   background: var(--surface);
-  overflow: hidden;
 }
 .frame .preview {
-  position: absolute;
-  inset: 0;
+  grid-area: 1 / 1;
   opacity: 0;
   visibility: hidden;
   transition: opacity 200ms ease, visibility 0s linear 200ms;
@@ -170,13 +170,16 @@ code, pre { font-family: var(--mono); }
 .preview .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
 .preview .bug { margin: 0; font-size: var(--step-lead); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; text-wrap: balance; }
 .preview .story { margin: 0; font-size: var(--step-body); line-height: 1.4; }
-.preview .commit { margin-top: auto; font-size: var(--step-small); font-weight: 500; }
+.preview .tags { margin: 0; font-size: var(--step-small); color: var(--muted); }
+.preview .links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 0; font-size: var(--step-small); font-weight: 500; }
+.btn.small { min-height: 40px; padding: 0 16px; font-size: var(--step-small); }
+.btn.ghost { background: var(--lilac); color: var(--ink); }
 
 /* The diff is real code, so it keeps a code face and its own colours */
 .diff { margin: 0; font: 14px/1.55 var(--mono); background: var(--paper); }
 .diff figcaption { padding: 6px 10px; background: var(--lilac); }
 .diff figcaption code { font: 500 13px/1.3 var(--mono); color: var(--muted); }
-.diff pre { margin: 0; padding: 6px 0; white-space: pre-wrap; word-break: break-word; }
+.diff pre { margin: 0; padding: 6px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .diff code { display: block; padding: 0 10px 0 2.2ch; text-indent: -1.4ch; font: inherit; }
 .diff .add { background: var(--add-bg); color: var(--add-ink); }
 .diff .del { background: var(--del-bg); color: var(--del-ink); text-decoration: line-through; text-decoration-thickness: 1px; }
@@ -249,8 +252,7 @@ code, pre { font-family: var(--mono); }
   font-size: var(--step-lead);
   line-height: 1.18;
   color: var(--ink);
-  text-align: justify;
-  hyphens: auto;
+  text-align: left;
 }
 .about strong { color: var(--ink); font-weight: 800; }
 .mark { color: var(--ink); padding: 0 0.1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
@@ -323,9 +325,9 @@ code, pre { font-family: var(--mono); }
 
 /* ---------- Motion ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .js .lines [data-line] { transform: translateY(105%); animation: line-up 900ms var(--ease-out) forwards; animation-delay: calc(var(--i) * 110ms + 150ms); }
-  .js .hero-foot > *, .js .topbar { opacity: 0; animation: fade-up 700ms var(--ease-out) 520ms forwards; }
-  .js [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 700ms var(--ease-out), transform 900ms var(--ease-out); transition-delay: calc(var(--d, 0) * 75ms); }
+  .js .lines [data-line] { transform: translateY(105%); animation: line-up 700ms var(--ease-out) forwards; animation-delay: calc(var(--i) * 90ms + 60ms); }
+  .js .hero-foot > *, .js .topbar { opacity: 0; animation: fade-up 500ms var(--ease-out) 300ms forwards; }
+  .js [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 450ms var(--ease-out), transform 550ms var(--ease-out); transition-delay: calc(var(--d, 0) * 60ms); }
   .js [data-reveal].is-in { opacity: 1; transform: none; }
 }
 @keyframes line-up { to { transform: none; } }
@@ -336,13 +338,26 @@ code, pre { font-family: var(--mono); }
 
 /* ---------- Tablet ---------- */
 @media (max-width: 980px) {
-  .hero-foot p { grid-column: 6 / 13; }
+  .hero-foot { display: block; }
+  .hero-foot .intro { justify-content: flex-start; margin-bottom: 20px; }
+  .work-row { cursor: default; }
+  .work-hint { display: none; }
   .showcase-top h2 { grid-column: 1 / 13; margin-bottom: 24px; }
   .showcase-top .copy { grid-column: 1 / 13; }
 }
 
 /* ---------- Tablet and phone: the work index loses its sticky frame ---------- */
 @media (max-width: 980px) {
+  .work-grid { display: block; }
+  .frame { display: none; }
+  .work-list li + li { margin-top: 40px; }
+  .work-row { display: block; color: var(--ink); padding: 0; }
+  .work-list .inline-preview { display: flex; position: static; opacity: 1; margin-top: 16px; background: var(--surface); }
+  /* on a phone the project links read as text links, not pills stacked over the next name */
+  .inline-preview .links .btn { min-height: 0; padding: 0; border-radius: 0; background: none; color: inherit; text-decoration: underline; }
+  .lineup table, .lineup tbody, .lineup tr, .lineup td, .lineup caption { display: block; }
+  .lineup colgroup { display: none; }
+  .lineup tr { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; margin-bottom: 18px; }
   .work-row .wmeta { display: block; margin-top: 6px; text-align: left; color: var(--violet); }
   .lineup td:first-child { grid-column: 1 / 3; line-height: 1.25; }
   .lineup td.sub { font-size: var(--step-small); }
@@ -358,14 +373,10 @@ code, pre { font-family: var(--mono); }
   .topbar nav a.only-phone { display: inline; }
   .name { margin-top: 18svh; font-size: 21vw; }
   .hero-foot { display: block; padding-bottom: 24px; }
-  .hero-foot p { text-align: left; max-width: none; font-size: var(--step-body); margin-bottom: 16px; }
-  .hero-foot .btn { display: inline-flex; }
+  .hero-foot .intro { justify-content: flex-start; margin-bottom: 20px; }
+  .hero-foot .intro p { font-size: var(--step-body); }
+  .hero-foot .face { width: 64px; height: 64px; }
 
-  .work-grid { display: block; }
-  .frame { display: none; }
-  .work-list li + li { margin-top: 40px; }
-  .work-row { display: block; color: var(--ink); padding: 0; }
-  .work-row .inline-preview { display: flex; position: static; opacity: 1; margin-bottom: 16px; background: var(--surface); }
   .work-row .wname { display: block; font-size: 9.5vw; }
   .work-row .wmeta { display: block; margin-top: 6px; text-align: left; font-size: 13px; color: var(--violet); }
 
