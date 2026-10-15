@@ -99,7 +99,7 @@
     "title": "Short URL",
     "summary": "Acortador de URLs con API en Go y contador de visitas.",
     "highlights": [
-      "El README documenta sus límites y cómo resolverlos: la redirección 301 queda cacheada y cuenta de menos, y dos clics simultáneos pueden contar como uno."
+      "El contador perdía clics: la redirección 301 quedaba cacheada en el navegador y dos visitas simultáneas contaban como una. Pasé a 302 y a un incremento atómico en SQL."
     ],
     "tags": [
       "Go",
@@ -113,7 +113,7 @@
     "image": "/projects/short-url-backend.png",
     "cover": {
       "kind": "API · Go",
-      "line": "GET /abc123 → 301 → url original"
+      "line": "GET /abc123 → 302 → visits = visits + 1"
     },
     "featured": false,
     "order": 5
