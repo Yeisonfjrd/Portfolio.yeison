@@ -8,6 +8,14 @@ export const experience = [
     link: "https://www.linkedin.com/in/yeison-fajardo/details/education/",
   },
   {
+    date: "2026 — Actualidad",
+    title: "Inglés — Nivel 4 de 6",
+    company: "Centro de Idiomas · Universidad Provincial de Ezeiza",
+    description:
+      "Curso anual de inglés general, en curso. Lectura de documentación técnica en inglés en el día a día.",
+    link: "",
+  },
+  {
     date: "Enero 2025",
     title: "Big O, Algoritmos y Estructuras de Datos",
     company: "Udemy",
@@ -29,7 +37,7 @@ export const experience = [
     company: "Aprende Programando",
     description:
       "Componentes reutilizables, hooks, gestión de estado y ciclo de vida en aplicaciones React.",
-    link: "https://www.linkedin.com/in/yeison-fajardo-105871341/overlay/1734480839735/single-media-viewer/?profileId=ACoAAFW8LlUBLECRfqM4hHbTz12h6A_qfDx7REk",
+    link: "https://www.linkedin.com/in/yeison-fajardo/overlay/1734480839735/single-media-viewer/?profileId=ACoAAFW8LlUBLECRfqM4hHbTz12h6A_qfDx7REk",
   },
   {
     date: "Diciembre 2022",
@@ -37,7 +45,7 @@ export const experience = [
     company: "Aprende Programando · UTN",
     description:
       "Aplicaciones web dinámicas con JavaScript y gestión de datos con bases de datos relacionales. Certificado en colaboración con la Universidad Tecnológica Nacional.",
-    link: "https://www.linkedin.com/in/yeison-fajardo-105871341/overlay/1734480821249/single-media-viewer/?profileId=ACoAAFW8LlUBLECRfqM4hHbTz12h6A_qfDx7REk",
+    link: "https://www.linkedin.com/in/yeison-fajardo/overlay/1734480821249/single-media-viewer/?profileId=ACoAAFW8LlUBLECRfqM4hHbTz12h6A_qfDx7REk",
   },
   {
     date: "Enero 2022",
@@ -45,6 +53,6 @@ export const experience = [
     company: "Aprende Programando · UTN",
     description:
       "HTML semántico, CSS y JavaScript. Páginas estáticas y dinámicas con buenas prácticas de maquetado.",
-    link: "https://www.linkedin.com/in/yeison-fajardo-105871341/overlay/1734480797995/single-media-viewer/?profileId=ACoAAFW8LlUBLECRfqM4hHbTz12h6A_qfDx7REk",
+    link: "https://www.linkedin.com/in/yeison-fajardo/overlay/1734480797995/single-media-viewer/?profileId=ACoAAFW8LlUBLECRfqM4hHbTz12h6A_qfDx7REk",
   },
 ] as const;

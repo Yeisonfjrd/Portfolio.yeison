@@ -1,11 +1,8 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import SectionContainer from "@/components/SectionContainer.astro";
-import ProjectCard from "@/components/ProjectCard.astro";
-import { projects } from "@/data/projects";
+import Projects from "@/components/Projects.astro";
 import { siteConfig } from "@/data/site";
-
-const allProjects = projects;
 ---
 
 <Layout 
@@ -16,23 +13,10 @@ const allProjects = projects;
     <div>
       <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-6 text-center">Mis Proyectos</h1>
       <p class="text-lg text-slate-600 dark:text-slate-400 mb-12 text-center max-w-3xl mx-auto">
-        Una colección de mis trabajos más destacados que muestran mi experiencia en desarrollo web, 
-        diseño de interfaces y soluciones digitales.
+        Lo que construí y, sobre todo, los problemas que encontré y resolví en el camino.
       </p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {allProjects.map((project, index) => (
-          <ProjectCard 
-            title={project.title}
-            description={project.description}
-            image={project.image}
-            tags={[...project.tags]}
-            link={project.link}
-            github={project.github}
-            index={index}
-          />
-        ))}
-      </div>
+      <Projects />
     </div>
   </SectionContainer>
 

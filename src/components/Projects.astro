@@ -1,27 +1,23 @@
 ---
+import FeaturedProject from "./FeaturedProject.astro";
 import ProjectCard from "./ProjectCard.astro";
 import LinkInline from "./LinkInline.astro";
-import { projects } from "@/data/projects";
+import { featuredProjects, otherProjects } from "@/data/projects";
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-  {
-    projects.map((project, index) => (
-      <ProjectCard
-        title={project.title}
-        description={project.description}
-        image={project.image}
-        tags={[...project.tags]}
-        link={project.link}
-        github={project.github}
-        index={index}
-      />
-    ))
-  }
+<div class="mt-8 space-y-8">
+  {featuredProjects.map((project, index) => <FeaturedProject project={project} index={index} />)}
 </div>
 
-<div class="flex justify-center mt-10">
-  <LinkInline href="https://github.com/Yeisonfjrd">
-    Ver más proyectos en GitHub →
-  </LinkInline>
+{otherProjects.length > 0 && (
+  <>
+    <h3 class="mb-6 mt-16 text-xl font-semibold text-white">Otros proyectos</h3>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {otherProjects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </>
+)}
+
+<div class="mt-10 flex justify-center">
+  <LinkInline href="https://github.com/Yeisonfjrd">Ver todo en GitHub →</LinkInline>
 </div>

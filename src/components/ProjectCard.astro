@@ -1,99 +1,53 @@
 ---
-import type { Project } from "@/types";
-import LinkButton from "./LinkButton.astro";
+import type { Project } from "@/data/projects";
 import GitHubIcon from "./icons/GitHub.astro";
 
 interface Props {
-  title: string;
-  description: string;
-  link: string;
-  github: string;
-  image: string;
-  tags: string[];
-  index: number;
+  project: Project;
 }
 
-const { title, description, link, github, image, tags, index } = Astro.props;
+const { project } = Astro.props;
+const href = project.link ?? project.github;
 ---
 
-<article class="group relative flex flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 shadow-lg hover:shadow-xl transition-all duration-300 h-full reveal stagger-delay-{index + 1} border border-slate-700/50 backdrop-blur-sm">
-  <div class="relative h-48 overflow-hidden">
-    <img 
-      src={image || "/placeholder.svg?height=400&width=600"}
-      alt={`Captura de pantalla del proyecto ${title}`} 
-      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-      loading="lazy"
-    />
-    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+<article class="reveal group flex flex-col overflow-hidden rounded-2xl border border-slate-700/50 bg-slate-900/60 transition-colors hover:border-violet-700/50">
+  <div class="relative aspect-[16/10] overflow-hidden">
+    {project.image && (
+      <img
+        src={project.image}
+        alt={`Vista de ${project.title}`}
+        loading="lazy"
+        decoding="async"
+        class="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
+      />
+    )}
   </div>
-  
-  <div class="flex flex-col flex-grow p-6">
-    <h3 class="text-xl font-bold mb-2 text-white group-hover:text-violet-400 transition-colors">
-      {title}
-    </h3>
-    
-    <p class="text-slate-300 mb-4 flex-grow line-clamp-3">
-      {description}
-    </p>
-    
-    <div class="flex flex-wrap gap-2 mb-4">
-      {tags.map((tag) => (
-        <span class="px-2 py-1 text-xs font-medium rounded-full bg-violet-900/50 text-violet-300 border border-violet-700/50 transition-colors">
-          {tag}
-        </span>
-      ))}
+  <div class="flex flex-grow flex-col p-5">
+    <div class="mb-1 flex items-baseline justify-between gap-3">
+      <h3 class="text-lg font-bold text-white">{project.title}</h3>
+      <span class="font-mono text-xs text-slate-500">{project.year}</span>
     </div>
-    
-    <footer class="flex gap-x-4 mt-auto">
-      {github && (
-        <LinkButton href={github}>
-          <GitHubIcon class="size-5" />
-          Código
-        </LinkButton>
-      )}
-      
-      {link && (
-        <LinkButton href={link}>
-          <svg 
-            width="20" 
-            height="20" 
-            viewBox="0 0 24 24" 
-            stroke-width="1.5" 
-            stroke="currentColor" 
-            fill="none" 
-            stroke-linecap="round" 
-            stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-            <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" />
-            <path d="M11 13l9 -9" />
-            <path d="M15 4h5v5" />
-          </svg>
-          Demo
-        </LinkButton>
-      )}
-    </footer>
+    <p class="mb-4 flex-grow text-sm leading-relaxed text-slate-400">{project.summary}</p>
+    <div class="flex items-center justify-between gap-3">
+      <div class="flex flex-wrap gap-1.5">
+        {project.tags.slice(0, 3).map((tag) => (
+          <span class="rounded-full bg-slate-800 px-2 py-0.5 text-xs text-slate-300">{tag}</span>
+        ))}
+      </div>
+      <div class="flex gap-3 text-slate-400">
+        {project.github && (
+          <a href={project.github} target="_blank" rel="noopener noreferrer" class="hover:text-violet-300" aria-label={`Código de ${project.title}`}>
+            <GitHubIcon class="size-5" />
+          </a>
+        )}
+        {project.link && (
+          <a href={project.link} target="_blank" rel="noopener noreferrer" class="hover:text-violet-300" aria-label={`Demo de ${project.title}`}>
+            <svg width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M12 6h-6a2 2 0 0 0 -2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-6" /><path d="M11 13l9 -9" /><path d="M15 4h5v5" />
+            </svg>
+          </a>
+        )}
+      </div>
+    </div>
   </div>
 </article>
-
-<style>
-  article {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-
-  article.reveal.active {
-    animation: fadeInUp 0.8s ease-out forwards;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-</style>

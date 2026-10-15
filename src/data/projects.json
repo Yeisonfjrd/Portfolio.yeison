@@ -1,0 +1,181 @@
+[
+  {
+    "slug": "garmin-coach-mcp",
+    "title": "Garmin Coach MCP",
+    "summary": "Servidor MCP que le da a una IA acceso a tu Garmin Connect: lee sueño, salud y actividades, y escribe entrenamientos estructurados en el calendario del reloj.",
+    "highlights": [
+      "La mayoría de las integraciones con Garmin solo leen; esta planifica un bloque de entrenamiento y lo carga en el reloj.",
+      "11 tests fallaban solo fuera de UTC por cómo JavaScript parsea fechas; lo arreglé y el CI corre en UTC y en hora de Buenos Aires."
+    ],
+    "tags": [
+      "TypeScript",
+      "MCP",
+      "Node.js",
+      "Vitest"
+    ],
+    "year": 2026,
+    "github": "https://github.com/Yeisonfjrd/garmin-coach-mcp",
+    "link": null,
+    "image": "/projects/garmin-coach-mcp.png",
+    "cover": {
+      "kind": "MCP server · IA + Garmin",
+      "line": "create_running_workout → calendario del reloj"
+    },
+    "featured": true,
+    "order": 1
+  },
+  {
+    "slug": "docsearch-api",
+    "title": "DocSearch — preguntas a tus documentos",
+    "summary": "API para subir documentos y hacerles preguntas en lenguaje natural. Responde con citas a la página exacta, con búsqueda semántica en pgvector y modelos locales en Ollama.",
+    "highlights": [
+      "Encontré un IDOR: una pregunta sin filtro buscaba en los documentos de todos los usuarios. Ahora cada consulta solo ve lo tuyo y una conversación ajena devuelve 404.",
+      "La deduplicación por checksum era global y te devolvía el documento de otro; pasó a ser por usuario, con migración."
+    ],
+    "tags": [
+      "TypeScript",
+      "Fastify",
+      "PostgreSQL",
+      "pgvector"
+    ],
+    "year": 2026,
+    "github": "https://github.com/Yeisonfjrd/docsearch-api",
+    "link": null,
+    "image": "/projects/docsearch-api.png",
+    "cover": {
+      "kind": "API · RAG local",
+      "line": "POST /ask → respuesta + cita (pág. 12)"
+    },
+    "featured": true,
+    "order": 2
+  },
+  {
+    "slug": "techlab-ecommerce-simulator",
+    "title": "TechLab — e-commerce en Spring Boot",
+    "summary": "Reescribí un simulador de tienda hecho en JavaScript como una API en Spring Boot 4: productos, usuarios y pedidos que se confirman completos o no se confirman.",
+    "highlights": [
+      "Dos compras simultáneas del último producto: optimistic locking con @Version, la segunda recibe 409 en vez de vender de más.",
+      "Migraciones con Flyway y CI que corre los tests en H2 y en PostgreSQL real."
+    ],
+    "tags": [
+      "Java 21",
+      "Spring Boot",
+      "PostgreSQL",
+      "Flyway"
+    ],
+    "year": 2025,
+    "github": "https://github.com/Yeisonfjrd/techlab-ecommerce-simulator",
+    "link": null,
+    "image": "/projects/techlab-ecommerce-simulator.png",
+    "cover": {
+      "kind": "API REST · Java",
+      "line": "POST /orders → 409 Conflict (stock ya vendido)"
+    },
+    "featured": true,
+    "order": 3
+  },
+  {
+    "slug": "rental-cars",
+    "title": "RoadEra — alquiler de autos",
+    "summary": "Plataforma de alquiler de autos con registro, reservas, pagos con Stripe y un panel para administrar la flota.",
+    "highlights": [
+      "El checkout cobraba el precio que mandaba el navegador; lo pasé a calcular en el servidor con el precio de la base."
+    ],
+    "tags": [
+      "Next.js",
+      "TypeScript",
+      "Prisma",
+      "Stripe"
+    ],
+    "year": 2025,
+    "github": "https://github.com/Yeisonfjrd/Rental-cars",
+    "link": "https://rental-cars-three.vercel.app",
+    "image": "/projects/rental-cars.png",
+    "featured": true,
+    "order": 4
+  },
+  {
+    "slug": "short-url-backend",
+    "title": "Short URL",
+    "summary": "Acortador de URLs con API en Go y contador de visitas.",
+    "highlights": [
+      "El README documenta sus límites y cómo resolverlos: la redirección 301 queda cacheada y cuenta de menos, y dos clics simultáneos pueden contar como uno."
+    ],
+    "tags": [
+      "Go",
+      "Gin",
+      "PostgreSQL",
+      "GORM"
+    ],
+    "year": 2025,
+    "github": "https://github.com/Yeisonfjrd/Short-url-backend",
+    "link": null,
+    "image": "/projects/short-url-backend.png",
+    "cover": {
+      "kind": "API · Go",
+      "line": "GET /abc123 → 301 → url original"
+    },
+    "featured": false,
+    "order": 5
+  },
+  {
+    "slug": "crypto-trading-platform-frontend",
+    "title": "Crypto Trading Simulator",
+    "summary": "Simulador de trading: órdenes, saldos y precios en vivo por WebSockets, con un dashboard en React.",
+    "highlights": [],
+    "tags": [
+      "React",
+      "Express",
+      "WebSockets",
+      "Redis"
+    ],
+    "year": 2025,
+    "github": "https://github.com/Yeisonfjrd/Crypto-trading-platform-frontend",
+    "link": null,
+    "image": "/projects/crypto-trading-platform-frontend.png",
+    "cover": {
+      "kind": "Full stack · tiempo real",
+      "line": "ws://prices → órdenes y saldos en vivo"
+    },
+    "featured": false,
+    "order": 6
+  },
+  {
+    "slug": "pingpong-scoreboard",
+    "title": "Ping Pong Scoreboard",
+    "summary": "Marcador de ping pong que se maneja con la voz (Web Speech API) y guarda el historial de partidos.",
+    "highlights": [],
+    "tags": [
+      "JavaScript",
+      "Web Speech API"
+    ],
+    "year": 2026,
+    "github": "https://github.com/Yeisonfjrd/pingpong-scoreboard",
+    "link": "https://pingpong-scoreboard-three.vercel.app",
+    "image": "/projects/pingpong-scoreboard.png",
+    "featured": false,
+    "order": 7
+  },
+  {
+    "slug": "mercadocomic-frontend",
+    "title": "MercadoComic",
+    "summary": "Tienda de cómics de Marvel, DC y Star Wars con carrito en Zustand y checkout con Stripe; backend en Strapi.",
+    "highlights": [],
+    "tags": [
+      "Next.js",
+      "TypeScript",
+      "Zustand",
+      "Stripe"
+    ],
+    "year": 2025,
+    "github": "https://github.com/Yeisonfjrd/MercadoComic-frontend",
+    "link": null,
+    "image": "/projects/mercadocomic-frontend.png",
+    "cover": {
+      "kind": "E-commerce · Next.js",
+      "line": "carrito (Zustand) → checkout con Stripe"
+    },
+    "featured": false,
+    "order": 8
+  }
+]
