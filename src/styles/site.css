@@ -1,8 +1,8 @@
 /* Direction: "Type and nothing else" (taste-skill seed 1012284728), brand violet kept.
    Paper and ink, the hero in light violet, one inverted section, the close in deep violet. */
 :root {
-  --hero: #a07cf9; /* taste-skill-ignore: brand violet, asked for by the client */
-  --violet: #6d28d9; /* taste-skill-ignore: brand violet */
+  --hero: #6d28d9; /* taste-skill-ignore: brand violet, asked for by the client */
+  --violet: #5b21b6; /* taste-skill-ignore: brand violet */
   --ink: #1e1033;
   --muted: #574a6e;
   --paper: #f6f3fb;
@@ -10,6 +10,8 @@
   --lilac: #ddd0fa;
   --lilac-2: #d2c2f5;
   --on-hero: #ffffff;
+  --on-hero-2: #d9c9ff; /* taste-skill-ignore: brand violet, light */
+  --close: #3b1478; /* taste-skill-ignore: brand violet, deep */
 
   --del-bg: #fbe2e2;
   --del-ink: #8a1c1c;
@@ -73,11 +75,14 @@ code, pre { font-family: var(--mono); }
 @media (hover: hover) and (pointer: fine) { .btn:hover { background: var(--violet); } }
 
 /* ---------- Hero: stacked name, two inks ---------- */
+.hero :focus-visible { outline-color: var(--on-hero); }
+.hero .btn { background: var(--on-hero); color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .hero .btn:hover { background: var(--on-hero-2); } }
 .hero {
   position: relative;
   min-height: 100svh;
   background: var(--hero);
-  color: var(--ink);
+  color: var(--on-hero);
   padding: 0 var(--m);
   display: grid;
   grid-template-rows: auto 1fr auto;
@@ -103,7 +108,7 @@ code, pre { font-family: var(--mono); }
 .lines .line { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .lines [data-line] { display: block; }
 .name .one { color: var(--on-hero); }
-.name .two { color: var(--ink); }
+.name .two { color: var(--on-hero-2); }
 .hero-foot {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -196,7 +201,7 @@ code, pre { font-family: var(--mono); }
 .showcase-top h2 { grid-column: 1 / 6; margin: 0; font-size: var(--step-head); font-weight: 800; line-height: 0.95; letter-spacing: -0.035em; text-wrap: balance; }
 .showcase-top .copy { grid-column: 7 / 13; }
 .showcase-top p { margin: 0 0 24px; max-width: 58ch; }
-.showcase .btn { background: var(--hero); color: var(--ink); }
+.showcase .btn { background: var(--on-hero-2); color: var(--ink); }
 @media (hover: hover) and (pointer: fine) { .showcase .btn:hover { background: var(--on-hero); } }
 .showcase .status { min-height: 3em; margin: 16px 0 0; color: var(--lilac); }
 .specimens { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; margin-top: 12vh; }
@@ -298,7 +303,7 @@ code, pre { font-family: var(--mono); }
 /* ---------- Footer: the email as the headline ---------- */
 .close {
   min-height: 90svh;
-  background: var(--violet);
+  background: var(--close);
   color: #fff;
   padding: 40px var(--m) 24px;
   display: grid;

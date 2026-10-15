@@ -10,7 +10,8 @@ const shots: Record<string, { src: string; alt: string }> = {
   "garmin-coach-mcp": { src: "/shots/ci-matrix.png", alt: "CI de garmin-coach-mcp en verde con los tests en UTC y en hora de Buenos Aires" },
   "pingpong-scoreboard": { src: "/projects/pingpong-scoreboard.png", alt: "Marcador de ping pong con dos jugadores en cero" },
 };
-const mail = `mailto:${siteConfig.links.email}?subject=${encodeURIComponent("Hola Yeison")}`;
+// Gmail's compose window, in a new tab: mailto opens a desktop mail app most people never set up
+const mail = `https://mail.google.com/mail/?view=cm&fs=1&to=${siteConfig.links.email}&su=${encodeURIComponent("Hola Yeison")}`;
 
 const education = [
   ["Tecnicatura en Desarrollo de Software", "Universidad Provincial de Ezeiza", "carrera", "2025 a hoy"],
@@ -42,7 +43,7 @@ const stack = [
         <a href="#arreglos">Arreglos</a>
         <a href="#formacion">Formación</a>
         <a href="#contacto" class="only-phone">Contacto</a>
-        <a class="btn" href={mail}>Escribime</a>
+        <a class="btn" href={mail} target="_blank" rel="noopener">Escribime</a>
       </nav>
     </div>
     <h1 class="name lines" id="top">
@@ -55,7 +56,7 @@ const stack = [
         <p>Desarrollador backend en Buenos Aires. Encuentro el bug que nadie vio y lo dejo con un test. Busco mi primer trabajo.</p>
       </div>
       <p class="reach">
-        <a class="btn" href={mail}>Escribime</a>
+        <a class="btn" href={mail} target="_blank" rel="noopener">Escribime</a>
         <a href={siteConfig.links.linkedin} rel="noopener">LinkedIn</a>
         <a href={siteConfig.links.github} rel="noopener">GitHub</a>
         <a href="/cv-yeison-fajardo.pdf">CV</a>
@@ -174,7 +175,7 @@ const stack = [
         <li><a href={siteConfig.links.github} rel="noopener"><span class="label">GitHub</span></a></li>
         <li><a href="/cv-yeison-fajardo.pdf"><span class="label">Currículum en PDF</span></a></li>
         <li><span class="row">Buenos Aires, UTC-3</span></li>
-        <li class="hello"><a href={mail} aria-label="Escribime un mail"><span class="label">Hola</span><span class="round" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span></a></li>
+        <li class="hello"><a href={mail} target="_blank" rel="noopener" aria-label="Escribime un mail"><span class="label">Hola</span><span class="round" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span></a></li>
       </ul>
     </section>
   </main>
@@ -189,7 +190,7 @@ const stack = [
       <a href="#top">Volver arriba</a>
     </div>
     <span></span>
-    <a class="mail" href={mail}><span>andresfajardo1606</span><span>@gmail.com</span></a>
+    <a class="mail" href={mail} target="_blank" rel="noopener"><span>andresfajardo1606</span><span>@gmail.com</span></a>
     <div class="meta">
       <p><a href={siteConfig.links.github} rel="noopener">GitHub</a><a href={siteConfig.links.linkedin} rel="noopener">LinkedIn</a><a href="https://www.npmjs.com/package/garmin-coach-mcp" rel="noopener">npm</a></p>
       <p>Tipografía: Cabinet Grotesk y JetBrains Mono</p><!-- taste-skill-ignore: credit line, not a font use -->
