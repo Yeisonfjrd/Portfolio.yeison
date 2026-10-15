@@ -23,3 +23,5 @@ dist/
 # System files
 .DS_Store
 Thumbs.db
+# taste-skill working files (screenshots, direction sheet)
+.taste-skill/

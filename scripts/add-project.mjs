@@ -90,6 +90,7 @@ const slug = repo.toLowerCase();
 const prev = projects.find((p) => p.slug === slug) ?? {};
 
 const entry = {
+  ...prev, // campos escritos a mano (bug, diff, discipline) se conservan
   slug,
   title: prev.title ?? repo.replace(/-/g, " "),
   summary: prev.summary ?? info.description ?? "",

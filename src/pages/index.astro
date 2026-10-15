@@ -1,50 +1,224 @@
 ---
-import Layout from "@/layouts/Layout.astro"
-import SectionContainer from "@/components/SectionContainer.astro"
-import Hero from "@/components/Hero.astro"
-import Experience from "@/components/Experience.astro"
-import Projects from "@/components/Projects.astro"
-import AboutMe from "@/components/AboutMe.astro"
-import TitleSection from "@/components/TitleSection.astro"
-import Briefcase from "@/components/icons/Briefcase.astro"
-import CodeIcon from "@/components/icons/Code.astro"
-import ProfileCheck from "@/components/icons/ProfileCheck.astro"
-import { siteConfig } from "@/data/site"
+import Site from "@/layouts/Site.astro";
+import { projects } from "@/data/projects";
+import { siteConfig } from "@/data/site";
+
+const work = projects.filter((p) => p.index);
+// Pictures that belong to a project's preview, besides its diff
+const shots: Record<string, { src: string; alt: string }> = {
+  "rental-cars": { src: "/projects/rental-cars.png", alt: "Portada de RoadEra: autos de alquiler premium" },
+  "garmin-coach-mcp": { src: "/shots/ci-matrix.png", alt: "CI de garmin-coach-mcp en verde con los tests en UTC y en hora de Buenos Aires" },
+  "pingpong-scoreboard": { src: "/projects/pingpong-scoreboard.png", alt: "Marcador de ping pong con dos jugadores en cero" },
+};
+const mail = `mailto:${siteConfig.links.email}?subject=${encodeURIComponent("Hola Yeison")}`;
+
+const education = [
+  ["Tecnicatura en Desarrollo de Software", "Universidad Provincial de Ezeiza", "carrera", "2025 a hoy"],
+  ["Inglés, nivel 4 de 6", "Centro de Idiomas, UPE", "idioma", "2026"],
+  ["Big O, algoritmos y estructuras de datos", "Udemy", "curso", "2025"],
+  ["Backend avanzado: APIs y bases de datos", "Aprende Programando", "curso", "2023"],
+  ["React", "Aprende Programando", "curso", "2023"],
+  ["JavaScript y MySQL", "Aprende Programando, UTN", "curso", "2022"],
+  ["Fundamentos web", "Aprende Programando, UTN", "curso", "2022"],
+];
+const stack = [
+  ["Java 21 y Spring Boot", "APIs, transacciones, JPA", "TechLab, Friv", "2025"],
+  ["TypeScript, Node y Fastify", "APIs y servidores MCP", "DocSearch, Garmin Coach", "2026"],
+  ["Go y Gin", "servicios chicos", "Short URL", "2025"],
+  ["PostgreSQL, pgvector y Flyway", "datos y migraciones", "TechLab, DocSearch", "2025"],
+  ["React y Next.js", "interfaces", "RoadEra", "2025"],
+  ["GitHub Actions", "CI contra PostgreSQL real", "en todos", "2026"],
+];
 ---
 
-<Layout
-  title={`${siteConfig.name} — Backend Engineer`}
-  description={siteConfig.description}
+<Site
+  title="Yeison Fajardo, desarrollador backend"
+  description="Yeison Fajardo, desarrollador backend en Buenos Aires. Los bugs que encontré y arreglé, con su diff real."
 >
-  <main>
-    <SectionContainer class="py-12 md:py-24">
-      <Hero />
-    </SectionContainer>
-
-    <div class="space-y-16">
-      <SectionContainer id="proyectos" class="pt-8">
-        <TitleSection>
-          <CodeIcon class="size-7" />
-          Proyectos
-        </TitleSection>
-        <Projects />
-      </SectionContainer>
-
-      <SectionContainer id="experiencia" class="pt-8">
-        <TitleSection>
-          <Briefcase class="size-8" />
-          Experiencia & Formación
-        </TitleSection>
-        <Experience />
-      </SectionContainer>
-
-      <SectionContainer id="sobre-mi" class="pt-8">
-        <TitleSection>
-          <ProfileCheck class="size-8" />
-          Sobre mí
-        </TitleSection>
-        <AboutMe />
-      </SectionContainer>
+  <header class="hero">
+    <div class="topbar">
+      <a class="monogram" href="#top" aria-label="Yeison Fajardo, inicio">YF</a>
+      <nav aria-label="Secciones">
+        <a href="#arreglos">Arreglos</a>
+        <a href="#formacion">Formación</a>
+        <a href="#contacto" class="only-phone">Contacto</a>
+        <a class="btn" href={mail}>Escribime</a>
+      </nav>
     </div>
+    <h1 class="name lines" id="top">
+      <span class="line"><span data-line class="one" style="--i:0">Yeison</span></span>
+      <span class="line"><span data-line class="two" style="--i:1">Fajardo</span></span>
+    </h1>
+    <div class="hero-foot">
+      <p>Desarrollador backend en Buenos Aires. Encuentro el bug que nadie vio y lo dejo con un test.</p>
+      <a class="btn" href={mail}>Escribime</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="work" id="arreglos" aria-labelledby="work-title">
+      <h2 class="section-title" id="work-title" data-reveal>Lo que arreglé</h2>
+      <div class="work-grid">
+        <ol class="work-list">
+          {work.map((p, i) => (
+            <li data-reveal style={`--d:${i}`}>
+              <a class="work-row" href={p.commit ?? p.link ?? p.github ?? "#"} aria-current={i === 0 ? "true" : "false"} data-slug={p.slug}>
+                <div class="preview inline-preview">
+                  {shots[p.slug] && <div class="shot"><img src={shots[p.slug].src} alt={shots[p.slug].alt} loading="lazy" width="1280" height="800" /></div>}
+                  {p.bug && <p class="bug">{p.bug}</p>}
+                  {p.diff && (
+                    <figure class="diff">
+                      <figcaption><code>{p.diff.file}</code></figcaption>
+                      <pre>{p.diff.lines.map((l) => <code class={l.t === "+" ? "add" : l.t === "-" ? "del" : ""}>{l.t} {l.c}</code>)}</pre>
+                    </figure>
+                  )}
+                  <p class="story">{p.story ?? p.summary}</p>
+                </div>
+                <span class="wname">{p.title}</span>
+                <span class="wmeta">{p.discipline}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+        <div class="frame" aria-hidden="true">
+          {work.map((p, i) => (
+            <div class="preview" data-slug={p.slug} data-active={i === 0 ? "" : undefined}>
+              {shots[p.slug] && <div class="shot"><img src={shots[p.slug].src} alt="" loading="lazy" width="1280" height="800" /></div>}
+              {p.bug && <p class="bug">{p.bug}</p>}
+              {p.diff && (
+                <figure class="diff">
+                  <figcaption><code>{p.diff.file}</code></figcaption>
+                  <pre>{p.diff.lines.map((l) => <code class={l.t === "+" ? "add" : l.t === "-" ? "del" : ""}>{l.t} {l.c}</code>)}</pre>
+                </figure>
+              )}
+              <p class="story">{p.story ?? p.summary}</p>
+              <span class="commit">{p.commit ? "Ver el commit" : "Ver la demo"}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="showcase on-dark" aria-labelledby="sim-title">
+      <div class="showcase-top">
+        <h2 id="sim-title" data-reveal>Dos compras, un mouse</h2>
+        <div class="copy" data-reveal style="--d:1">
+          <p>En TechLab quedaba un mouse y llegaron dos pedidos a la vez. Los dos leían stock 1 y los dos lo descontaban. Con <code>@Version</code> en el producto, el segundo choca contra el primero y recibe 409.</p>
+          <button class="btn" type="button" id="sim-run" hidden>Comprar dos a la vez</button>
+          <p class="status" id="sim-status" aria-live="polite">Antes del arreglo el stock terminaba en −1. Después, el segundo pedido recibe 409 Conflict.</p>
+        </div>
+      </div>
+      <div class="specimens">
+        <div class="specimen" data-reveal style="--d:2">
+          <div class="num" aria-hidden="true"><span id="sim-before">−1</span></div>
+          <p class="cap">Antes del arreglo: stock al final</p>
+        </div>
+        <div class="specimen" data-reveal style="--d:3">
+          <div class="num" aria-hidden="true"><span id="sim-after">409</span></div>
+          <p class="cap">Con el arreglo: respuesta al segundo pedido</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="band" aria-label="Mi perfil de GitHub">
+      <div class="band-img">
+        <img src="/shots/access-log.png" alt="Mis últimos commits mostrados como un log de acceso de servidor en mi perfil de GitHub" width="1760" height="540" loading="lazy" />
+      </div>
+      <p data-reveal>Mi perfil de GitHub reescribe mis últimos commits como un log de servidor cada mañana: un <code>feat</code> es un POST 201, un <code>fix</code> es un PATCH.</p>
+    </section>
+
+    <section class="lineup" id="formacion" aria-label="Formación y stack">
+      <table data-reveal>
+        <colgroup><col class="c1" /><col class="c2" /><col class="c3" /><col /></colgroup>
+        <caption>Formación</caption>
+        <tbody>
+          {education.map(([a, b, c, d]) => <tr><td>{a}</td><td class="sub">{b}</td><td class="sub">{c}</td><td>{d}</td></tr>)}
+        </tbody>
+        <tbody>
+          <tr class="part"><th colspan="4" scope="colgroup">Con qué trabajo</th></tr>
+          {stack.map(([a, b, c, d]) => <tr><td>{a}</td><td class="sub">{b}</td><td class="sub">{c}</td><td>{d}</td></tr>)}
+        </tbody>
+      </table>
+    </section>
+
+    <section class="about" aria-label="Sobre mí">
+      <p class="cols" data-reveal>
+        <strong>Yeison Fajardo</strong>, 21 años, en <span class="mark l">Buenos Aires</span>. Estudio la Tecnicatura en Desarrollo de Software en la <span class="mark y">UPE</span> desde 2025. Me interesa la parte del software que solo se nota cuando falla: dos pedidos que pisan el mismo stock, una búsqueda que ve datos ajenos, una fecha que en <span class="mark g">UTC-3</span> cae el día anterior. Trabajo sobre todo con <span class="mark l">Java y Spring Boot</span>, TypeScript y <span class="mark y">PostgreSQL</span>, y cada arreglo lo dejo con un test y un CI que lo corre. También armo mis propias herramientas: zion, un agente que corre en mi GPU con un modelo local, y <span class="mark g">un MCP publicado en npm</span> que carga entrenamientos en un reloj Garmin. Estoy en el nivel 4 de 6 de inglés y lo sigo cursando.
+        <a class="end" href="#contacto">Busco mi primer trabajo como desarrollador backend.</a>
+      </p>
+    </section>
+
+    <section id="contacto" aria-label="Contacto">
+      <ul class="rows">
+        <li><a href={siteConfig.links.linkedin} rel="noopener"><span class="label">LinkedIn</span><img class="portrait" src="/Yeison-fajardo.webp" alt="Yeison Fajardo" width="200" height="200" loading="lazy" /></a></li>
+        <li><a href={siteConfig.links.github} rel="noopener"><span class="label">GitHub</span></a></li>
+        <li><a href="/cv-yeison-fajardo.pdf"><span class="label">Currículum en PDF</span></a></li>
+        <li><span class="row">Buenos Aires, UTC-3</span></li>
+        <li class="hello"><a href={mail} aria-label="Escribime un mail"><span class="label">Hola</span><span class="round" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg></span></a></li>
+      </ul>
+    </section>
   </main>
-</Layout>
+
+  <footer class="close on-dark">
+    <div class="notes">
+      <div>
+        <span>Yeison Fajardo</span>
+        <span>Buenos Aires, UTC-3</span>
+        <span>Busco trabajo como desarrollador backend junior o pasantía.</span>
+      </div>
+      <a href="#top">Volver arriba</a>
+    </div>
+    <span></span>
+    <a class="mail" href={mail}><span>andresfajardo1606</span><span>@gmail.com</span></a>
+    <div class="meta">
+      <p><a href={siteConfig.links.github} rel="noopener">GitHub</a><a href={siteConfig.links.linkedin} rel="noopener">LinkedIn</a><a href="https://www.npmjs.com/package/garmin-coach-mcp" rel="noopener">npm</a></p>
+      <p>Tipografía: Cabinet Grotesk y JetBrains Mono</p><!-- taste-skill-ignore: credit line, not a font use -->
+      <p>Buenos Aires, 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    // Entrances: each part once, when it scrolls in
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
+    }, { rootMargin: "0px 0px -10% 0px", threshold: 0.1 });
+    document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+
+    // Work index: hover or focus a name to show its diff in the frame
+    const rows = [...document.querySelectorAll<HTMLAnchorElement>(".work-row")];
+    const previews = [...document.querySelectorAll<HTMLElement>(".frame .preview")];
+    const activate = (slug: string) => {
+      rows.forEach((r) => r.setAttribute("aria-current", String(r.dataset.slug === slug)));
+      previews.forEach((p) => p.toggleAttribute("data-active", p.dataset.slug === slug));
+    };
+    rows.forEach((r) => {
+      r.addEventListener("mouseenter", () => activate(r.dataset.slug!));
+      r.addEventListener("focus", () => activate(r.dataset.slug!));
+    });
+
+    // The live thing: replay two simultaneous purchases of the last mouse
+    const run = document.getElementById("sim-run") as HTMLButtonElement;
+    const before = document.getElementById("sim-before")!;
+    const after = document.getElementById("sim-after")!;
+    const status = document.getElementById("sim-status")!;
+    run.hidden = false;
+    const set = (el: HTMLElement, v: string) => {
+      el.classList.add("tick");
+      setTimeout(() => { el.textContent = v; el.classList.remove("tick"); }, 140);
+    };
+    const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+    run.addEventListener("click", async () => {
+      run.disabled = true;
+      set(before, "1"); set(after, "1");
+      status.textContent = "Queda 1 mouse. Llegan dos pedidos a la vez y los dos leen stock 1.";
+      await wait(1100);
+      set(before, "0"); set(after, "0");
+      status.textContent = "El primer pedido descuenta: stock 0, en los dos casos.";
+      await wait(1100);
+      set(before, "−1"); set(after, "409");
+      status.textContent = "Sin @Version el segundo también descuenta y el stock queda en −1. Con @Version la versión ya cambió y recibe 409 Conflict.";
+      run.disabled = false;
+      run.textContent = "Repetir";
+    });
+  </script>
+</Site>

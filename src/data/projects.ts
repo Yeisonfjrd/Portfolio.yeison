@@ -13,6 +13,12 @@ export interface Project {
   image: string | null;
   featured: boolean;
   order: number;
+  index?: boolean;
+  discipline?: string;
+  bug?: string;
+  story?: string;
+  commit?: string;
+  diff?: { file: string; lines: { t: string; c: string }[] };
 }
 
 export const projects: Project[] = [...data].sort((a, b) => a.order - b.order);

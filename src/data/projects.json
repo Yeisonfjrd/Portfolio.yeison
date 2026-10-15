@@ -1,57 +1,7 @@
 [
   {
-    "slug": "garmin-coach-mcp",
-    "title": "Garmin Coach MCP",
-    "summary": "Servidor MCP que le da a una IA acceso a tu Garmin Connect: lee sueño, salud y actividades, y escribe entrenamientos estructurados en el calendario del reloj.",
-    "highlights": [
-      "La mayoría de las integraciones con Garmin solo leen; esta planifica un bloque de entrenamiento y lo carga en el reloj.",
-      "11 tests fallaban solo fuera de UTC por cómo JavaScript parsea fechas; lo arreglé y el CI corre en UTC y en hora de Buenos Aires."
-    ],
-    "tags": [
-      "TypeScript",
-      "MCP",
-      "Node.js",
-      "Vitest"
-    ],
-    "year": 2026,
-    "github": "https://github.com/Yeisonfjrd/garmin-coach-mcp",
-    "link": null,
-    "image": "/projects/garmin-coach-mcp.png",
-    "cover": {
-      "kind": "MCP server · IA + Garmin",
-      "line": "create_running_workout → calendario del reloj"
-    },
-    "featured": true,
-    "order": 1
-  },
-  {
-    "slug": "docsearch-api",
-    "title": "DocSearch — preguntas a tus documentos",
-    "summary": "API para subir documentos y hacerles preguntas en lenguaje natural. Responde con citas a la página exacta, con búsqueda semántica en pgvector y modelos locales en Ollama.",
-    "highlights": [
-      "Encontré un IDOR: una pregunta sin filtro buscaba en los documentos de todos los usuarios. Ahora cada consulta solo ve lo tuyo y una conversación ajena devuelve 404.",
-      "La deduplicación por checksum era global y te devolvía el documento de otro; pasó a ser por usuario, con migración."
-    ],
-    "tags": [
-      "TypeScript",
-      "Fastify",
-      "PostgreSQL",
-      "pgvector"
-    ],
-    "year": 2026,
-    "github": "https://github.com/Yeisonfjrd/docsearch-api",
-    "link": null,
-    "image": "/projects/docsearch-api.png",
-    "cover": {
-      "kind": "API · RAG local",
-      "line": "POST /ask → respuesta + cita (pág. 12)"
-    },
-    "featured": true,
-    "order": 2
-  },
-  {
     "slug": "techlab-ecommerce-simulator",
-    "title": "TechLab — e-commerce en Spring Boot",
+    "title": "TechLab",
     "summary": "Reescribí un simulador de tienda hecho en JavaScript como una API en Spring Boot 4: productos, usuarios y pedidos que se confirman completos o no se confirman.",
     "highlights": [
       "Dos compras simultáneas del último producto: optimistic locking con @Version, la segunda recibe 409 en vez de vender de más.",
@@ -72,11 +22,139 @@
       "line": "POST /orders → 409 Conflict (stock ya vendido)"
     },
     "featured": true,
-    "order": 3
+    "order": 1,
+    "discipline": "API en Java y Spring Boot, 2025",
+    "index": true,
+    "bug": "Vendía el último mouse dos veces",
+    "story": "Dos pedidos leían stock 1 al mismo tiempo y los dos lo descontaban. Con optimistic locking el segundo choca y recibe 409.",
+    "commit": "https://github.com/Yeisonfjrd/techlab-ecommerce-simulator/commit/bf37733",
+    "diff": {
+      "file": "product/Product.java",
+      "lines": [
+        {
+          "t": "+",
+          "c": "// Optimistic locking: two orders that read"
+        },
+        {
+          "t": "+",
+          "c": "// the same stock can't both write it back"
+        },
+        {
+          "t": "+",
+          "c": "@Version"
+        },
+        {
+          "t": "+",
+          "c": "private Long version;"
+        }
+      ]
+    }
+  },
+  {
+    "slug": "docsearch-api",
+    "title": "DocSearch",
+    "summary": "API para subir documentos y hacerles preguntas en lenguaje natural. Responde con citas a la página exacta, con búsqueda semántica en pgvector y modelos locales en Ollama.",
+    "highlights": [
+      "Encontré un IDOR: una pregunta sin filtro buscaba en los documentos de todos los usuarios. Ahora cada consulta solo ve lo tuyo y una conversación ajena devuelve 404.",
+      "La deduplicación por checksum era global y te devolvía el documento de otro; pasó a ser por usuario, con migración."
+    ],
+    "tags": [
+      "TypeScript",
+      "Fastify",
+      "PostgreSQL",
+      "pgvector"
+    ],
+    "year": 2026,
+    "github": "https://github.com/Yeisonfjrd/docsearch-api",
+    "link": null,
+    "image": "/projects/docsearch-api.png",
+    "cover": {
+      "kind": "API · RAG local",
+      "line": "POST /ask → respuesta + cita (pág. 12)"
+    },
+    "featured": true,
+    "order": 2,
+    "discipline": "API de búsqueda con IA local, 2026",
+    "index": true,
+    "bug": "Te dejaba buscar en documentos ajenos",
+    "story": "Una pregunta sin filtro recorría los documentos de todos los usuarios. Ahora solo busca en los tuyos, y una conversación ajena devuelve 404.",
+    "commit": "https://github.com/Yeisonfjrd/docsearch-api/commit/212f5b4",
+    "diff": {
+      "file": "use-cases/answer-question.ts",
+      "lines": [
+        {
+          "t": "-",
+          "c": "  input.documentIds"
+        },
+        {
+          "t": "+",
+          "c": "const ownedIds = (await this.documents"
+        },
+        {
+          "t": "+",
+          "c": "  .findByUserId(input.userId)).map((d) => d.id);"
+        },
+        {
+          "t": "+",
+          "c": "const searchIds = input.documentIds?.length"
+        },
+        {
+          "t": "+",
+          "c": "  ? input.documentIds.filter((id) => ownedIds.includes(id))"
+        },
+        {
+          "t": "+",
+          "c": "  : ownedIds;"
+        }
+      ]
+    }
+  },
+  {
+    "slug": "garmin-coach-mcp",
+    "title": "Garmin Coach",
+    "summary": "Servidor MCP que le da a una IA acceso a tu Garmin Connect: lee sueño, salud y actividades, y escribe entrenamientos estructurados en el calendario del reloj.",
+    "highlights": [
+      "La mayoría de las integraciones con Garmin solo leen; esta planifica un bloque de entrenamiento y lo carga en el reloj.",
+      "11 tests fallaban solo fuera de UTC por cómo JavaScript parsea fechas; lo arreglé y el CI corre en UTC y en hora de Buenos Aires."
+    ],
+    "tags": [
+      "TypeScript",
+      "MCP",
+      "Node.js",
+      "Vitest"
+    ],
+    "year": 2026,
+    "github": "https://github.com/Yeisonfjrd/garmin-coach-mcp",
+    "link": null,
+    "image": "/projects/garmin-coach-mcp.png",
+    "cover": {
+      "kind": "MCP server · IA + Garmin",
+      "line": "create_running_workout → calendario del reloj"
+    },
+    "featured": true,
+    "order": 3,
+    "discipline": "Servidor MCP en npm, 2026",
+    "index": true,
+    "bug": "El lunes caía en la semana anterior",
+    "story": "new Date('2024-01-15') es medianoche en UTC: en Buenos Aires todavía es el 14. Fallaban 11 tests fuera de UTC; ahora el CI corre en las dos zonas.",
+    "commit": "https://github.com/Yeisonfjrd/garmin-coach-mcp/commit/49f24df",
+    "diff": {
+      "file": "services/weeklyAggregator.ts",
+      "lines": [
+        {
+          "t": "-",
+          "c": "const date = new Date(tss.date);"
+        },
+        {
+          "t": "+",
+          "c": "const date = parseLocalDate(tss.date);"
+        }
+      ]
+    }
   },
   {
     "slug": "rental-cars",
-    "title": "RoadEra — alquiler de autos",
+    "title": "RoadEra",
     "summary": "Plataforma de alquiler de autos con registro, reservas, pagos con Stripe y un panel para administrar la flota.",
     "highlights": [
       "El checkout cobraba el precio que mandaba el navegador; lo pasé a calcular en el servidor con el precio de la base."
@@ -92,7 +170,37 @@
     "link": "https://rental-cars-three.vercel.app",
     "image": "/projects/rental-cars.png",
     "featured": true,
-    "order": 4
+    "order": 4,
+    "discipline": "Alquiler de autos en Next.js, 2025",
+    "index": true,
+    "bug": "El navegador elegía el precio",
+    "story": "El checkout cobraba el precio que mandaba el cliente y además imprimía la clave secreta de Stripe en el log. Ahora el precio sale de la base.",
+    "commit": "https://github.com/Yeisonfjrd/Rental-cars/commit/11bdde6",
+    "diff": {
+      "file": "app/api/checkout/route.ts",
+      "lines": [
+        {
+          "t": "-",
+          "c": "console.log(process.env.STRIPE_SECRET_KEY);"
+        },
+        {
+          "t": "-",
+          "c": "const { carId, priceDay, startDate, endDate, carName } = await req.json();"
+        },
+        {
+          "t": "+",
+          "c": "const { carId, startDate, endDate } = await req.json();"
+        },
+        {
+          "t": "+",
+          "c": "const car = await db.car.findUnique({ where: { id: carId } });"
+        },
+        {
+          "t": "+",
+          "c": "const priceDay = Number(car.priceDay);"
+        }
+      ]
+    }
   },
   {
     "slug": "short-url-backend",
@@ -116,7 +224,33 @@
       "line": "GET /abc123 → 302 → visits = visits + 1"
     },
     "featured": false,
-    "order": 5
+    "order": 5,
+    "discipline": "API en Go, 2025",
+    "index": true,
+    "bug": "Perdía clics",
+    "story": "La redirección 301 quedaba en la caché del navegador y dos clics simultáneos contaban como uno. Ahora es 302 y la suma la hace la base.",
+    "commit": "https://github.com/Yeisonfjrd/Short-url-backend/commit/d12c495",
+    "diff": {
+      "file": "shortener/handlers.go",
+      "lines": [
+        {
+          "t": "-",
+          "c": "Visits:    url.Visits + 1,"
+        },
+        {
+          "t": "+",
+          "c": "\"visits\":  gorm.Expr(\"visits + ?\", 1),"
+        },
+        {
+          "t": "-",
+          "c": "c.Redirect(http.StatusMovedPermanently, url.OriginalURL)"
+        },
+        {
+          "t": "+",
+          "c": "c.Redirect(http.StatusFound, url.OriginalURL)"
+        }
+      ]
+    }
   },
   {
     "slug": "crypto-trading-platform-frontend",
@@ -138,11 +272,12 @@
       "line": "ws://prices → órdenes y saldos en vivo"
     },
     "featured": false,
-    "order": 6
+    "order": 6,
+    "index": false
   },
   {
     "slug": "pingpong-scoreboard",
-    "title": "Ping Pong Scoreboard",
+    "title": "Ping Pong",
     "summary": "Marcador de ping pong que se maneja con la voz (Web Speech API) y guarda el historial de partidos.",
     "highlights": [],
     "tags": [
@@ -154,7 +289,10 @@
     "link": "https://pingpong-scoreboard-three.vercel.app",
     "image": "/projects/pingpong-scoreboard.png",
     "featured": false,
-    "order": 7
+    "order": 6,
+    "discipline": "Marcador por voz, 2026",
+    "index": true,
+    "story": "Un marcador que se maneja hablando, con la Web Speech API, y guarda el historial de partidos."
   },
   {
     "slug": "mercadocomic-frontend",
@@ -176,6 +314,7 @@
       "line": "carrito (Zustand) → checkout con Stripe"
     },
     "featured": false,
-    "order": 8
+    "order": 8,
+    "index": false
   }
 ]
