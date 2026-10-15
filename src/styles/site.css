@@ -1,24 +1,21 @@
-/* Direction: "Type and nothing else" (taste-skill seed 1012284728), brand violet kept.
-   Paper and ink, the hero in light violet, one inverted section, the close in deep violet. */
+/* Direction: "Type and nothing else" (taste-skill seed 1012284728), brand violet kept,
+   trimmed to what a recruiter reads: who, projects, studies and stack, contact. */
 :root {
   --hero: #6d28d9; /* taste-skill-ignore: brand violet, asked for by the client */
   --violet: #5b21b6; /* taste-skill-ignore: brand violet */
+  --on-hero: #ffffff;
+  --on-hero-2: #d9c9ff; /* taste-skill-ignore: brand violet, light */
+  --close: #3b1478; /* taste-skill-ignore: brand violet, deep */
   --ink: #1e1033;
   --muted: #574a6e;
   --paper: #f6f3fb;
   --surface: #ece6f6;
   --lilac: #ddd0fa;
-  --lilac-2: #d2c2f5;
-  --on-hero: #ffffff;
-  --on-hero-2: #d9c9ff; /* taste-skill-ignore: brand violet, light */
-  --close: #3b1478; /* taste-skill-ignore: brand violet, deep */
 
   --del-bg: #fbe2e2;
   --del-ink: #8a1c1c;
   --add-bg: #d9f2e2;
   --add-ink: #12502b;
-  --mark-yellow: #ffe58a;
-  --mark-mint: #c6efd6;
 
   --display: "Cabinet Grotesk", "Segoe UI", sans-serif;
   --mono: "JetBrains Mono Variable", monospace; /* taste-skill-ignore: only for the diffs, which are real code */
@@ -26,17 +23,14 @@
   --step-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
   --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
   --step-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
-  --step-head: clamp(2.75rem, 5.6vw, 5.25rem);
+  --step-head: clamp(2.25rem, 4.4vw, 4rem);
 
-  --m: clamp(16px, 2.2vw, 32px);
-  --gap-section: clamp(96px, 12vw, 200px);
+  --m: clamp(16px, 3vw, 48px);
+  --gap-section: clamp(80px, 9vw, 140px);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
-  --ease-soft: cubic-bezier(0.33, 1, 0.68, 1);
   --t-press: 140ms;
   --t-hover: 180ms;
-  --t-ui: 240ms;
 }
 
 html { scroll-behavior: smooth; scrollbar-color: var(--violet) var(--surface); }
@@ -53,7 +47,6 @@ body {
 ::selection { background: var(--hero); color: #fff; }
 a { color: inherit; text-underline-offset: 0.18em; text-decoration-thickness: 0.06em; }
 :focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
-.on-dark :focus-visible { outline-color: var(--on-hero); }
 img { display: block; max-width: 100%; height: auto; }
 code, pre { font-family: var(--mono); }
 
@@ -73,115 +66,66 @@ code, pre { font-family: var(--mono); }
 }
 .btn:active { transform: scale(0.97); }
 @media (hover: hover) and (pointer: fine) { .btn:hover { background: var(--violet); } }
+.btn.small { min-height: 40px; padding: 0 16px; font-size: var(--step-small); }
+.btn.ghost { background: var(--lilac); color: var(--ink); }
 
-/* ---------- Hero: stacked name, two inks ---------- */
-.hero :focus-visible { outline-color: var(--on-hero); }
-.hero .btn { background: var(--on-hero); color: var(--ink); }
-@media (hover: hover) and (pointer: fine) { .hero .btn:hover { background: var(--on-hero-2); } }
+.section-title { margin: 0 0 40px; font-size: var(--step-head); font-weight: 800; line-height: 1; letter-spacing: -0.035em; }
+
+/* ---------- Hero ---------- */
 .hero {
-  position: relative;
-  min-height: 100svh;
+  min-height: 86svh;
   background: var(--hero);
   color: var(--on-hero);
   padding: 0 var(--m);
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
-.topbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 24px;
-  font-size: var(--step-small);
-}
-.monogram { font-weight: 800; font-size: var(--step-body); text-decoration: none; letter-spacing: -0.02em; }
-.topbar nav { display: flex; align-items: center; gap: clamp(14px, 2vw, 28px); }
-.topbar nav a:not(.btn) { font-size: var(--step-small); font-weight: 500; }
-.topbar .btn { min-height: 44px; font-size: var(--step-small); }
+.hero :focus-visible { outline-color: var(--on-hero); }
+.hero .btn { background: var(--on-hero); color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .hero .btn:hover { background: var(--on-hero-2); } }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; }
+.monogram { font-weight: 800; text-decoration: none; letter-spacing: -0.02em; }
+.topbar nav { display: flex; gap: clamp(16px, 2.4vw, 32px); font-size: var(--step-small); font-weight: 500; }
 .name {
-  margin: 14svh 0 0;
+  align-self: center;
+  margin: 0;
   font-weight: 800;
-  font-size: clamp(110px, 21vw, 330px);
-  line-height: 0.82;
+  font-size: clamp(84px, 14vw, 210px);
+  line-height: 0.84;
   letter-spacing: -0.04em;
 }
 .lines .line { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .lines [data-line] { display: block; }
-.name .one { color: var(--on-hero); }
 .name .two { color: var(--on-hero-2); }
-.hero-foot {
+.hero-foot { display: flex; justify-content: space-between; align-items: end; gap: 24px 48px; flex-wrap: wrap; padding-bottom: 40px; }
+.hero-foot .intro { display: flex; align-items: center; gap: 20px; max-width: 640px; }
+.hero-foot .intro p { margin: 0; font-size: var(--step-lead); line-height: 1.3; font-weight: 500; }
+.hero-foot .face { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; flex-shrink: 0; }
+.hero-foot .reach { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 0; font-weight: 500; }
+
+/* ---------- Projects: everything visible, nothing behind a hover ---------- */
+.projects { padding: var(--gap-section) var(--m) 0; }
+.project {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  padding-bottom: 40px;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  column-gap: clamp(24px, 4vw, 64px);
+  padding: 48px 0;
 }
-.hero-foot { align-items: end; }
-.hero-foot .reach { grid-column: 1 / 7; grid-row: 1; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 0; font-weight: 500; }
-.hero-foot .intro { grid-column: 8 / 13; display: flex; align-items: flex-end; gap: 20px; justify-content: flex-end; }
-.hero-foot .intro p { max-width: 30ch; margin: 0; font-size: var(--step-lead); line-height: 1.3; font-weight: 500; }
-.hero-foot .face { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; flex-shrink: 0; }
-
-/* ---------- Work: big names, fixed preview ---------- */
-.work { padding: var(--gap-section) var(--m) 0; }
-.section-title { margin: 0 0 48px; font-size: var(--step-lead); font-weight: 500; letter-spacing: -0.01em; }
-.work-grid { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; }
-.work-list { grid-column: 1 / 9; margin: 0; padding: 0; list-style: none; }
-.work-hint { margin: -32px 0 40px; max-width: 60ch; }
-.work-row {
-  width: 100%;
-  border: 0;
-  background: none;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 10px 0;
-  color: var(--muted);
-  text-decoration: none;
-  transition: color var(--t-hover) ease;
-}
-.work-row .wname {
-  font-size: var(--step-head);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: -0.035em;
-}
-.work-row .wmeta { font-size: var(--step-small); font-weight: 500; text-align: right; }
-.work-row[aria-pressed="true"] { color: var(--ink); }
-.work-row[aria-pressed="true"] .wmeta { color: var(--violet); }
-.work-list .inline-preview { display: none; }
-.preview, .preview > * { min-width: 0; max-width: 100%; }
-
-.frame {
-  grid-column: 9 / 13;
-  position: sticky;
-  top: 15vh;
-  align-self: start;
-  display: grid;
-  background: var(--surface);
-}
-.frame .preview {
-  grid-area: 1 / 1;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 200ms ease, visibility 0s linear 200ms;
-}
-.frame .preview[data-active] { opacity: 1; visibility: visible; transition: opacity 200ms ease, visibility 0s; }
-
-.preview { display: flex; flex-direction: column; gap: 14px; padding: 20px; box-sizing: border-box; }
-.preview .shot { margin: -20px -20px 0; aspect-ratio: 16 / 9; overflow: hidden; background: var(--lilac); }
-.preview .shot img { width: 100%; height: 100%; object-fit: cover; object-position: top left; }
-.preview .bug { margin: 0; font-size: var(--step-lead); font-weight: 800; line-height: 1.08; letter-spacing: -0.02em; text-wrap: balance; }
-.preview .story { margin: 0; font-size: var(--step-body); line-height: 1.4; }
-.preview .tags { margin: 0; font-size: var(--step-small); color: var(--muted); }
-.preview .links { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin: 0; font-size: var(--step-small); font-weight: 500; }
-.btn.small { min-height: 40px; padding: 0 16px; font-size: var(--step-small); }
-.btn.ghost { background: var(--lilac); color: var(--ink); }
+.p-head h3 { margin: 0; font-size: clamp(2rem, 3.6vw, 3.25rem); font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
+.p-meta { margin: 8px 0 0; color: var(--violet); font-size: var(--step-small); font-weight: 500; }
+.p-shot { margin-top: 20px; width: 100%; max-width: 360px; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; background: var(--surface); }
+.p-body p { margin: 0 0 12px; max-width: 65ch; }
+.p-body strong { font-weight: 800; }
+.p-stack { color: var(--muted); }
+.p-stack span { color: var(--ink); font-weight: 500; }
+.p-body .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.fix { margin-top: 16px; max-width: 65ch; }
+.fix summary { cursor: pointer; font-weight: 500; color: var(--violet); width: fit-content; }
+.fix[open] summary { margin-bottom: 12px; }
+.fix > a { display: inline-block; margin-top: 10px; font-size: var(--step-small); font-weight: 500; }
 
 /* The diff is real code, so it keeps a code face and its own colours */
-.diff { margin: 0; font: 14px/1.55 var(--mono); background: var(--paper); }
+.diff { margin: 0; font: 14px/1.55 var(--mono); background: #fff; }
 .diff figcaption { padding: 6px 10px; background: var(--lilac); }
 .diff figcaption code { font: 500 13px/1.3 var(--mono); color: var(--muted); }
 .diff pre { margin: 0; padding: 6px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -189,226 +133,60 @@ code, pre { font-family: var(--mono); }
 .diff .add { background: var(--add-bg); color: var(--add-ink); }
 .diff .del { background: var(--del-bg); color: var(--del-ink); text-decoration: line-through; text-decoration-thickness: 1px; }
 
-/* ---------- Showcase: two giant numbers compared (the live thing) ---------- */
-.showcase {
+/* ---------- Studies and stack, side by side ---------- */
+.cv {
   margin-top: var(--gap-section);
-  background: var(--ink);
-  color: var(--paper);
-  padding: clamp(64px, 8vw, 120px) var(--m) 0;
-  overflow: hidden;
-}
-.showcase-top { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; }
-.showcase-top h2 { grid-column: 1 / 6; margin: 0; font-size: var(--step-head); font-weight: 800; line-height: 0.95; letter-spacing: -0.035em; text-wrap: balance; }
-.showcase-top .copy { grid-column: 7 / 13; }
-.showcase-top p { margin: 0 0 24px; max-width: 58ch; }
-.showcase .btn { background: var(--on-hero-2); color: var(--ink); }
-@media (hover: hover) and (pointer: fine) { .showcase .btn:hover { background: var(--on-hero); } }
-.showcase .status { min-height: 3em; margin: 16px 0 0; color: var(--lilac); }
-.specimens { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 24px; margin-top: 12vh; }
-.specimen { grid-column: span 6; }
-.specimen { --spec: clamp(160px, 25vw, 400px); }
-.specimen .cap { margin: calc(var(--spec) * 0.34) 0 0; font-size: var(--step-body); color: var(--lilac); }
-.specimen .num {
-  height: 0.5em;
-  overflow: hidden;
-  font-size: var(--spec);
-  font-weight: 800;
-  line-height: 0.8;
-  letter-spacing: -0.05em;
-}
-.specimen .num span { display: block; transition: transform 320ms var(--ease-out), opacity 320ms var(--ease-out); }
-.specimen .num span.tick { transform: translateY(-12%); opacity: 0.4; }
-
-/* ---------- Picture band ---------- */
-.band { margin-top: var(--gap-section); }
-.band-img { overflow: hidden; background: var(--surface); }
-.band-img img { width: 100%; aspect-ratio: 1760 / 540; object-fit: cover; object-position: left center; }
-.band p { margin: 20px var(--m) 0; max-width: 60ch; }
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .band-img img { animation: drift linear both; animation-timeline: view(); animation-range: entry 0% exit 100%; }
-  }
-}
-@keyframes drift { from { transform: scale(1.12) translateY(-3%); } to { transform: scale(1) translateY(0); } }
-
-/* ---------- List: line-up at one size ---------- */
-.lineup { margin-top: var(--gap-section); background: var(--surface); padding: 24px var(--m) clamp(72px, 8vw, 120px); }
-.lineup table { width: 100%; border-collapse: collapse; font-size: var(--step-lead); line-height: 1.5; }
-.lineup caption, .lineup .part th {
-  padding: 72px 0 20px;
   background: var(--surface);
-  color: var(--violet);
-  text-align: left;
-  font-weight: 500;
-}
-.lineup col.c1 { width: 40%; }
-.lineup col.c2 { width: 30%; }
-.lineup col.c3 { width: 18%; }
-.lineup td { padding: 0; vertical-align: baseline; }
-.lineup td:last-child { text-align: right; }
-.lineup td.sub { color: var(--muted); }
-
-/* ---------- About: two columns, highlighted words ---------- */
-.about { padding: clamp(96px, 9vw, 120px) var(--m); }
-.about .cols {
-  margin: 0;
-  columns: 2;
-  column-gap: 32px;
-  font-size: var(--step-lead);
-  line-height: 1.18;
-  color: var(--ink);
-  text-align: left;
-}
-.about strong { color: var(--ink); font-weight: 800; }
-.mark { color: var(--ink); padding: 0 0.1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-.mark.l { background: var(--lilac); }
-.mark.y { background: var(--mark-yellow); }
-.mark.g { background: var(--mark-mint); }
-.about .end { color: #fff; background: var(--violet); padding: 0 0.1em; text-decoration: none; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
-@media (hover: hover) and (pointer: fine) { .about .end:hover { text-decoration: underline; } }
-
-/* ---------- Contact rows ---------- */
-.rows { margin: 0; padding: 0; list-style: none; }
-.rows li:nth-child(odd) { background: var(--lilac); }
-.rows li:nth-child(even) { background: var(--lilac-2); }
-.rows a, .rows .row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  min-height: clamp(84px, 10.5vw, 150px);
-  padding: 0 20px 18px;
-  box-sizing: border-box;
-  font-size: var(--step-head);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  text-decoration: none;
-}
-@media (hover: hover) and (pointer: fine) { .rows a:hover .label { text-decoration: underline; } }
-.rows .portrait { width: 0.9em; height: 0.9em; border-radius: 50%; object-fit: cover; object-position: 50% 30%; }
-.rows .hello { background: var(--hero); }
-.round {
-  display: inline-grid;
-  place-items: center;
-  width: 0.9em;
-  height: 0.9em;
-  border-radius: 50%;
-  background: var(--ink);
-  color: var(--paper);
-  transition: transform var(--t-press) var(--ease-out);
-}
-.round svg { width: 42%; height: 42%; }
-.rows a:active .round { transform: scale(0.94); }
-
-/* ---------- Footer: the email as the headline ---------- */
-.close {
-  min-height: 90svh;
-  background: var(--close);
-  color: #fff;
-  padding: 40px var(--m) 24px;
+  padding: clamp(64px, 7vw, 104px) var(--m);
   display: grid;
-  grid-template-rows: auto 1fr auto auto;
+  grid-template-columns: 7fr 5fr;
+  gap: 112px clamp(32px, 5vw, 80px);
 }
-.close .notes { display: flex; justify-content: space-between; gap: 24px; font-size: var(--step-small); }
-.close .notes div { display: flex; gap: 32px; flex-wrap: wrap; }
+.ledger { margin: 0; padding: 0; list-style: none; }
+.ledger li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; padding: 8px 0; }
+.l-what { font-weight: 500; }
+.l-where { grid-column: 1; color: var(--muted); font-size: var(--step-small); }
+.l-when { grid-column: 2; grid-row: 1; color: var(--muted); }
+
+/* ---------- About ---------- */
+.about { padding: var(--gap-section) var(--m); }
+.about p { margin: 0; max-width: 62ch; font-size: var(--step-lead); line-height: 1.4; }
+
+/* ---------- Contact, once ---------- */
+.close { background: var(--close); color: #fff; padding: clamp(64px, 7vw, 104px) var(--m) 32px; }
+.close :focus-visible { outline-color: #fff; }
 .close .mail {
-  align-self: end;
-  margin: 0 0 32px;
-  font-size: clamp(2.5rem, 9.6vw, 10rem);
+  display: block;
+  font-size: clamp(2.25rem, 8vw, 8rem);
   font-weight: 800;
-  line-height: 0.92;
+  line-height: 0.95;
   letter-spacing: -0.045em;
   text-decoration: none;
 }
 .close .mail span { display: block; }
 @media (hover: hover) and (pointer: fine) { .close .mail:hover { text-decoration: underline; text-decoration-thickness: 0.04em; } }
-.close .meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; font-size: var(--step-small); }
-.close .meta p { margin: 0; }
-.close .meta p:nth-child(2) { text-align: center; }
-.close .meta p:last-child { text-align: right; }
-.close .meta a { margin-right: 16px; }
+.close-links { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 40px 0 0; font-size: var(--step-lead); font-weight: 500; }
+.close .meta { margin: 64px 0 0; font-size: var(--step-small); color: var(--on-hero-2); }
 
-/* ---------- Motion ---------- */
+/* ---------- Motion: one short entrance for the name, nothing else waits ---------- */
 @media (prefers-reduced-motion: no-preference) {
-  .js .lines [data-line] { transform: translateY(105%); animation: line-up 700ms var(--ease-out) forwards; animation-delay: calc(var(--i) * 90ms + 60ms); }
-  .js .hero-foot > *, .js .topbar { opacity: 0; animation: fade-up 500ms var(--ease-out) 300ms forwards; }
-  .js [data-reveal] { opacity: 0; transform: translateY(24px); transition: opacity 450ms var(--ease-out), transform 550ms var(--ease-out); transition-delay: calc(var(--d, 0) * 60ms); }
-  .js [data-reveal].is-in { opacity: 1; transform: none; }
+  .js .lines [data-line] { transform: translateY(105%); animation: line-up 650ms var(--ease-out) forwards; animation-delay: calc(var(--i) * 80ms + 40ms); }
 }
 @keyframes line-up { to { transform: none; } }
-@keyframes fade-up { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
-@media (prefers-reduced-motion: reduce) {
-  .frame .preview, .work-row, .specimen .num span { transition: opacity 120ms ease; }
-}
 
-/* ---------- Tablet ---------- */
-@media (max-width: 980px) {
-  .hero-foot { display: block; }
-  .hero-foot .intro { justify-content: flex-start; margin-bottom: 20px; }
-  .work-row { cursor: default; }
-  .work-hint { display: none; }
-  .showcase-top h2 { grid-column: 1 / 13; margin-bottom: 24px; }
-  .showcase-top .copy { grid-column: 1 / 13; }
+/* ---------- Tablet and phone ---------- */
+@media (max-width: 900px) {
+  .project { grid-template-columns: 1fr; }
+  .p-shot { max-width: 320px; }
+  .p-body { margin-top: 16px; }
+  .cv { grid-template-columns: 1fr; }
 }
-
-/* ---------- Tablet and phone: the work index loses its sticky frame ---------- */
-@media (max-width: 980px) {
-  .work-grid { display: block; }
-  .frame { display: none; }
-  .work-list li + li { margin-top: 40px; }
-  .work-row { display: block; color: var(--ink); padding: 0; }
-  .work-list .inline-preview { display: flex; position: static; opacity: 1; margin-top: 16px; background: var(--surface); }
-  /* on a phone the project links read as text links, not pills stacked over the next name */
-  .inline-preview .links .btn { min-height: 0; padding: 0; border-radius: 0; background: none; color: inherit; text-decoration: underline; }
-  .lineup table, .lineup tbody, .lineup tr, .lineup td, .lineup caption { display: block; }
-  .lineup colgroup { display: none; }
-  .lineup tr { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; margin-bottom: 18px; }
-  .work-row .wmeta { display: block; margin-top: 6px; text-align: left; color: var(--violet); }
-  .lineup td:first-child { grid-column: 1 / 3; line-height: 1.25; }
-  .lineup td.sub { font-size: var(--step-small); }
-  .lineup td:nth-child(2) { grid-column: 1; }
-  .lineup td:nth-child(3) { display: none; }
-  .lineup td:last-child { grid-column: 2; grid-row: 2; font-size: var(--step-small); }
-  .lineup .part th { display: block; }
-}
-
-/* ---------- Phone ---------- */
-@media (max-width: 720px) {
-  .topbar nav a:not(.btn) { display: none; }
-  .topbar nav a.only-phone { display: inline; }
-  .name { margin-top: 18svh; font-size: 21vw; }
-  .hero-foot { display: block; padding-bottom: 24px; }
-  .hero-foot .intro { justify-content: flex-start; margin-bottom: 20px; }
+@media (max-width: 600px) {
+  .topbar nav a:not([href="#contacto"]) { display: none; }
+  .name { font-size: 21vw; }
+  .hero-foot { display: block; padding-bottom: 28px; }
+  .hero-foot .intro { align-items: flex-start; margin-bottom: 20px; }
   .hero-foot .intro p { font-size: var(--step-body); }
-  .hero-foot .face { width: 64px; height: 64px; }
-
-  .work-row .wname { display: block; font-size: 9.5vw; }
-  .work-row .wmeta { display: block; margin-top: 6px; text-align: left; font-size: 13px; color: var(--violet); }
-
-  .specimens { display: block; margin-top: 48px; }
-  .specimen + .specimen { margin: 0 calc(var(--m) * -1); padding: 24px var(--m) 0; background: var(--paper); color: var(--ink); }
-  /* the status line above already says what each number is */
-  .specimen .cap { display: none; }
-  .specimen + .specimen { padding-bottom: 24px; }
-  .specimen { --spec: 46vw; }
-
-  .band-img img { aspect-ratio: 4 / 3; object-position: 38% 50%; }
-
-  .lineup table, .lineup tbody, .lineup tr, .lineup td, .lineup caption { display: block; }
-  .lineup colgroup { display: none; }
-  .lineup tr { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; margin-bottom: 18px; }
-  .lineup td:first-child { grid-column: 1 / 3; font-size: 22px; line-height: 1.25; }
-
-  .about .cols { columns: 1; font-size: 20px; line-height: 1.25; text-align: left; hyphens: manual; }
-  .about .end { display: block; margin-top: 24px; padding: 12px 0.3em; }
-
-  .rows a, .rows .row { font-size: 9.6vw; min-height: 84px; padding: 0 16px 14px; }
-  .rows .hello { background: var(--violet); color: #fff; }
-  .rows .hello .round { width: 56px; height: 56px; background: #fff; color: var(--violet); }
-
-  .close .notes { flex-direction: column; }
-  .close .notes div { flex-direction: column; gap: 6px; }
+  .hero-foot .face { width: 56px; height: 56px; }
   .close .mail { font-size: 11.4vw; }
-  .close .meta { grid-template-columns: 1fr; font-size: 13px; }
-  .close .meta p, .close .meta p:nth-child(2), .close .meta p:last-child { text-align: left; }
 }
