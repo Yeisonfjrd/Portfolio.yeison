@@ -2,6 +2,7 @@
 import Site from "@/layouts/Site.astro";
 import { projects } from "@/data/projects";
 import { siteConfig } from "@/data/site";
+import AsciiBot from "@/components/AsciiBot.astro";
 
 const work = projects.filter((p) => p.index);
 const shots: Record<string, { src: string; alt: string }> = {
@@ -47,10 +48,13 @@ const stack = [
         <a href="#contacto">Contacto</a>
       </nav>
     </div>
-    <h1 class="name lines" id="top">
-      <span class="line"><span data-line class="one" style="--i:0">Yeison</span></span>
-      <span class="line"><span data-line class="two" style="--i:1">Fajardo</span></span>
-    </h1>
+    <div class="hero-main">
+      <h1 class="name lines" id="top">
+        <span class="line"><span data-line class="one" style="--i:0">Yeison</span></span>
+        <span class="line"><span data-line class="two" style="--i:1">Fajardo</span></span>
+      </h1>
+      <AsciiBot />
+    </div>
     <div class="hero-cells">
       <div class="cell intro">
         <img class="face" src="/Yeison-fajardo.webp" alt="Yeison Fajardo" width="96" height="96" />
