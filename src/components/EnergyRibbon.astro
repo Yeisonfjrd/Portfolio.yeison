@@ -1,134 +1,89 @@
 ---
-// A river of light filaments that snakes down the whole page behind the content. The path is laid
-// out over the document's height, so scrolling travels down it; the bundle pinches where it crosses
-// the middle and fans out on the bends, every strand waves on its own, and sparks flow downward.
-// Canvas only, no library.
+// A river of light filaments that snakes down the whole page behind the content.
+// Drawn once as SVG over the document's height (it scrolls with the page for free), in two layers
+// with different waves that crossfade with a CSS opacity animation. Nothing runs per frame on the
+// main thread: the compositor does all the motion. Rebuilt only when the page size changes.
 ---
 
-<canvas class="ribbon" aria-hidden="true"></canvas>
+<div class="ribbon" aria-hidden="true">
+  <svg class="ribbon-a"></svg>
+  <svg class="ribbon-b"></svg>
+</div>
 
 <script>
-  const canvas = document.querySelector<HTMLCanvasElement>(".ribbon")!;
-  const ctx = canvas.getContext("2d")!;
-  const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const root = document.querySelector<HTMLElement>(".ribbon")!;
+  const layers = [root.querySelector<SVGSVGElement>(".ribbon-a")!, root.querySelector<SVGSVGElement>(".ribbon-b")!];
+  const NS = "http://www.w3.org/2000/svg";
+  const STRANDS = 40;
 
-  // Budget: 44 strands x 48 points, five stroke calls a frame, no shadowBlur, 60% resolution, 30 fps.
-  const STRANDS = 44, STEPS = 48, SCALE = 0.6, FRAME_MS = 1000 / 30;
-  const strands = Array.from({ length: STRANDS }, (_, i) => ({
-    k: i / (STRANDS - 1) - 0.5, // place across the bundle
-    phase: Math.random() * Math.PI * 2,
-    speed: 0.5 + Math.random() * 0.6,
-    bright: Math.random() < 0.12,
-    hue: 258 + Math.random() * 18,
-  }));
-  const sparks = Array.from({ length: 28 }, () => ({ s: Math.floor(Math.random() * STRANDS), u: Math.random(), v: 0.04 + Math.random() * 0.08 }));
+  // seeded random so a rebuild after resize keeps the same look
+  let seed = 7;
+  const rnd = () => ((seed = (seed * 16807) % 2147483647) - 1) / 2147483646;
+  const strands = Array.from({ length: STRANDS }, (_, i) => ({ k: i / (STRANDS - 1) - 0.5, phase: rnd() * 6.28, bright: rnd() < 0.12 }));
 
-  let W = 0, H = 0, dpr = 1, scrollTop = 0;
-  function resize() {
-    // a background doesn't need full resolution; drawing fewer pixels is most of the saving
-    dpr = SCALE;
-    W = innerWidth;
-    H = innerHeight;
-    canvas.width = Math.round(W * dpr);
-    canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.lineCap = "round";
-  }
+  function build() {
+    const W = document.documentElement.clientWidth;
+    const H = innerHeight;
+    const D = document.documentElement.scrollHeight;
+    const period = H * 1.3;
+    const ang = (y: number) => (y / period) * Math.PI + 0.9;
+    const centre = (y: number) => W * (0.5 + 0.34 * Math.sin(ang(y)));
+    const slope = (y: number) => W * 0.34 * Math.cos(ang(y)) * (Math.PI / period);
+    const spread = (y: number) => Math.min(W, H) * (0.03 + 0.2 * Math.abs(Math.sin(ang(y))));
+    const step = 28; // px between points down the page
+    root.style.height = `${D}px`;
 
-  // The path, in document coordinates: one bend every PERIOD pixels down the page
-  const PERIOD = () => H * 1.3;
-  const centre = (docY: number) => W * (0.5 + 0.34 * Math.sin((docY / PERIOD()) * Math.PI + 0.9));
-  const slope = (docY: number) => W * 0.34 * Math.cos((docY / PERIOD()) * Math.PI + 0.9) * (Math.PI / PERIOD());
-  // tight where the river crosses the middle, open on the bends
-  const spread = (docY: number) => Math.min(W, H) * (0.03 + 0.2 * Math.abs(Math.sin((docY / PERIOD()) * Math.PI + 0.9)));
-
-  // screen y of a point at fraction u of the visible stretch (a bit beyond both edges)
-  const yAt = (u: number) => -0.1 * H + u * 1.2 * H;
-
-  function point(st: (typeof strands)[number], u: number, t: number) {
-    const y = yAt(u);
-    const docY = scrollTop + y;
-    const cx = centre(docY);
-    const m = slope(docY);
-    const len = Math.hypot(1, m);
-    // the wave travels downward: its phase moves with time against the page position
-    const wave = Math.sin(docY / 160 + st.phase - t * st.speed) * 0.22 + Math.sin(docY / 420 - t * 0.5 + st.phase) * 0.12;
-    const off = (st.k + wave) * spread(docY);
-    // offset along the normal of the path, so the bundle keeps its width on the bends
-    return [cx + off / len, y - (off * m) / len];
-  }
-
-  // strands grouped by look, so each group is one path and one stroke
-  const faint = strands.filter((s) => !s.bright && Math.abs(s.k) > 0.25);
-  const mid = strands.filter((s) => !s.bright && Math.abs(s.k) <= 0.25);
-  const bright = strands.filter((s) => s.bright);
-
-  function trace(group: typeof strands, t: number) {
-    ctx.beginPath();
-    for (const st of group) {
-      for (let i = 0; i <= STEPS; i++) {
-        const [x, y] = point(st, i / STEPS, t);
-        i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+    layers.forEach((svg, li) => {
+      svg.setAttribute("viewBox", `0 0 ${W} ${D}`);
+      svg.setAttribute("width", String(W));
+      svg.setAttribute("height", String(D));
+      svg.replaceChildren();
+      const groups: Record<string, string[]> = { faint: [], mid: [], bright: [] };
+      for (const st of strands) {
+        let d = "";
+        for (let y = -step; y <= D + step; y += step) {
+          // the second layer gets a shifted wave; crossfading the two makes the bundle shimmer
+          const wave = Math.sin(y / 160 + st.phase + li * 2.1) * 0.22 + Math.sin(y / 420 + st.phase - li * 1.3) * 0.12;
+          const off = (st.k + wave) * spread(y);
+          const m = slope(y), len = Math.hypot(1, m);
+          const x = centre(y) + off / len, yy = y - (off * m) / len;
+          d += `${d ? "L" : "M"}${x.toFixed(1)} ${yy.toFixed(1)}`;
+        }
+        groups[st.bright ? "bright" : Math.abs(st.k) > 0.25 ? "faint" : "mid"].push(d);
       }
-    }
-  }
-
-  function draw(t: number) {
-    ctx.clearRect(0, 0, W, H);
-    trace(faint, t);
-    ctx.strokeStyle = "rgba(139, 92, 246, 0.16)";
-    ctx.lineWidth = 1;
-    ctx.stroke();
-    trace(mid, t);
-    ctx.strokeStyle = "rgba(124, 58, 237, 0.28)";
-    ctx.stroke();
-    // the glow: the same bright strands twice, wide and faint under thin and strong
-    trace(bright, t);
-    ctx.strokeStyle = "rgba(167, 139, 250, 0.25)";
-    ctx.lineWidth = 5;
-    ctx.stroke();
-    ctx.strokeStyle = "rgba(124, 58, 237, 0.6)";
-    ctx.lineWidth = 1.3;
-    ctx.stroke();
-    ctx.beginPath();
-    for (const sp of sparks) {
-      const [x, y] = point(strands[sp.s], sp.u, t);
-      ctx.moveTo(x + 1.8, y);
-      ctx.arc(x, y, 1.8, 0, Math.PI * 2);
-    }
-    ctx.fillStyle = "rgba(124, 58, 237, 0.8)";
-    ctx.fill();
-  }
-
-  let raf = 0, last = 0, time = 0;
-  function loop(now: number) {
-    raf = requestAnimationFrame(loop);
-    if (last && now - last < FRAME_MS) return; // 30 fps is plenty for a slow background
-    const dt = Math.min(100, now - (last || now)) / 1000;
-    last = now;
-    time += dt;
-    for (const sp of sparks) {
-      sp.u += sp.v * dt; // sparks run down the screen
-      if (sp.u > 1) { sp.u = 0; sp.s = Math.floor(Math.random() * STRANDS); }
-    }
-    draw(time);
-  }
-
-  resize();
-  scrollTop = scrollY;
-  addEventListener("resize", () => { resize(); if (still) draw(0); });
-  addEventListener("scroll", () => { scrollTop = scrollY; if (still) draw(0); }, { passive: true });
-  if (still) draw(0);
-  else {
-    raf = requestAnimationFrame(loop);
-    document.addEventListener("visibilitychange", () => {
-      cancelAnimationFrame(raf);
-      last = 0;
-      if (!document.hidden) raf = requestAnimationFrame(loop);
+      const add = (paths: string[], stroke: string, width: number) => {
+        const p = document.createElementNS(NS, "path");
+        p.setAttribute("d", paths.join(""));
+        p.setAttribute("stroke", stroke);
+        p.setAttribute("stroke-width", String(width));
+        svg.appendChild(p);
+      };
+      add(groups.faint, "rgba(139, 92, 246, 0.16)", 1);
+      add(groups.mid, "rgba(124, 58, 237, 0.28)", 1);
+      add(groups.bright, "rgba(167, 139, 250, 0.25)", 5); // glow: wide and faint
+      add(groups.bright, "rgba(124, 58, 237, 0.6)", 1.3); //       under thin and strong
     });
   }
+
+  build();
+  // the page grows as images load and fonts swap; rebuild only when its size really changes
+  let size = "", timer = 0;
+  new ResizeObserver(() => {
+    const next = `${document.documentElement.clientWidth}x${document.documentElement.scrollHeight}`;
+    if (next === size) return;
+    size = next;
+    clearTimeout(timer);
+    timer = window.setTimeout(build, 150);
+  }).observe(document.body);
 </script>
 
 <style>
-  .ribbon { position: fixed; inset: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; }
+  .ribbon { position: absolute; top: 0; left: 0; width: 100%; z-index: -1; pointer-events: none; overflow: hidden; contain: layout paint; }
+  .ribbon svg { position: absolute; top: 0; left: 0; fill: none; stroke-linecap: round; }
+  /* compositor-only motion: two waves of the same river fading into each other */
+  .ribbon-b { opacity: 0; will-change: opacity; }
+  @media (prefers-reduced-motion: no-preference) {
+    .ribbon-b { animation: ribbon-shimmer 6s ease-in-out infinite alternate; }
+  }
+  @keyframes ribbon-shimmer { to { opacity: 1; } }
 </style>
