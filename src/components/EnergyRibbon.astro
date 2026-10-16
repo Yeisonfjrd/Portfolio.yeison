@@ -9,6 +9,8 @@
   <svg class="ribbon-a"></svg>
   <svg class="ribbon-b"></svg>
 </div>
+<!-- a veil fixed to the lower part of the screen: the river shows above it and is revealed as you scroll -->
+<div class="ribbon-veil" aria-hidden="true"></div>
 
 <script>
   const root = document.querySelector<HTMLElement>(".ribbon")!;
@@ -31,6 +33,7 @@
     const slope = (y: number) => W * 0.34 * Math.cos(ang(y)) * (Math.PI / period);
     const spread = (y: number) => Math.min(W, H) * (0.03 + 0.2 * Math.abs(Math.sin(ang(y))));
     const step = 28; // px between points down the page
+    const startY = H * 0.62; // the river starts under the name, not at the top edge
     root.style.height = `${D}px`;
 
     layers.forEach((svg, li) => {
@@ -41,9 +44,9 @@
       const groups: Record<string, string[]> = { faint: [], mid: [], bright: [] };
       for (const st of strands) {
         let d = "";
-        for (let y = -step; y <= D + step; y += step) {
+        for (let y = startY; y <= D + step; y += step) {
           // the second layer gets a shifted wave; crossfading the two makes the bundle shimmer
-          const wave = Math.sin(y / 160 + st.phase + li * 2.1) * 0.22 + Math.sin(y / 420 + st.phase - li * 1.3) * 0.12;
+          const wave = Math.sin(y / 220 + st.phase + li * 2.1) * 0.09 + Math.sin(y / 520 + st.phase - li * 1.3) * 0.05;
           const off = (st.k + wave) * spread(y);
           const m = slope(y), len = Math.hypot(1, m);
           const x = centre(y) + off / len, yy = y - (off * m) / len;
@@ -78,12 +81,20 @@
 </script>
 
 <style>
-  .ribbon { position: absolute; top: 0; left: 0; width: 100%; z-index: -1; pointer-events: none; overflow: hidden; contain: layout paint; }
+  .ribbon { position: absolute; top: 0; left: 0; width: 100%; z-index: -2; pointer-events: none; overflow: hidden; contain: layout paint;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 55vh, #000 80vh); mask-image: linear-gradient(to bottom, transparent 55vh, #000 80vh); }
+  .ribbon-veil {
+    position: fixed; left: 0; right: 0; top: 72vh; height: 60vh; z-index: -1; pointer-events: none;
+    background: linear-gradient(to bottom, rgba(217, 210, 231, 0) 0, #d9d2e7 22vh); /* taste-skill-ignore: a scrim, the page's own ground */
+  }
   .ribbon svg { position: absolute; top: 0; left: 0; fill: none; stroke-linecap: round; }
   /* compositor-only motion: two waves of the same river fading into each other */
-  .ribbon-b { opacity: 0; will-change: opacity; }
+  .ribbon-b { opacity: 0; will-change: opacity, transform; }
   @media (prefers-reduced-motion: no-preference) {
-    .ribbon-b { animation: ribbon-shimmer 6s ease-in-out infinite alternate; }
+    .ribbon-a { animation: ribbon-drift 9s ease-in-out infinite alternate; will-change: transform; }
+    .ribbon-b { animation: ribbon-shimmer 4.5s ease-in-out infinite alternate; }
   }
-  @keyframes ribbon-shimmer { to { opacity: 1; } }
+  @media (prefers-reduced-motion: reduce) { .ribbon-veil { display: none; } }
+  @keyframes ribbon-shimmer { from { opacity: 0; transform: translateY(-18px); } to { opacity: 1; transform: translateY(18px); } }
+  @keyframes ribbon-drift { from { transform: translateY(-10px); } to { transform: translateY(10px); } }
 </style>

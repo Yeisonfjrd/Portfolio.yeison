@@ -57,7 +57,7 @@ code, pre { font-family: var(--mono); }
 .section-title { margin: 0 0 28px; font-size: var(--step-head); font-weight: 800; line-height: 1; letter-spacing: -0.035em; }
 
 /* Cells: filled surfaces with a small gap, no outlines */
-.grid { display: grid; gap: 12px; }
+.grid { display: grid; gap: 12px; background: rgba(217, 210, 231, 0.8); } /* the gaps mute the river as much as the cards do */
 .cell { padding: var(--pad); min-width: 0; background: rgba(203, 194, 221, 0.8); border-radius: 4px; } /* translucent so the light river shows through */
 
 /* A key: the scoreboard's bordered button, filled on hover. The one place borders live. */
