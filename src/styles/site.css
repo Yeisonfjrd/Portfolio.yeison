@@ -37,10 +37,10 @@
   --t-hover: 180ms;
 }
 
-html { scroll-behavior: smooth; scrollbar-color: var(--violet) var(--surface); }
+html { scroll-behavior: smooth; scrollbar-color: var(--violet) var(--surface); background: var(--ground); }
 body {
   margin: 0;
-  background: var(--ground);
+  background: transparent;
   color: var(--ink);
   font-family: var(--display);
   font-size: var(--step-body);
@@ -58,7 +58,7 @@ code, pre { font-family: var(--mono); }
 
 /* Cells: filled surfaces with a small gap, no outlines */
 .grid { display: grid; gap: 12px; }
-.cell { padding: var(--pad); min-width: 0; background: var(--surface); border-radius: 4px; }
+.cell { padding: var(--pad); min-width: 0; background: rgba(203, 194, 221, 0.8); border-radius: 4px; } /* translucent so the light river shows through */
 
 /* A key: the scoreboard's bordered button, filled on hover. The one place borders live. */
 .key {
@@ -95,8 +95,9 @@ code, pre { font-family: var(--mono); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* The hero holds the name and the portrait ring side by side */
-.hero-main { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 560px); align-items: center; gap: clamp(24px, 4vw, 64px); margin-bottom: 32px; }
+.hero-main { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: clamp(24px, 4vw, 64px); margin-bottom: 32px; }
 .hero-main .name { margin: 0; }
+.hero-photo { justify-self: center; width: clamp(160px, 20vw, 260px); aspect-ratio: 1; border-radius: 50%; object-fit: cover; object-position: 50% 58%; box-shadow: 0 0 0 2px var(--violet-soft), 0 18px 40px -18px rgba(46, 16, 101, 0.45); } /* taste-skill-ignore: his original round avatar with a violet ring */
 
 /* The link row keeps the scoreboard borders: one strip of cells sharing their lines */
 .hero-cells {
@@ -145,7 +146,7 @@ code, pre { font-family: var(--mono); }
 .about-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
 .about .story { margin: 0; font-size: var(--step-lead); line-height: 1.4; }
 .facts { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.facts .cell { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; background: var(--surface-2); }
+.facts .cell { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; background: rgba(192, 182, 214, 0.8); }
 .facts dt { color: var(--muted); font-size: var(--step-small); }
 .facts dd { margin: 0; font-size: var(--step-lead); font-weight: 800; line-height: 1.1; letter-spacing: -0.01em; }
 
@@ -156,7 +157,7 @@ code, pre { font-family: var(--mono); }
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
   gap: 12px;
 }
-.panel { background: var(--surface); border-radius: 4px; padding: var(--pad); }
+.panel { background: rgba(203, 194, 221, 0.8); border-radius: 4px; padding: var(--pad); }
 .ledger { margin: 0; padding: 0; list-style: none; }
 .ledger li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; padding: 12px 0; }
 .ledger li + li { border-top: 1px solid rgba(27, 20, 48, 0.12); } /* taste-skill-ignore: row separator in a list */
@@ -193,6 +194,7 @@ code, pre { font-family: var(--mono); }
 /* ---------- Tablet and phone ---------- */
 @media (max-width: 900px) {
   .hero-main { grid-template-columns: 1fr; }
+  .hero-photo { justify-self: start; width: 140px; }
   .hero-cells { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .hero-cells .intro { grid-column: 1 / -1; }
   .hero-cells .key { min-height: 64px; font-size: var(--step-body); }

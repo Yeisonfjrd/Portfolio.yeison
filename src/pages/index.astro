@@ -2,7 +2,7 @@
 import Site from "@/layouts/Site.astro";
 import { projects } from "@/data/projects";
 import { siteConfig } from "@/data/site";
-import PortraitRing from "@/components/PortraitRing.astro";
+import EnergyRibbon from "@/components/EnergyRibbon.astro";
 
 const work = projects.filter((p) => p.index);
 const shots: Record<string, { src: string; alt: string }> = {
@@ -53,7 +53,7 @@ const stack = [
         <span class="line"><span data-line class="one" style="--i:0">Yeison</span></span>
         <span class="line"><span data-line class="two" style="--i:1">Fajardo</span></span>
       </h1>
-      <PortraitRing />
+      <img class="hero-photo" src="/Yeison-fajardo.webp" alt="Yeison Fajardo" width="260" height="260" />
     </div>
     <div class="hero-cells">
       <div class="cell intro">
@@ -143,4 +143,5 @@ const stack = [
     </div>
     <p class="meta">Buenos Aires, Argentina (UTC-3). 2026.</p>
   </footer>
+  <EnergyRibbon />
 </Site>
