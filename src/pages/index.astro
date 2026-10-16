@@ -51,38 +51,34 @@ const stack = [
       <span class="line"><span data-line class="one" style="--i:0">Yeison</span></span>
       <span class="line"><span data-line class="two" style="--i:1">Fajardo</span></span>
     </h1>
-    <div class="hero-foot">
-      <div class="intro">
+    <div class="hero-cells">
+      <div class="cell intro">
         <img class="face" src="/Yeison-fajardo.webp" alt="Yeison Fajardo" width="96" height="96" />
         <p>Desarrollador backend en Buenos Aires. Estudio la Tecnicatura en Desarrollo de Software en la UPE y busco mi primer trabajo.</p>
       </div>
-      <p class="reach">
-        <a class="btn" href={mail} target="_blank" rel="noopener">Escribime</a>
-        <a href={siteConfig.links.linkedin} rel="noopener">LinkedIn</a>
-        <a href={siteConfig.links.github} rel="noopener">GitHub</a>
-        <a href="/cv-yeison-fajardo.pdf">CV</a>
-      </p>
+      <a class="cell key primary" href={mail} target="_blank" rel="noopener">Escribime</a>
+      <a class="cell key" href={siteConfig.links.linkedin} rel="noopener">LinkedIn</a>
+      <a class="cell key" href={siteConfig.links.github} rel="noopener">GitHub</a>
+      <a class="cell key" href="/cv-yeison-fajardo.pdf">CV</a>
     </div>
   </header>
 
   <main>
     <section class="projects" id="proyectos" aria-labelledby="projects-title">
       <h2 class="section-title" id="projects-title">Proyectos</h2>
-      {work.map((p) => (
-        <article class="project">
-          <div class="p-head">
+      <div class="grid">
+        {work.map((p) => (
+          <article class="cell project">
+            {shots[p.slug] && <img class="p-shot" src={shots[p.slug].src} alt={shots[p.slug].alt} loading="lazy" width="1280" height="800" />}
             <h3>{p.title}</h3>
             <p class="p-meta">{p.discipline}</p>
-            {shots[p.slug] && <img class="p-shot" src={shots[p.slug].src} alt={shots[p.slug].alt} loading="lazy" width="1280" height="800" />}
-          </div>
-          <div class="p-body">
             <p>{p.summary}</p>
             {p.bug && <p><strong>Qué arreglé:</strong> {p.bug.charAt(0).toLowerCase() + p.bug.slice(1)}. {p.story}</p>}
             <p class="p-stack"><span>Hecho con</span> {p.tags.join(", ")}</p>
-            <p class="links">
-              {p.github && <a class="btn small" href={p.github} rel="noopener">Código</a>}
-              {p.link && <a class="btn small ghost" href={p.link} rel="noopener">Demo</a>}
-              {extraLinks[p.slug] && <a class="btn small ghost" href={extraLinks[p.slug].href} rel="noopener">{extraLinks[p.slug].label}</a>}
+            <p class="keys">
+              {p.github && <a class="key" href={p.github} rel="noopener">Código</a>}
+              {p.link && <a class="key" href={p.link} rel="noopener">Demo</a>}
+              {extraLinks[p.slug] && <a class="key" href={extraLinks[p.slug].href} rel="noopener">{extraLinks[p.slug].label}</a>}
             </p>
             {p.diff && (
               <details class="fix">
@@ -94,13 +90,26 @@ const stack = [
                 {p.commit && <a href={p.commit} rel="noopener">Ver el commit en GitHub</a>}
               </details>
             )}
-          </div>
-        </article>
-      ))}
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="about" aria-labelledby="about-title">
+      <h2 class="section-title" id="about-title">Sobre mí</h2>
+      <div class="grid about-grid">
+        <p class="cell story">Me interesa el backend: APIs, bases de datos y lo que pasa cuando dos pedidos llegan al mismo tiempo. Trabajo sobre todo con Java y Spring Boot, TypeScript y PostgreSQL, y a cada proyecto le pongo tests y un CI que los corre. También armo herramientas propias, como un agente que corre con un modelo local en mi GPU y un servidor MCP publicado en npm.</p>
+        <dl class="facts">
+          <div class="cell"><dt>Edad</dt><dd>21 años</dd></div>
+          <div class="cell"><dt>Ciudad</dt><dd>Buenos Aires</dd></div>
+          <div class="cell"><dt>Inglés</dt><dd>Nivel 4 de 6</dd></div>
+          <div class="cell"><dt>Busco</dt><dd>Junior o pasantía, backend</dd></div>
+        </dl>
+      </div>
     </section>
 
     <section class="cv" id="formacion" aria-label="Formación y stack">
-      <div>
+      <div class="panel">
         <h2 class="section-title">Formación</h2>
         <ul class="ledger">
           {education.map(([what, where, when]) => (
@@ -108,7 +117,7 @@ const stack = [
           ))}
         </ul>
       </div>
-      <div>
+      <div class="panel">
         <h2 class="section-title">Con qué trabajo</h2>
         <ul class="ledger">
           {stack.map(([what, where]) => (
@@ -117,21 +126,17 @@ const stack = [
         </ul>
       </div>
     </section>
-
-    <section class="about" aria-labelledby="about-title">
-      <h2 class="section-title" id="about-title">Sobre mí</h2>
-      <p>Tengo 21 años y vivo en Buenos Aires. Me interesa el backend: APIs, bases de datos y lo que pasa cuando dos pedidos llegan al mismo tiempo. Trabajo sobre todo con Java y Spring Boot, TypeScript y PostgreSQL, y a cada proyecto le pongo tests y un CI que los corre. También armo herramientas propias, como un agente que corre con un modelo local en mi GPU y un servidor MCP publicado en npm.</p>
-    </section>
   </main>
 
   <footer class="close" id="contacto">
     <h2 class="section-title">Contacto</h2>
     <a class="mail" href={mail} target="_blank" rel="noopener"><span>andresfajardo1606</span><span>@gmail.com</span></a>
-    <p class="close-links">
-      <a href={siteConfig.links.linkedin} rel="noopener">LinkedIn</a>
-      <a href={siteConfig.links.github} rel="noopener">GitHub</a>
-      <a href="/cv-yeison-fajardo.pdf">CV en PDF</a>
-    </p>
+    <div class="grid close-cells">
+      <a class="cell key" href={siteConfig.links.linkedin} rel="noopener">LinkedIn</a>
+      <a class="cell key" href={siteConfig.links.github} rel="noopener">GitHub</a>
+      <a class="cell key" href="/cv-yeison-fajardo.pdf">CV en PDF</a>
+      <a class="cell key" href="https://www.npmjs.com/package/garmin-coach-mcp" rel="noopener">npm</a>
+    </div>
     <p class="meta">Buenos Aires, Argentina (UTC-3). 2026.</p>
   </footer>
 </Site>

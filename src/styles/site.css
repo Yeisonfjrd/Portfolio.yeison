@@ -1,5 +1,7 @@
 /* Direction: "Type and nothing else" (taste-skill seed 1012284728), brand violet kept,
-   trimmed to what a recruiter reads: who, projects, studies and stack, contact. */
+   with the client's own border language from his ping pong scoreboard: 1px low-opacity lines,
+   square corners, cells that share their borders, bordered keys that fill on hover. */
+/* taste-skill-ignore-file: hairlines and outlined boxes are the client's chosen style */
 :root {
   --hero: #6d28d9; /* taste-skill-ignore: brand violet, asked for by the client */
   --violet: #5b21b6; /* taste-skill-ignore: brand violet */
@@ -11,6 +13,11 @@
   --paper: #f6f3fb;
   --surface: #ece6f6;
   --lilac: #ddd0fa;
+
+  /* the scoreboard's lines: ink at low opacity on paper, white at low opacity on violet */
+  --line: rgba(30, 16, 51, 0.16); /* taste-skill-ignore: client's border style */
+  --line-strong: rgba(30, 16, 51, 0.55); /* taste-skill-ignore: client's border style */
+  --line-on-dark: rgba(255, 255, 255, 0.22); /* taste-skill-ignore: client's border style */
 
   --del-bg: #fbe2e2;
   --del-ink: #8a1c1c;
@@ -26,7 +33,8 @@
   --step-head: clamp(2.25rem, 4.4vw, 4rem);
 
   --m: clamp(16px, 3vw, 48px);
-  --gap-section: clamp(80px, 9vw, 140px);
+  --pad: clamp(20px, 2.2vw, 32px);
+  --gap-section: clamp(72px, 7vw, 112px);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --t-press: 140ms;
@@ -46,86 +54,95 @@ body {
 }
 ::selection { background: var(--hero); color: #fff; }
 a { color: inherit; text-underline-offset: 0.18em; text-decoration-thickness: 0.06em; }
-:focus-visible { outline: 3px solid var(--violet); outline-offset: 3px; }
+:focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
 img { display: block; max-width: 100%; height: auto; }
 code, pre { font-family: var(--mono); }
 
-.btn {
+.section-title { margin: 0 0 28px; font-size: var(--step-head); font-weight: 800; line-height: 1; letter-spacing: -0.035em; }
+
+/* ---------- The grid of cells: shared 1px borders, square corners ---------- */
+.grid { display: grid; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.grid > .cell, .grid > * > .cell { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.cell { padding: var(--pad); min-width: 0; }
+
+/* A key: a bordered button like the scoreboard's +1 / Gana P1, filled on hover */
+.key {
   display: inline-flex;
   align-items: center;
-  min-height: 48px;
-  padding: 0 22px;
-  border: 0;
-  border-radius: 999px;
-  background: var(--ink);
-  color: var(--paper);
-  font: 500 var(--step-body) / 1 var(--display);
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid var(--line-strong);
+  border-radius: 2px;
+  font-weight: 500;
   text-decoration: none;
-  cursor: pointer;
-  transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease;
+  transition: background-color var(--t-hover) ease, color var(--t-hover) ease, border-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
 }
-.btn:active { transform: scale(0.97); }
-@media (hover: hover) and (pointer: fine) { .btn:hover { background: var(--violet); } }
-.btn.small { min-height: 40px; padding: 0 16px; font-size: var(--step-small); }
-.btn.ghost { background: var(--lilac); color: var(--ink); }
-
-.section-title { margin: 0 0 40px; font-size: var(--step-head); font-weight: 800; line-height: 1; letter-spacing: -0.035em; }
+.key:active { transform: scale(0.97); }
+@media (hover: hover) and (pointer: fine) { .key:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); } }
 
 /* ---------- Hero ---------- */
 .hero {
-  min-height: 86svh;
+  min-height: 80svh;
   background: var(--hero);
   color: var(--on-hero);
-  padding: 0 var(--m);
+  padding: 0 var(--m) var(--m);
   display: grid;
   grid-template-rows: auto 1fr auto;
+  --line: var(--line-on-dark);
 }
 .hero :focus-visible { outline-color: var(--on-hero); }
-.hero .btn { background: var(--on-hero); color: var(--ink); }
-@media (hover: hover) and (pointer: fine) { .hero .btn:hover { background: var(--on-hero-2); } }
-.topbar { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; }
+.topbar { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; }
 .monogram { font-weight: 800; text-decoration: none; letter-spacing: -0.02em; }
 .topbar nav { display: flex; gap: clamp(16px, 2.4vw, 32px); font-size: var(--step-small); font-weight: 500; }
 .name {
   align-self: center;
-  margin: 0;
+  margin: 24px 0 40px;
   font-weight: 800;
-  font-size: clamp(84px, 14vw, 210px);
+  font-size: clamp(84px, 13vw, 200px);
   line-height: 0.84;
   letter-spacing: -0.04em;
 }
 .lines .line { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .lines [data-line] { display: block; }
 .name .two { color: var(--on-hero-2); }
-.hero-foot { display: flex; justify-content: space-between; align-items: end; gap: 24px 48px; flex-wrap: wrap; padding-bottom: 40px; }
-.hero-foot .intro { display: flex; align-items: center; gap: 20px; max-width: 640px; }
-.hero-foot .intro p { margin: 0; font-size: var(--step-lead); line-height: 1.3; font-weight: 500; }
-.hero-foot .face { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; flex-shrink: 0; }
-.hero-foot .reach { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin: 0; font-weight: 500; }
-
-/* ---------- Projects: everything visible, nothing behind a hover ---------- */
-.projects { padding: var(--gap-section) var(--m) 0; }
-.project {
+.hero-cells {
   display: grid;
-  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-  column-gap: clamp(24px, 4vw, 64px);
-  padding: 48px 0;
+  grid-template-columns: minmax(0, 2.6fr) repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
 }
-.p-head h3 { margin: 0; font-size: clamp(2rem, 3.6vw, 3.25rem); font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
-.p-meta { margin: 8px 0 0; color: var(--violet); font-size: var(--step-small); font-weight: 500; }
-.p-shot { margin-top: 20px; width: 100%; max-width: 360px; aspect-ratio: 16 / 10; object-fit: cover; object-position: top left; background: var(--surface); }
-.p-body p { margin: 0 0 12px; max-width: 65ch; }
-.p-body strong { font-weight: 800; }
+.hero-cells > .cell { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.hero-cells .intro { display: flex; align-items: center; gap: 18px; }
+.hero-cells .intro p { margin: 0; font-size: var(--step-body); line-height: 1.35; font-weight: 500; }
+.face { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; flex-shrink: 0; }
+.hero-cells .key { border: 0; border-radius: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 88px; font-size: var(--step-lead); }
+.hero-cells .key.primary { background: var(--on-hero); color: var(--ink); }
+@media (hover: hover) and (pointer: fine) {
+  .hero-cells .key:hover { background: var(--on-hero); color: var(--ink); border-color: var(--line); }
+  .hero-cells .key.primary:hover { background: var(--on-hero-2); }
+}
+
+/* ---------- Projects: a two-column board, everything visible ---------- */
+.projects { padding: var(--gap-section) var(--m) 0; }
+.projects .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.project { display: flex; flex-direction: column; }
+.project h3 { margin: 0; font-size: clamp(1.75rem, 2.8vw, 2.5rem); font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
+.p-meta { margin: 8px 0 16px; color: var(--violet); font-size: var(--step-small); font-weight: 500; }
+.project p { margin: 0 0 12px; }
+.project strong { font-weight: 800; }
+.p-shot { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; object-position: top left; margin-bottom: 20px; border: 1px solid var(--line); }
 .p-stack { color: var(--muted); }
 .p-stack span { color: var(--ink); font-weight: 500; }
-.p-body .links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
-.fix { margin-top: 16px; max-width: 65ch; }
+.keys { display: flex; flex-wrap: wrap; gap: 8px; margin: auto 0 0 !important; padding-top: 8px; }
+.keys .key { min-height: 40px; font-size: var(--step-small); }
+.fix { margin-top: 16px; }
 .fix summary { cursor: pointer; font-weight: 500; color: var(--violet); width: fit-content; }
 .fix[open] summary { margin-bottom: 12px; }
 .fix > a { display: inline-block; margin-top: 10px; font-size: var(--step-small); font-weight: 500; }
 
 /* The diff is real code, so it keeps a code face and its own colours */
-.diff { margin: 0; font: 14px/1.55 var(--mono); background: #fff; }
+.diff { margin: 0; font: 14px/1.55 var(--mono); background: #fff; border: 1px solid var(--line); }
 .diff figcaption { padding: 6px 10px; background: var(--lilac); }
 .diff figcaption code { font: 500 13px/1.3 var(--mono); color: var(--muted); }
 .diff pre { margin: 0; padding: 6px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
@@ -133,30 +150,36 @@ code, pre { font-family: var(--mono); }
 .diff .add { background: var(--add-bg); color: var(--add-ink); }
 .diff .del { background: var(--del-bg); color: var(--del-ink); text-decoration: line-through; text-decoration-thickness: 1px; }
 
-/* ---------- Studies and stack, side by side ---------- */
+/* ---------- About: the paragraph beside the facts a recruiter scans for ---------- */
+.about { padding: var(--gap-section) var(--m) 0; }
+.about-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+.about .story { margin: 0; font-size: var(--step-lead); line-height: 1.4; }
+.facts { margin: 0; display: grid; grid-template-columns: 1fr 1fr; }
+.facts .cell { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+.facts dt { color: var(--muted); font-size: var(--step-small); }
+.facts dd { margin: 0; font-size: var(--step-lead); font-weight: 800; line-height: 1.1; letter-spacing: -0.01em; }
+
+/* ---------- Studies and stack: two panels, rows split by the same line ---------- */
 .cv {
-  margin-top: var(--gap-section);
-  background: var(--surface);
-  padding: clamp(64px, 7vw, 104px) var(--m);
+  padding: var(--gap-section) var(--m);
   display: grid;
-  grid-template-columns: 7fr 5fr;
-  gap: 112px clamp(32px, 5vw, 80px);
+  grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+  gap: 0;
 }
+.panel { border: 1px solid var(--line); padding: var(--pad); }
+.panel + .panel { border-left: 0; }
 .ledger { margin: 0; padding: 0; list-style: none; }
-.ledger li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; padding: 8px 0; }
+.ledger li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
 .l-what { font-weight: 500; }
 .l-where { grid-column: 1; color: var(--muted); font-size: var(--step-small); }
 .l-when { grid-column: 2; grid-row: 1; color: var(--muted); }
 
-/* ---------- About ---------- */
-.about { padding: var(--gap-section) var(--m); }
-.about p { margin: 0; max-width: 62ch; font-size: var(--step-lead); line-height: 1.4; }
-
 /* ---------- Contact, once ---------- */
-.close { background: var(--close); color: #fff; padding: clamp(64px, 7vw, 104px) var(--m) 32px; }
+.close { background: var(--close); color: #fff; padding: var(--gap-section) var(--m) 32px; --line: var(--line-on-dark); }
 .close :focus-visible { outline-color: #fff; }
 .close .mail {
   display: block;
+  margin-bottom: 40px;
   font-size: clamp(2.25rem, 8vw, 8rem);
   font-weight: 800;
   line-height: 0.95;
@@ -165,8 +188,10 @@ code, pre { font-family: var(--mono); }
 }
 .close .mail span { display: block; }
 @media (hover: hover) and (pointer: fine) { .close .mail:hover { text-decoration: underline; text-decoration-thickness: 0.04em; } }
-.close-links { display: flex; flex-wrap: wrap; gap: 12px 32px; margin: 40px 0 0; font-size: var(--step-lead); font-weight: 500; }
-.close .meta { margin: 64px 0 0; font-size: var(--step-small); color: var(--on-hero-2); }
+.close-cells { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.close-cells .key { border: 0; border-radius: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 96px; font-size: var(--step-lead); }
+@media (hover: hover) and (pointer: fine) { .close-cells .key:hover { background: #fff; color: var(--close); border-color: var(--line); } }
+.close .meta { margin: 48px 0 0; font-size: var(--step-small); color: var(--on-hero-2); }
 
 /* ---------- Motion: one short entrance for the name, nothing else waits ---------- */
 @media (prefers-reduced-motion: no-preference) {
@@ -176,17 +201,20 @@ code, pre { font-family: var(--mono); }
 
 /* ---------- Tablet and phone ---------- */
 @media (max-width: 900px) {
-  .project { grid-template-columns: 1fr; }
-  .p-shot { max-width: 320px; }
-  .p-body { margin-top: 16px; }
-  .cv { grid-template-columns: 1fr; }
+  .hero-cells { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .hero-cells .intro { grid-column: 1 / -1; }
+  .hero-cells .key { min-height: 64px; font-size: var(--step-body); }
+  .projects .grid, .about-grid, .cv { grid-template-columns: 1fr; }
+  .panel + .panel { border-left: 1px solid var(--line); border-top: 0; }
+  .close-cells { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
   .topbar nav a:not([href="#contacto"]) { display: none; }
   .name { font-size: 21vw; }
-  .hero-foot { display: block; padding-bottom: 28px; }
-  .hero-foot .intro { align-items: flex-start; margin-bottom: 20px; }
-  .hero-foot .intro p { font-size: var(--step-body); }
-  .hero-foot .face { width: 56px; height: 56px; }
+  .hero-cells { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero-cells .intro { align-items: flex-start; }
+  .face { width: 48px; height: 48px; }
+  .facts dd { font-size: var(--step-body); }
   .close .mail { font-size: 11.4vw; }
+  .close-cells .key { min-height: 72px; font-size: var(--step-body); }
 }
