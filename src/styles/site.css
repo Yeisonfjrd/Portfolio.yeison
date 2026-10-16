@@ -1,28 +1,24 @@
-/* Direction: "Type and nothing else" (taste-skill seed 1012284728), brand violet kept,
-   with the client's own border language from his ping pong scoreboard: 1px low-opacity lines,
-   square corners, cells that share their borders, bordered keys that fill on hover. */
-/* taste-skill-ignore-file: hairlines and outlined boxes are the client's chosen style */
+/* Mid-tone lavender ground (not white, not dark) around the violet of his original portfolio
+   (Tailwind violet-600 / violet-400). Borders from his ping pong scoreboard only as a touch:
+   the hero's link row and the buttons. Project cards are filled, not outlined. */
 :root {
-  --hero: #6d28d9; /* taste-skill-ignore: brand violet, asked for by the client */
-  --violet: #5b21b6; /* taste-skill-ignore: brand violet */
-  --on-hero: #ffffff;
-  --on-hero-2: #d9c9ff; /* taste-skill-ignore: brand violet, light */
-  --close: #3b1478; /* taste-skill-ignore: brand violet, deep */
-  --ink: #1e1033;
-  --muted: #574a6e;
-  --paper: #f6f3fb;
-  --surface: #ece6f6;
-  --lilac: #ddd0fa;
+  --violet: #7c3aed; /* taste-skill-ignore: his original portfolio's violet-600 */
+  --violet-soft: #a78bfa; /* taste-skill-ignore: his original violet-400 */
+  --violet-deep: #2e1065;
+  --violet-text: #5b21b6; /* taste-skill-ignore: violet-800, for small violet text on lavender (5:1+) */ /* taste-skill-ignore: brand violet, deep */
+  --ground: #d9d2e7;
+  --surface: #cbc2dd;
+  --surface-2: #c0b6d6;
+  --ink: #1b1430;
+  --muted: #43395a;
 
-  /* the scoreboard's lines: ink at low opacity on paper, white at low opacity on violet */
-  --line: rgba(30, 16, 51, 0.16); /* taste-skill-ignore: client's border style */
-  --line-strong: rgba(30, 16, 51, 0.55); /* taste-skill-ignore: client's border style */
-  --line-on-dark: rgba(255, 255, 255, 0.22); /* taste-skill-ignore: client's border style */
+  --line: rgba(27, 20, 48, 0.35); /* taste-skill-ignore: client's scoreboard border, used sparingly */
+  --line-on-dark: rgba(255, 255, 255, 0.3); /* taste-skill-ignore: client's scoreboard border */
 
-  --del-bg: #fbe2e2;
-  --del-ink: #8a1c1c;
-  --add-bg: #d9f2e2;
-  --add-ink: #12502b;
+  --del-bg: #f6dcdc;
+  --del-ink: #7d1a1a;
+  --add-bg: #d3eedb;
+  --add-ink: #10482a;
 
   --display: "Cabinet Grotesk", "Segoe UI", sans-serif;
   --mono: "JetBrains Mono Variable", monospace; /* taste-skill-ignore: only for the diffs, which are real code */
@@ -44,7 +40,7 @@
 html { scroll-behavior: smooth; scrollbar-color: var(--violet) var(--surface); }
 body {
   margin: 0;
-  background: var(--paper);
+  background: var(--ground);
   color: var(--ink);
   font-family: var(--display);
   font-size: var(--step-body);
@@ -52,7 +48,7 @@ body {
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
-::selection { background: var(--hero); color: #fff; }
+::selection { background: var(--violet); color: #fff; }
 a { color: inherit; text-underline-offset: 0.18em; text-decoration-thickness: 0.06em; }
 :focus-visible { outline: 3px solid var(--violet); outline-offset: 2px; }
 img { display: block; max-width: 100%; height: auto; }
@@ -60,90 +56,78 @@ code, pre { font-family: var(--mono); }
 
 .section-title { margin: 0 0 28px; font-size: var(--step-head); font-weight: 800; line-height: 1; letter-spacing: -0.035em; }
 
-/* ---------- The grid of cells: shared 1px borders, square corners ---------- */
-.grid { display: grid; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
-.grid > .cell, .grid > * > .cell { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.cell { padding: var(--pad); min-width: 0; }
+/* Cells: filled surfaces with a small gap, no outlines */
+.grid { display: grid; gap: 12px; }
+.cell { padding: var(--pad); min-width: 0; background: var(--surface); border-radius: 4px; }
 
-/* A key: a bordered button like the scoreboard's +1 / Gana P1, filled on hover */
+/* A key: the scoreboard's bordered button, filled on hover. The one place borders live. */
 .key {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 44px;
   padding: 0 18px;
-  border: 1px solid var(--line-strong);
+  border: 1px solid var(--line);
   border-radius: 2px;
+  background: transparent;
   font-weight: 500;
   text-decoration: none;
   transition: background-color var(--t-hover) ease, color var(--t-hover) ease, border-color var(--t-hover) ease, transform var(--t-press) var(--ease-out);
 }
 .key:active { transform: scale(0.97); }
-@media (hover: hover) and (pointer: fine) { .key:hover { background: var(--ink); border-color: var(--ink); color: var(--paper); } }
+@media (hover: hover) and (pointer: fine) { .key:hover { background: var(--ink); border-color: var(--ink); color: var(--ground); } }
 
-/* ---------- Hero ---------- */
-.hero {
-  min-height: 80svh;
-  background: var(--hero);
-  color: var(--on-hero);
-  padding: 0 var(--m) var(--m);
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  --line: var(--line-on-dark);
-}
-.hero :focus-visible { outline-color: var(--on-hero); }
+/* ---------- Hero: his original layout (who, photo, links) with the big two-tone name ---------- */
+.hero { padding: 0 var(--m); }
 .topbar { display: flex; justify-content: space-between; align-items: center; padding: 24px 0; }
 .monogram { font-weight: 800; text-decoration: none; letter-spacing: -0.02em; }
 .topbar nav { display: flex; gap: clamp(16px, 2.4vw, 32px); font-size: var(--step-small); font-weight: 500; }
 .name {
-  align-self: center;
-  margin: 24px 0 40px;
+  margin: clamp(32px, 6vw, 88px) 0 32px;
   font-weight: 800;
-  font-size: clamp(84px, 13vw, 200px);
+  font-size: clamp(76px, 12vw, 184px);
   line-height: 0.84;
   letter-spacing: -0.04em;
 }
 .lines .line { display: block; overflow: hidden; padding-bottom: 0.08em; margin-bottom: -0.08em; }
 .lines [data-line] { display: block; }
-.name .two { color: var(--on-hero-2); }
+.name .two { color: var(--violet); }
+/* The link row keeps the scoreboard borders: one strip of cells sharing their lines */
 .hero-cells {
   display: grid;
   grid-template-columns: minmax(0, 2.6fr) repeat(4, minmax(0, 1fr));
   border-top: 1px solid var(--line);
   border-left: 1px solid var(--line);
 }
-.hero-cells > .cell { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-.hero-cells .intro { display: flex; align-items: center; gap: 18px; }
+.hero-cells > * { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; border-radius: 0; }
+.hero-cells .intro { display: flex; align-items: center; gap: 18px; padding: var(--pad); }
 .hero-cells .intro p { margin: 0; font-size: var(--step-body); line-height: 1.35; font-weight: 500; }
 .face { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; object-position: 50% 30%; flex-shrink: 0; }
-.hero-cells .key { border: 0; border-radius: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 88px; font-size: var(--step-lead); }
-.hero-cells .key.primary { background: var(--on-hero); color: var(--ink); }
-@media (hover: hover) and (pointer: fine) {
-  .hero-cells .key:hover { background: var(--on-hero); color: var(--ink); border-color: var(--line); }
-  .hero-cells .key.primary:hover { background: var(--on-hero-2); }
-}
+.hero-cells .key { border-top: 0; border-left: 0; border-radius: 0; min-height: 88px; font-size: var(--step-lead); }
+.hero-cells .key.primary { background: var(--violet); color: #fff; }
+@media (hover: hover) and (pointer: fine) { .hero-cells .key.primary:hover { background: var(--ink); } }
 
-/* ---------- Projects: a two-column board, everything visible ---------- */
+/* ---------- Projects: filled cards on two columns, like the original, without shadows ---------- */
 .projects { padding: var(--gap-section) var(--m) 0; }
 .projects .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .project { display: flex; flex-direction: column; }
 .project h3 { margin: 0; font-size: clamp(1.75rem, 2.8vw, 2.5rem); font-weight: 800; line-height: 1; letter-spacing: -0.03em; }
-.p-meta { margin: 8px 0 16px; color: var(--violet); font-size: var(--step-small); font-weight: 500; }
+.p-meta { margin: 8px 0 16px; color: var(--violet-text); font-size: var(--step-small); font-weight: 800; }
 .project p { margin: 0 0 12px; }
 .project strong { font-weight: 800; }
-.p-shot { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; object-position: top left; margin-bottom: 20px; border: 1px solid var(--line); }
+.p-shot { width: 100%; aspect-ratio: 16 / 7; object-fit: cover; object-position: top left; margin-bottom: 20px; border-radius: 2px; }
 .p-stack { color: var(--muted); }
 .p-stack span { color: var(--ink); font-weight: 500; }
 .keys { display: flex; flex-wrap: wrap; gap: 8px; margin: auto 0 0 !important; padding-top: 8px; }
 .keys .key { min-height: 40px; font-size: var(--step-small); }
 .fix { margin-top: 16px; }
-.fix summary { cursor: pointer; font-weight: 500; color: var(--violet); width: fit-content; }
+.fix summary { cursor: pointer; font-weight: 500; color: var(--violet-text); width: fit-content; }
 .fix[open] summary { margin-bottom: 12px; }
 .fix > a { display: inline-block; margin-top: 10px; font-size: var(--step-small); font-weight: 500; }
 
 /* The diff is real code, so it keeps a code face and its own colours */
-.diff { margin: 0; font: 14px/1.55 var(--mono); background: #fff; border: 1px solid var(--line); }
-.diff figcaption { padding: 6px 10px; background: var(--lilac); }
+.diff { margin: 0; font: 14px/1.55 var(--mono); background: #f4f1f9; border-radius: 2px; overflow: hidden; }
+.diff figcaption { padding: 6px 10px; background: var(--surface-2); }
 .diff figcaption code { font: 500 13px/1.3 var(--mono); color: var(--muted); }
 .diff pre { margin: 0; padding: 6px 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .diff code { display: block; padding: 0 10px 0 2.2ch; text-indent: -1.4ch; font: inherit; }
@@ -154,28 +138,28 @@ code, pre { font-family: var(--mono); }
 .about { padding: var(--gap-section) var(--m) 0; }
 .about-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
 .about .story { margin: 0; font-size: var(--step-lead); line-height: 1.4; }
-.facts { margin: 0; display: grid; grid-template-columns: 1fr 1fr; }
-.facts .cell { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; }
+.facts { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.facts .cell { display: flex; flex-direction: column; justify-content: space-between; gap: 12px; background: var(--surface-2); }
 .facts dt { color: var(--muted); font-size: var(--step-small); }
 .facts dd { margin: 0; font-size: var(--step-lead); font-weight: 800; line-height: 1.1; letter-spacing: -0.01em; }
 
-/* ---------- Studies and stack: two panels, rows split by the same line ---------- */
+/* ---------- Studies and stack ---------- */
 .cv {
   padding: var(--gap-section) var(--m);
   display: grid;
   grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-  gap: 0;
+  gap: 12px;
 }
-.panel { border: 1px solid var(--line); padding: var(--pad); }
-.panel + .panel { border-left: 0; }
+.panel { background: var(--surface); border-radius: 4px; padding: var(--pad); }
 .ledger { margin: 0; padding: 0; list-style: none; }
-.ledger li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; padding: 12px 0; border-top: 1px solid var(--line); }
+.ledger li { display: grid; grid-template-columns: 1fr auto; column-gap: 16px; padding: 12px 0; }
+.ledger li + li { border-top: 1px solid rgba(27, 20, 48, 0.12); } /* taste-skill-ignore: row separator in a list */
 .l-what { font-weight: 500; }
 .l-where { grid-column: 1; color: var(--muted); font-size: var(--step-small); }
 .l-when { grid-column: 2; grid-row: 1; color: var(--muted); }
 
-/* ---------- Contact, once ---------- */
-.close { background: var(--close); color: #fff; padding: var(--gap-section) var(--m) 32px; --line: var(--line-on-dark); }
+/* ---------- Contact, once, in his deep violet ---------- */
+.close { background: var(--violet-deep); color: #fff; padding: var(--gap-section) var(--m) 32px; --line: var(--line-on-dark); }
 .close :focus-visible { outline-color: #fff; }
 .close .mail {
   display: block;
@@ -187,11 +171,12 @@ code, pre { font-family: var(--mono); }
   text-decoration: none;
 }
 .close .mail span { display: block; }
+.close .mail span + span { color: var(--violet-soft); }
 @media (hover: hover) and (pointer: fine) { .close .mail:hover { text-decoration: underline; text-decoration-thickness: 0.04em; } }
-.close-cells { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.close-cells .key { border: 0; border-radius: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); min-height: 96px; font-size: var(--step-lead); }
-@media (hover: hover) and (pointer: fine) { .close-cells .key:hover { background: #fff; color: var(--close); border-color: var(--line); } }
-.close .meta { margin: 48px 0 0; font-size: var(--step-small); color: var(--on-hero-2); }
+.close-cells { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.close-cells .key { min-height: 72px; font-size: var(--step-lead); border-radius: 2px; background: transparent; }
+@media (hover: hover) and (pointer: fine) { .close-cells .key:hover { background: #fff; color: var(--violet-deep); border-color: #fff; } }
+.close .meta { margin: 48px 0 0; font-size: var(--step-small); color: var(--violet-soft); }
 
 /* ---------- Motion: one short entrance for the name, nothing else waits ---------- */
 @media (prefers-reduced-motion: no-preference) {
@@ -205,7 +190,6 @@ code, pre { font-family: var(--mono); }
   .hero-cells .intro { grid-column: 1 / -1; }
   .hero-cells .key { min-height: 64px; font-size: var(--step-body); }
   .projects .grid, .about-grid, .cv { grid-template-columns: 1fr; }
-  .panel + .panel { border-left: 1px solid var(--line); border-top: 0; }
   .close-cells { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
@@ -216,5 +200,5 @@ code, pre { font-family: var(--mono); }
   .face { width: 48px; height: 48px; }
   .facts dd { font-size: var(--step-body); }
   .close .mail { font-size: 11.4vw; }
-  .close-cells .key { min-height: 72px; font-size: var(--step-body); }
+  .close-cells .key { min-height: 64px; font-size: var(--step-body); }
 }
