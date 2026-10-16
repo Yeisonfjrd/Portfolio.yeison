@@ -12,7 +12,8 @@
   const ctx = canvas.getContext("2d")!;
   const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const STRANDS = 90, STEPS = 120;
+  // Budget: 44 strands x 48 points, five stroke calls a frame, no shadowBlur, 60% resolution, 30 fps.
+  const STRANDS = 44, STEPS = 48, SCALE = 0.6, FRAME_MS = 1000 / 30;
   const strands = Array.from({ length: STRANDS }, (_, i) => ({
     k: i / (STRANDS - 1) - 0.5, // place across the bundle
     phase: Math.random() * Math.PI * 2,
@@ -20,16 +21,18 @@
     bright: Math.random() < 0.12,
     hue: 258 + Math.random() * 18,
   }));
-  const sparks = Array.from({ length: 50 }, () => ({ s: Math.floor(Math.random() * STRANDS), u: Math.random(), v: 0.04 + Math.random() * 0.08 }));
+  const sparks = Array.from({ length: 28 }, () => ({ s: Math.floor(Math.random() * STRANDS), u: Math.random(), v: 0.04 + Math.random() * 0.08 }));
 
   let W = 0, H = 0, dpr = 1, scrollTop = 0;
   function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // a background doesn't need full resolution; drawing fewer pixels is most of the saving
+    dpr = SCALE;
     W = innerWidth;
     H = innerHeight;
-    canvas.width = W * dpr;
-    canvas.height = H * dpr;
+    canvas.width = Math.round(W * dpr);
+    canvas.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.lineCap = "round";
   }
 
   // The path, in document coordinates: one bend every PERIOD pixels down the page
@@ -55,35 +58,53 @@
     return [cx + off / len, y - (off * m) / len];
   }
 
-  function draw(t: number) {
-    ctx.clearRect(0, 0, W, H);
-    for (const st of strands) {
-      ctx.beginPath();
+  // strands grouped by look, so each group is one path and one stroke
+  const faint = strands.filter((s) => !s.bright && Math.abs(s.k) > 0.25);
+  const mid = strands.filter((s) => !s.bright && Math.abs(s.k) <= 0.25);
+  const bright = strands.filter((s) => s.bright);
+
+  function trace(group: typeof strands, t: number) {
+    ctx.beginPath();
+    for (const st of group) {
       for (let i = 0; i <= STEPS; i++) {
         const [x, y] = point(st, i / STEPS, t);
         i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
       }
-      ctx.strokeStyle = `hsla(${st.hue}, 85%, ${st.bright ? 56 : 62}%, ${st.bright ? 0.55 : 0.2 - Math.abs(st.k) * 0.12})`;
-      ctx.lineWidth = st.bright ? 1.4 : 0.9;
-      ctx.shadowBlur = st.bright ? 12 : 0;
-      ctx.shadowColor = `hsla(${st.hue}, 90%, 60%, 0.8)`;
-      ctx.stroke();
     }
-    ctx.shadowBlur = 8;
-    ctx.shadowColor = "rgba(124, 58, 237, 0.9)";
-    ctx.fillStyle = "rgba(124, 58, 237, 0.85)";
+  }
+
+  function draw(t: number) {
+    ctx.clearRect(0, 0, W, H);
+    trace(faint, t);
+    ctx.strokeStyle = "rgba(139, 92, 246, 0.16)";
+    ctx.lineWidth = 1;
+    ctx.stroke();
+    trace(mid, t);
+    ctx.strokeStyle = "rgba(124, 58, 237, 0.28)";
+    ctx.stroke();
+    // the glow: the same bright strands twice, wide and faint under thin and strong
+    trace(bright, t);
+    ctx.strokeStyle = "rgba(167, 139, 250, 0.25)";
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    ctx.strokeStyle = "rgba(124, 58, 237, 0.6)";
+    ctx.lineWidth = 1.3;
+    ctx.stroke();
+    ctx.beginPath();
     for (const sp of sparks) {
       const [x, y] = point(strands[sp.s], sp.u, t);
-      ctx.beginPath();
-      ctx.arc(x, y, 1.6, 0, Math.PI * 2);
-      ctx.fill();
+      ctx.moveTo(x + 1.8, y);
+      ctx.arc(x, y, 1.8, 0, Math.PI * 2);
     }
-    ctx.shadowBlur = 0;
+    ctx.fillStyle = "rgba(124, 58, 237, 0.8)";
+    ctx.fill();
   }
 
   let raf = 0, last = 0, time = 0;
   function loop(now: number) {
-    const dt = Math.min(50, now - (last || now)) / 1000;
+    raf = requestAnimationFrame(loop);
+    if (last && now - last < FRAME_MS) return; // 30 fps is plenty for a slow background
+    const dt = Math.min(100, now - (last || now)) / 1000;
     last = now;
     time += dt;
     for (const sp of sparks) {
@@ -91,7 +112,6 @@
       if (sp.u > 1) { sp.u = 0; sp.s = Math.floor(Math.random() * STRANDS); }
     }
     draw(time);
-    raf = requestAnimationFrame(loop);
   }
 
   resize();
