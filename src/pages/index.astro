@@ -2,7 +2,7 @@
 import Site from "@/layouts/Site.astro";
 import { projects } from "@/data/projects";
 import { siteConfig } from "@/data/site";
-import AsciiBot from "@/components/AsciiBot.astro";
+import PortraitRing from "@/components/PortraitRing.astro";
 
 const work = projects.filter((p) => p.index);
 const shots: Record<string, { src: string; alt: string }> = {
@@ -53,7 +53,7 @@ const stack = [
         <span class="line"><span data-line class="one" style="--i:0">Yeison</span></span>
         <span class="line"><span data-line class="two" style="--i:1">Fajardo</span></span>
       </h1>
-      <AsciiBot />
+      <PortraitRing />
     </div>
     <div class="hero-cells">
       <div class="cell intro">

@@ -20,6 +20,7 @@
     "@supabase/supabase-js": "^2.48.0",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
+    "animejs": "4.5.0",
     "astro": "^4.4.5",
     "astro-robots-txt": "1.0.0",
     "react": "^19.0.0",
