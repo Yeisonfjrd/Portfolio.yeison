@@ -112,7 +112,7 @@
   {
     "slug": "garmin-coach-mcp",
     "title": "Garmin Coach",
-    "summary": "Servidor MCP que le da a una IA acceso a tu Garmin Connect: lee sueño, salud y actividades, y escribe entrenamientos estructurados en el calendario del reloj.",
+    "summary": "Servidor MCP que le da a una IA acceso a tu Garmin Connect: lee sueño, salud y actividades, y escribe entrenamientos estructurados en el calendario del reloj. Lo aceptaron en HOL Guard, el registro que revisa qué herramientas usan los agentes de IA.",
     "highlights": [
       "La mayoría de las integraciones con Garmin solo leen; esta planifica un bloque de entrenamiento y lo carga en el reloj.",
       "11 tests fallaban solo fuera de UTC por cómo JavaScript parsea fechas; lo arreglé y el CI corre en UTC y en hora de Buenos Aires."
