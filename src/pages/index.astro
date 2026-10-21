@@ -10,8 +10,11 @@ const shots: Record<string, { src: string; alt: string }> = {
   "garmin-coach-mcp": { src: "/shots/ci-matrix.png", alt: "CI de garmin-coach-mcp en verde, con tests en UTC y en hora de Buenos Aires" },
   "pingpong-scoreboard": { src: "/projects/pingpong-scoreboard.png", alt: "Marcador de ping pong" },
 };
-const extraLinks: Record<string, { href: string; label: string }> = {
-  "garmin-coach-mcp": { href: "https://www.npmjs.com/package/garmin-coach-mcp", label: "npm" },
+const extraLinks: Record<string, { href: string; label: string }[]> = {
+  "garmin-coach-mcp": [
+    { href: "https://www.npmjs.com/package/garmin-coach-mcp", label: "npm" },
+    { href: "https://github.com/hashgraph-online/hol-guard/pull/5267", label: "HOL Guard" },
+  ],
 };
 // Gmail's compose window, in a new tab: mailto opens a desktop mail app most people never set up
 const mail = `https://mail.google.com/mail/?view=cm&fs=1&to=${siteConfig.links.email}&su=${encodeURIComponent("Hola Yeison")}`;
@@ -82,7 +85,7 @@ const stack = [
             <p class="keys">
               {p.github && <a class="key" href={p.github} rel="noopener">Código</a>}
               {p.link && <a class="key" href={p.link} rel="noopener">Demo</a>}
-              {extraLinks[p.slug] && <a class="key" href={extraLinks[p.slug].href} rel="noopener">{extraLinks[p.slug].label}</a>}
+              {extraLinks[p.slug]?.map((l) => <a class="key" href={l.href} rel="noopener">{l.label}</a>)}
             </p>
             {p.diff && (
               <details class="fix">
