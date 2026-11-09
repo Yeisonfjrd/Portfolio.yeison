@@ -10,8 +10,7 @@
   --accent-ink: #ffffff;
   --add: #e3f4e6;
   --del: #fbe6e6;
-  --col: 22vw;
-  --w: 560px;
+  --w: 640px;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
@@ -38,13 +37,13 @@ a { color: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-.col { margin-left: var(--col); width: min(var(--w), calc(100vw - var(--col) - 24px)); }
+.col { margin-inline: auto; width: min(var(--w), 100% - 40px); }
 section { padding-top: 140px; }
 h2 { font-size: 28px; font-weight: 500; line-height: 1.2; letter-spacing: -0.01em; margin-bottom: 32px; }
 .muted { color: var(--muted); }
 
 /* top */
-.top { display: flex; justify-content: space-between; align-items: center; padding: 48px 32px 0 var(--col); }
+.top { display: flex; justify-content: space-between; align-items: center; padding-top: 48px; }
 .mark { font-weight: 600; text-decoration: none; }
 .top-links { display: flex; gap: 24px; font-size: 15px; }
 .top-links button, .top-links a { background: none; border: 0; font: inherit; color: var(--muted); cursor: pointer; text-decoration: none; padding: 4px 0; transition: color .15s; }
@@ -52,7 +51,7 @@ h2 { font-size: 28px; font-weight: 500; line-height: 1.2; letter-spacing: -0.01e
 
 /* hero */
 .hero { min-height: 86svh; padding-top: 22vh; }
-.hero h1 { font-size: clamp(30px, 3.3vw, 48px); font-weight: 500; line-height: 1.1; letter-spacing: -0.025em; width: max-content; max-width: calc(100vw - var(--col) - 24px); }
+.hero h1 { font-size: clamp(30px, 3.3vw, 46px); font-weight: 500; line-height: 1.1; letter-spacing: -0.025em; }
 .lead { margin-top: 24px; font-size: 18px; max-width: 34em; }
 .now { margin-top: 20px; font-size: 15px; color: var(--muted); }
 .now b { font-weight: 500; color: var(--ink); }
@@ -106,7 +105,7 @@ h2 { font-size: 28px; font-weight: 500; line-height: 1.2; letter-spacing: -0.01e
 .group:first-child { margin-top: 0; }
 
 /* about */
-.about { display: grid; grid-template-columns: 180px 1fr; gap: 0 48px; margin-left: calc(var(--col) - 228px); max-width: 1040px; padding-right: 32px; }
+.about { display: grid; grid-template-columns: 180px 1fr; gap: 0 48px; margin-inline: auto; width: min(calc(var(--w) + 228px), 100% - 40px); }
 .facts { display: grid; gap: 20px; font-size: 15px; align-content: start; padding-top: 6px; }
 .facts dt { color: var(--muted); }
 .facts dd { font-weight: 500; }
@@ -142,18 +141,16 @@ footer { margin-top: 16svh; padding: 0 24px 24px; overflow: hidden; }
   .detail, .preview { transition: none; }
 }
 
-@media (max-width: 1100px) { .preview { display: none; } }
+@media (max-width: 1320px) { .preview { display: none; } }
 @media (max-width: 760px) {
-  :root { --col: 20px; }
   body { font-size: 16px; }
-  .col { width: calc(100vw - 40px); }
-  .top { padding: 28px 20px 0; }
+  .top { padding-top: 28px; }
   .hero { padding-top: 18vh; }
-  .hero h1 { font-size: 26px; width: auto; }
+  .hero h1 { font-size: 26px; }
   .row > button { grid-template-columns: 1fr auto; row-gap: 2px; padding: 14px 0; }
   .row .kind { grid-column: 1; grid-row: 2; font-size: 14px; }
   .row .year { grid-column: 2; grid-row: 1; }
-  .about { grid-template-columns: 1fr; margin-left: 20px; padding-right: 20px; }
+  .about { grid-template-columns: 1fr; }
   .about p { font-size: 19px; }
   .facts { grid-template-columns: 1fr 1fr; order: 2; margin-top: 32px; }
   .prompt { font-size: 22px; }
@@ -163,12 +160,11 @@ footer { margin-top: 16svh; padding: 0 24px 24px; overflow: hidden; }
 }
 
 @media print {
-  :root, :root[data-theme="dark"] { --bg: #fff; --ink: #000; --muted: #444; --surface: #f3f3f3; --add: #e3f4e6; --del: #fbe6e6; --col: 0px; }
+  :root, :root[data-theme="dark"] { --bg: #fff; --ink: #000; --muted: #444; --surface: #f3f3f3; --add: #e3f4e6; --del: #fbe6e6; }
   .top-links, .actions, .hint, .preview, .shot, .contact, footer, .now { display: none !important; }
   .hero { min-height: 0; padding-top: 0; }
   section { padding-top: 28px; }
-  .col { width: 100%; }
+  .col, .about { width: 100%; }
   .detail { grid-template-rows: 1fr !important; }
   .rise { opacity: 1 !important; transform: none !important; }
-  .about { margin-left: 0; }
 }
