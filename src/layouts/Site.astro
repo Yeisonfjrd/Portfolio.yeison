@@ -1,7 +1,7 @@
 ---
-import "@fontsource-variable/outfit";
-import "@fontsource-variable/jetbrains-mono";
+import "@fontsource-variable/chivo";
 import "@/styles/site.css";
+import { siteConfig } from "@/data/site";
 
 interface Props {
   title: string;
@@ -15,26 +15,22 @@ const { title, description } = Astro.props;
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#7c3aed" /><!-- taste-skill-ignore: brand violet -->
+    <meta name="theme-color" content="#0e0c17" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="canonical" href="https://portfolio-yeison.vercel.app/" />
+    <link rel="canonical" href={`${siteConfig.url}/`} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://portfolio-yeison.vercel.app/" />
+    <meta property="og:url" content={`${siteConfig.url}/`} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="https://portfolio-yeison.vercel.app/og.png" />
+    <meta property="og:image" content={`${siteConfig.url}/og.png`} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <title>{title}</title>
-    <!-- The hidden starting states only apply once we know scripts run -->
-    <script is:inline>
-      document.documentElement.classList.add("js");
-      // A theme picked with the button wins over the system one
-      try { const t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch {}
-    </script>
+    <!-- Entrance states only apply when scripts run, so nothing stays hidden without JS -->
+    <script is:inline>document.documentElement.classList.add("js");</script>
   </head>
   <body>
     <slot />
