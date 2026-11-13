@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import Site from "@/layouts/Site.astro";
+import Arrow from "@/components/Arrow.astro";
 import { siteConfig } from "@/data/site";
 
 const all = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
@@ -31,7 +32,7 @@ const education = [
         <a href="#proyectos">Proyectos</a>
         <a href="#sobre-mi">Sobre mí</a>
         <a href="#contacto">Contacto</a>
-        <a class="btn" href={links.cv} {...out}>Descargar CV</a>
+        <a class="btn" href={links.cv} {...out}>CV <Arrow /></a>
       </nav>
     </div>
   </header>
@@ -43,16 +44,16 @@ const education = [
         <img class="portrait" src="/yeison-fajardo-300.webp" alt="Foto de Yeison Fajardo" width="132" height="132" />
         <p class="rise">Desarrollador backend junior. Estudio Desarrollo de Software en la UPE y hago APIs en Java y Spring Boot.</p>
         <div class="actions rise" style="--d:80ms">
-          <a class="btn main" href={links.gmail} {...out}>Escribime</a>
-          <a class="btn" href={links.linkedin} {...out}>LinkedIn</a>
-          <a class="btn" href={links.github} {...out}>GitHub</a>
+          <a class="btn main" href={links.gmail} {...out}>Escribime <Arrow /></a>
+          <a class="btn" href={links.linkedin} {...out}>LinkedIn <Arrow /></a>
+          <a class="btn" href={links.github} {...out}>GitHub <Arrow /></a>
         </div>
       </div>
       <dl class="facts rise" style="--d:160ms">
-        <div><dt>Busco</dt><dd>Mi primer trabajo como backend junior</dd></div>
-        <div><dt>Lo que más uso</dt><dd>Java 21, Spring Boot, PostgreSQL</dd></div>
-        <div><dt>También</dt><dd>TypeScript, Node, Go</dd></div>
-        <div><dt>Vivo en</dt><dd>Ezeiza, Buenos Aires. Inglés intermedio</dd></div>
+        <div class="seek"><dt>Busco</dt><dd>Mi primer trabajo como <mark>backend junior</mark></dd></div>
+        <div><dt>Lo que más uso</dt><dd><ul class="keys main-stack"><li>Java 21</li><li>Spring Boot</li><li>PostgreSQL</li></ul></dd></div>
+        <div><dt>También</dt><dd><ul class="keys"><li>TypeScript</li><li>Node</li><li>Go</li></ul></dd></div>
+        <div class="where"><dt>Vivo en</dt><dd>Ezeiza, Buenos Aires<span>Inglés intermedio · <span>acá son las <time data-clock>--:--</time> (GMT-3)</span></span></dd></div>
       </dl>
     </section>
 
@@ -64,8 +65,8 @@ const education = [
             <div class="story"><Story /></div>
             <p class="stack">{[String(data.year), ...data.stack].join(" · ")}</p>
             <div class="links">
-              {data.github && <a href={data.github} {...out}>Código en GitHub</a>}
-              {data.links.map((l) => <a href={l.href} {...out}>{l.label}</a>)}
+              {data.github && <a href={data.github} {...out}>Código en GitHub <Arrow /></a>}
+              {data.links.map((l) => <a href={l.href} {...out}>{l.label} <Arrow /></a>)}
               {data.privateNote && <span>{data.privateNote}</span>}
             </div>
           </div>
@@ -152,9 +153,9 @@ const education = [
         <p class="say">Si buscás un backend junior o querés charlar de algún proyecto, escribime.</p>
         <a class="mail" href={links.gmail} {...out}>{siteConfig.email.split("@")[0]}@<wbr />{siteConfig.email.split("@")[1]}</a>
         <div class="contact-actions">
-          <a class="btn" href={links.gmail} {...out}>Abrir Gmail</a>
-          <button class="btn ghost" type="button" data-copy={siteConfig.email}>Copiar email</button>
-          <a class="btn ghost" href={links.cv} {...out}>Descargar CV</a>
+          <a class="btn" href={links.gmail} {...out}>Abrir Gmail <Arrow /></a>
+          <button class="btn ghost" type="button" data-copy={siteConfig.email}><span class="label">Copiar email</span></button>
+          <a class="btn ghost" href={links.cv} {...out}>Descargar CV <Arrow /></a>
         </div>
       </div>
     </section>
@@ -181,19 +182,31 @@ const education = [
     );
     document.querySelectorAll(".rise").forEach((el) => io.observe(el));
 
+    // My local time, so whoever reads this knows if I'm awake
+    const clock = document.querySelector<HTMLTimeElement>("[data-clock]");
+    if (clock) {
+      const fmt = new Intl.DateTimeFormat("es-AR", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "America/Argentina/Buenos_Aires" });
+      const tick = () => { clock.textContent = fmt.format(new Date()); };
+      tick();
+      setInterval(tick, 30_000);
+    }
+
     // Copy the address; if the clipboard is blocked, select the text so it can be copied by hand
     document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
       btn.addEventListener("click", async () => {
-        const label = btn.textContent;
+        const text = btn.querySelector(".label");
+        if (!text) return;
+        const label = text.textContent;
         try {
           await navigator.clipboard.writeText(btn.dataset.copy ?? "");
-          btn.textContent = "Copiado";
+          text.textContent = "Copiado";
+          btn.dataset.done = "";
         } catch {
           const mail = document.querySelector(".mail");
           if (mail) window.getSelection()?.selectAllChildren(mail);
-          btn.textContent = "Seleccionado, copialo";
+          text.textContent = "Seleccionado, copialo";
         }
-        setTimeout(() => (btn.textContent = label), 1800);
+        setTimeout(() => { text.textContent = label; delete btn.dataset.done; }, 1800);
       });
     });
   </script>
