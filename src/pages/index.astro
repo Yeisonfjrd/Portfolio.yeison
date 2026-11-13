@@ -70,6 +70,17 @@ const education = [
             </div>
           </div>
           <div class="screens">
+            {data.testimonial && (
+              <figure class="rise review">
+                <blockquote><p>{data.testimonial.quote}</p></blockquote>
+                <figcaption><b>{data.testimonial.author}</b>, {data.testimonial.role}</figcaption>
+              </figure>
+            )}
+            {data.facts.length > 0 && (
+              <dl class="project-facts rise">
+                {data.facts.map((f) => <div><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+              </dl>
+            )}
             {data.figures.map((f) => (
               <figure class="rise">
                 <div class={f.kind === "phones" ? "phones" : "shot"}>

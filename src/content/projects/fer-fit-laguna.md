@@ -3,19 +3,16 @@ title: Fer Fit Laguna
 year: 2026
 order: 1
 featured: true
-stack: [Java 21, Spring Boot 4, PostgreSQL, Flyway, Render y Neon, sin costo]
+stack: [Java 21, Spring Boot 4, PostgreSQL, Flyway, Render, Neon]
 summary: App de reservas y pagos para las clases de funcional de Fer.
 privateNote: El código es privado porque es de Fer.
-figures:
-  - kind: phones
-    caption: Una alumna pagando el mes, y el panel donde Fer arma los horarios. Capturas de la demo, con datos de prueba.
-    screens:
-      - { src: /projects/fer-pagar.webp, alt: Pantalla de una alumna pagando el abono por alias, width: 390, height: 844 }
-      - { src: /projects/fer-horario.webp, alt: Panel de Fer con los horarios de la semana y el cupo de cada clase, width: 390, height: 880 }
-  - kind: phones
-    caption: Las clases de la semana en el panel de Fer, con los pagos que le falta confirmar arriba.
-    screens:
-      - { src: /projects/fer-panel.webp, alt: Panel de Fer con un pago para confirmar y la próxima clase, width: 390, height: 700 }
+facts:
+  - { label: En uso, value: Desde octubre de 2026 }
+  - { label: Clases, value: "6 lugares por clase, los sábados sin límite" }
+  - { label: Pagos, value: "Por alias: la alumna avisa y Fer confirma" }
+  - { label: Costo, value: "$0 por mes, en Render y Neon gratis" }
+# Cuando Fer mande su reseña, va acá tal cual la escribió:
+# testimonial: { quote: "...", author: Fer, role: entrenadora de funcional }
 ---
 
 Fer da clases de funcional y llevaba todo por WhatsApp: quién venía, quién pagó, cuántos lugares quedaban. Le armé una app para que sus alumnas reserven y paguen por alias, y ella confirma todo desde su panel.

@@ -31,6 +31,10 @@ const projects = defineCollection({
         }),
       )
       .default([]),
+    // Short real facts shown as cells next to the story
+    facts: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
+    // Only a real quote from the person, never written by me
+    testimonial: z.object({ quote: z.string(), author: z.string(), role: z.string() }).optional(),
     numbers: z
       .object({
         columns: z.array(z.string()),
