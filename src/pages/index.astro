@@ -1,227 +1,213 @@
 ---
+import { getCollection } from "astro:content";
 import Site from "@/layouts/Site.astro";
-import { projects } from "@/data/projects";
+import Arrow from "@/components/Arrow.astro";
 import { siteConfig } from "@/data/site";
 
-// Only projects with a real bug and its diff go in the ledger
-const bugs = projects.filter((p) => p.bug && p.diff);
-const shots: Record<string, string> = {
-  "garmin-coach-mcp": "/shots/ci-matrix.png",
-};
-const extraLinks: Record<string, { href: string; label: string }[]> = {
-  "garmin-coach-mcp": [
-    { href: "https://www.npmjs.com/package/garmin-coach-mcp", label: "npm" },
-    { href: "https://github.com/hashgraph-online/hol-guard/pull/5267", label: "HOL Guard" },
-  ],
-};
+const all = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+const featured = await Promise.all(
+  all.filter((p) => p.data.featured).map(async (p) => ({ ...p, Story: (await p.render()).Content })),
+);
+const others = all.filter((p) => !p.data.featured);
 
-// Last public push, read at build time; the line hides itself if GitHub doesn't answer
-let lastPush: { repo: string; at: string } | null = null;
-try {
-  const res = await fetch("https://api.github.com/users/Yeisonfjrd/events/public?per_page=30", {
-    headers: { "User-Agent": "portfolio-yeison-build" },
-  });
-  const events = res.ok ? await res.json() : [];
-  const push = events.find((e: { type: string }) => e.type === "PushEvent");
-  if (push) lastPush = { repo: push.repo.name.split("/")[1], at: push.created_at };
-} catch {}
+const { links } = siteConfig;
+const out = { target: "_blank", rel: "noopener noreferrer" };
 
-const stack = [
-  ["Java 21 y Spring Boot", "TechLab, ai-fix"],
-  ["TypeScript, Node y Fastify", "DocSearch, Garmin Coach"],
-  ["Go y Gin", "Short URL"],
-  ["PostgreSQL, pgvector y Flyway", "TechLab, DocSearch"],
-  ["GitHub Actions, Docker y Git", "todos"],
-];
 const education = [
-  ["Tecnicatura en Desarrollo de Software, UPE", "2025 a hoy"],
-  ["Inglés, nivel 4 de 6, Centro de Idiomas UPE", "2026"],
-  ["Big O, algoritmos y estructuras de datos", "2025"],
-  ["Backend avanzado: APIs y bases de datos", "2023"],
-  ["JavaScript y MySQL, UTN", "2022"],
+  ["2025 – hoy", "Tecnicatura en Desarrollo de Software", "Universidad Provincial de Ezeiza"],
+  ["2026 – hoy", "Inglés, nivel 4 de 6", "Centro de Idiomas, UPE"],
+  ["2025", "Big O, algoritmos y estructuras de datos", "Udemy"],
+  ["2023", "Backend: APIs y bases de datos", "Aprende Programando"],
+  ["2022", "JavaScript y MySQL", "Aprende Programando y UTN"],
 ];
-// Gmail's compose window, in a new tab: mailto opens a desktop mail app most people never set up
-const compose = `https://mail.google.com/mail/?view=cm&fs=1&to=${siteConfig.links.email}&su=${encodeURIComponent("Hola Yeison")}`;
 ---
 
-<Site
-  title="Yeison Fajardo, desarrollador backend"
-  description="Yeison Fajardo, desarrollador backend en Java en Buenos Aires. Cada proyecto con el bug real que encontró y el cambio que lo arregló."
->
-  <header class="top col">
-    <a class="mark" href="#top" aria-label="Yeison Fajardo, inicio">Yeison Fajardo</a>
-    <div class="top-links">
-      <button type="button" id="theme" aria-label="Cambiar entre tema claro y oscuro">Tema</button>
-      <a href="/cv-yeison-fajardo.pdf">CV en PDF</a>
+<Site title={`${siteConfig.name} · ${siteConfig.role}`} description={siteConfig.description}>
+  <a class="skip" href="#proyectos">Ir a los proyectos</a>
+
+  <header class="bar">
+    <div class="wrap">
+      <a class="home" href="#top">Yeison Fajardo</a>
+      <nav aria-label="Secciones">
+        <a href="#proyectos">Proyectos</a>
+        <a href="#sobre-mi">Sobre mí</a>
+        <a href="#contacto">Contacto</a>
+        <a class="btn" href={links.cv} {...out}>CV <Arrow /></a>
+      </nav>
     </div>
   </header>
 
   <main id="top">
-    <div class="hero col">
-      <h1 class="rise">Backend en Java.<br />Arreglo lo que falla callado.</h1>
-      <p class="lead rise">Estudio Desarrollo de Software en la UPE y busco mi primer trabajo. Cada proyecto de abajo tiene el bug real que encontré y el cambio que lo arregló.</p>
-      <p class="now rise">
-        Buenos Aires, <b id="clock">UTC-3</b>
-        {lastPush && <>· último push en <b>{lastPush.repo}</b>, <time id="ago" datetime={lastPush.at}>hace poco</time></>}
-      </p>
-      <div class="actions rise">
-        <a class="btn" href="#contacto">Escribime</a>
-        <a class="link-arrow" href={siteConfig.links.github} rel="noopener">GitHub <span aria-hidden="true">→</span></a>
-      </div>
-    </div>
-
-    <section id="proyectos" class="col" aria-labelledby="bugs-title">
-      <h2 class="rise" id="bugs-title">Bugs que encontré</h2>
-      <ul class="ledger rise">
-        {bugs.map((p, i) => (
-          <li class:list={["row", { open: i === 0 }]} data-shot={shots[p.slug] ?? p.image}>
-            <button type="button" aria-expanded={i === 0 ? "true" : "false"} aria-controls={`fix-${p.slug}`}>
-              <span class="bug">{p.bug}</span>
-              <span class="kind">{p.title} · {p.tags[0]}</span>
-              <span class="year">{p.year}</span>
-            </button>
-            <div class="detail" id={`fix-${p.slug}`}>
-              <div>
-                <div class="detail-inner">
-                  <p>{p.story}</p>
-                  {(shots[p.slug] ?? p.image) && (
-                    <img class="shot" src={shots[p.slug] ?? p.image} alt={`Captura de ${p.title}`} loading="lazy" width="560" height="350" />
-                  )}
-                  <figure class="diff">
-                    <figcaption>{p.diff!.file}</figcaption>
-                    <pre>{p.diff!.lines.map((l) => <code class={l.t === "+" ? "add" : l.t === "-" ? "del" : ""}>{l.t} {l.c}</code>)}</pre>
-                  </figure>
-                  <p class="refs">
-                    {p.commit && <a href={p.commit} rel="noopener">Ver el commit</a>}
-                    {p.github && <a href={p.github} rel="noopener">Repositorio</a>}
-                    {p.link && <a href={p.link} rel="noopener">Demo</a>}
-                    {extraLinks[p.slug]?.map((l) => <a href={l.href} rel="noopener">{l.label}</a>)}
-                  </p>
-                </div>
-              </div>
-            </div>
-          </li>
-        ))}
-        <li aria-hidden="true"><img class="preview" src={shots[bugs[0].slug] ?? bugs[0].image} alt="" width="300" height="225" /></li>
-      </ul>
-      <p class="hint muted">Tocá un bug para ver el arreglo.</p>
-    </section>
-
-    <section id="stack" class="col" aria-labelledby="stack-title">
-      <h2 class="rise" id="stack-title">Con qué trabajo</h2>
-      <div class="rise">
-        <p class="group">Stack</p>
-        <ul class="pairs">
-          {stack.map(([what, where]) => <li><span>{what}</span><span>{where}</span></li>)}
-        </ul>
-        <p class="group" id="formacion">Formación</p>
-        <ul class="pairs">
-          {education.map(([what, when]) => <li><span>{what}</span><span>{when}</span></li>)}
-        </ul>
-      </div>
-    </section>
-
-    <section id="sobre-mi" aria-label="Sobre mí">
-      <div class="about">
-        <dl class="facts rise">
-          <div><dt>Base</dt><dd>Buenos Aires</dd></div>
-          <div><dt>Último año</dt><dd>913 contribuciones</dd></div>
-          <div><dt>Busco</dt><dd>Primer puesto backend</dd></div>
-        </dl>
-        <div class="rise">
-          <p>Me gusta el caso que nadie probó: dos compras al mismo tiempo, una zona horaria distinta, un usuario que pregunta por documentos que no son suyos.</p>
-          <p class="muted">Escribo el test que lo rompe, después el arreglo, y dejo el CI corriendo para que no vuelva.</p>
+    <section class="hero wrap">
+      <h1 class="name"><span>Yeison</span> <span style="--d:90ms">Fajardo</span></h1>
+      <div class="hero-row">
+        <img class="portrait" src="/yeison-fajardo-300.webp" alt="Foto de Yeison Fajardo" width="132" height="132" />
+        <p class="rise">Desarrollador backend junior. Estudio Desarrollo de Software en la UPE y hago APIs en Java y Spring Boot.</p>
+        <div class="actions rise" style="--d:80ms">
+          <a class="btn main" href={links.gmail} {...out}>Escribime <Arrow /></a>
+          <a class="btn" href={links.linkedin} {...out}>LinkedIn <Arrow /></a>
+          <a class="btn" href={links.github} {...out}>GitHub <Arrow /></a>
         </div>
       </div>
+      <dl class="facts rise" style="--d:160ms">
+        <div class="seek"><dt>Busco</dt><dd>Mi primer trabajo como <mark>backend junior</mark></dd></div>
+        <div><dt>Lo que más uso</dt><dd><ul class="keys main-stack"><li>Java 21</li><li>Spring Boot</li><li>PostgreSQL</li></ul></dd></div>
+        <div><dt>También</dt><dd><ul class="keys"><li>TypeScript</li><li>Node</li><li>Go</li></ul></dd></div>
+        <div class="where"><dt>Vivo en</dt><dd>Ezeiza, Buenos Aires<span>Inglés intermedio · <span>acá son las <time data-clock>--:--</time> (GMT-3)</span></span></dd></div>
+      </dl>
     </section>
 
-    <section id="contacto" class="col contact" aria-label="Contacto">
-      <p class="prompt rise"><span>¿Tenés un puesto backend?</span>Contame en una línea.</p>
-      <form class="field rise" id="mailform" action="https://mail.google.com/mail/" method="get" target="_blank">
-        <label for="msg" class="sr-only">Tu mensaje</label>
-        <input id="msg" name="body" autocomplete="off" placeholder="Hola Yeison, te escribo por…" />
-        <input type="hidden" name="view" value="cm" />
-        <input type="hidden" name="fs" value="1" />
-        <input type="hidden" name="to" value={siteConfig.links.email} />
-        <input type="hidden" name="su" value="Hola Yeison" />
-        <button type="submit" aria-label="Abrir Gmail con este mensaje">→</button>
-      </form>
-      <p class="next">Se abre Gmail con tu mensaje listo para mandar.</p>
-      <ul class="pairs reach">
-        <li><span>Email</span><a href={compose} target="_blank" rel="noopener">{siteConfig.links.email}</a></li>
-        <li><span>GitHub</span><a href={siteConfig.links.github} rel="noopener">Yeisonfjrd</a></li>
-        <li><span>LinkedIn</span><a href={siteConfig.links.linkedin} rel="noopener">yeison-fajardo</a></li>
+    <div id="proyectos" class="wrap">
+      {featured.map(({ data, Story }) => (
+        <article class:list={["project", { fer: data.title === "Fer Fit Laguna" }]}>
+          <div class="pin">
+            <h2>{data.title}</h2>
+            <div class="story"><Story /></div>
+            <p class="stack">{[String(data.year), ...data.stack].join(" · ")}</p>
+            <div class="links">
+              {data.github && <a href={data.github} {...out}>Código en GitHub <Arrow /></a>}
+              {data.links.map((l) => <a href={l.href} {...out}>{l.label} <Arrow /></a>)}
+              {data.privateNote && <span>{data.privateNote}</span>}
+            </div>
+          </div>
+          <div class="screens">
+            {data.testimonial && (
+              <figure class="rise review">
+                <blockquote><p>{data.testimonial.quote}</p></blockquote>
+                <figcaption><b>{data.testimonial.author}</b>, {data.testimonial.role}</figcaption>
+              </figure>
+            )}
+            {data.facts.length > 0 && (
+              <dl class="project-facts rise">
+                {data.facts.map((f) => <div><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+              </dl>
+            )}
+            {data.figures.map((f) => (
+              <figure class="rise">
+                <div class={f.kind === "phones" ? "phones" : "shot"}>
+                  {f.screens.map((s) => (
+                    <img src={s.src} alt={s.alt} width={s.width} height={s.height} loading="lazy" decoding="async" />
+                  ))}
+                </div>
+                <figcaption>{f.caption}</figcaption>
+              </figure>
+            ))}
+            {data.numbers && (
+              <figure class="rise">
+                <div class="numbers">
+                  <table>
+                    <thead>
+                      <tr>{data.numbers.columns.map((c) => <th scope="col">{c}</th>)}</tr>
+                    </thead>
+                    <tbody>
+                      {data.numbers.rows.map((r) => (
+                        <tr>
+                          <td>{r.label}</td>
+                          {r.values.map((v) => <td class="n">{v}</td>)}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  <p>{data.numbers.note}</p>
+                </div>
+              </figure>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <section class="lineup wrap" aria-labelledby="otros">
+      <h2 id="otros">Otros proyectos</h2>
+      <ul>
+        {others.map(({ data }) => (
+          <li class="rise">
+            {data.github
+              ? <a class="title" href={data.github} {...out}>{data.title}</a>
+              : <span class="title">{data.title}</span>}
+            <span>{data.summary}</span>
+            <span class="side">
+              {data.privateNote ? `${data.privateNote} · ` : ""}{data.stack.join(" · ")}
+              {data.links.map((l) => <> · <a href={l.href} {...out}>{l.label}</a></>)}
+            </span>
+          </li>
+        ))}
       </ul>
+    </section>
+
+    <section id="sobre-mi" class="about wrap">
+      <div>
+        <h2>Sobre mí</h2>
+        <p class="me rise">Tengo 21 años y busco mi primer trabajo como desarrollador backend junior.</p>
+        <p class="rise" style="--d:80ms">Empecé a programar a los 16 con cursos de JavaScript. Hoy me gusta más lo que no se ve: la base de datos, los tests y que algo siga andando cuando lo usa gente real.</p>
+      </div>
+      <ol aria-label="Formación">
+        {education.map(([when, what, where]) => (
+          <li class="rise"><span>{when}</span><div><b>{what}</b><i>{where}</i></div></li>
+        ))}
+      </ol>
+    </section>
+
+    <section id="contacto" class="contact">
+      <div class="wrap">
+        <p class="say">Si buscás un backend junior o querés charlar de algún proyecto, escribime.</p>
+        <a class="mail" href={links.gmail} {...out}>{siteConfig.email.split("@")[0]}@<wbr />{siteConfig.email.split("@")[1]}</a>
+        <div class="contact-actions">
+          <a class="btn" href={links.gmail} {...out}>Abrir Gmail <Arrow /></a>
+          <button class="btn ghost" type="button" data-copy={siteConfig.email}><span class="label">Copiar email</span></button>
+          <a class="btn ghost" href={links.cv} {...out}>Descargar CV <Arrow /></a>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer>
-    <div class="bigname" aria-hidden="true">Yeison</div>
-    <div class="foot">
-      <span>Backend en Java, Buenos Aires</span>
-      <nav aria-label="Pie">
-        <a href={siteConfig.links.github} rel="noopener">GitHub</a>
-        <a href={siteConfig.links.linkedin} rel="noopener">LinkedIn</a>
-        <a href="#contacto">Email</a>
+    <div class="wrap">
+      <span><b>Yeison Fajardo</b> · Backend junior · Ezeiza, Buenos Aires</span>
+      <nav aria-label="Enlaces">
+        <a href={links.linkedin} {...out}>LinkedIn</a>
+        <a href={links.github} {...out}>GitHub</a>
+        <a href="#top">Volver arriba</a>
       </nav>
-      <span>{new Date().getFullYear()}</span>
     </div>
   </footer>
-</Site>
 
-<script>
-  // Open and close each fix
-  const preview = document.querySelector<HTMLImageElement>(".preview")!;
-  document.querySelectorAll<HTMLLIElement>(".row").forEach((row) => {
-    const btn = row.querySelector("button")!;
-    btn.addEventListener("click", () => btn.setAttribute("aria-expanded", String(row.classList.toggle("open"))));
-    // On wide screens the project's screenshot shows beside the hovered row
-    const show = () => {
-      if (!row.dataset.shot) return;
-      preview.src = row.dataset.shot;
-      preview.style.top = `${row.offsetTop}px`;
-      preview.classList.add("on");
-    };
-    const hide = () => preview.classList.remove("on");
-    btn.addEventListener("mouseenter", show);
-    btn.addEventListener("focus", show);
-    btn.addEventListener("mouseleave", hide);
-    btn.addEventListener("blur", hide);
-  });
-
-  // Buenos Aires local time
-  const clock = document.getElementById("clock")!;
-  const fmt = new Intl.DateTimeFormat("es-AR", { hour: "2-digit", minute: "2-digit", timeZone: "America/Argentina/Buenos_Aires" });
-  const tick = () => (clock.textContent = fmt.format(new Date()));
-  tick();
-  setInterval(tick, 15000);
-
-  const ago = document.getElementById("ago");
-  if (ago) {
-    const days = Math.floor((Date.now() - Date.parse(ago.getAttribute("datetime")!)) / 864e5);
-    ago.textContent = days <= 0 ? "hoy" : days === 1 ? "ayer" : `hace ${days} días`;
-  }
-
-  // Theme button: remembered per visitor
-  document.getElementById("theme")!.addEventListener("click", () => {
-    const root = document.documentElement;
-    const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
-    root.dataset.theme = dark ? "light" : "dark";
-    try { localStorage.setItem("theme", root.dataset.theme); } catch {}
-  });
-
-  // Staggered entrance, once per element
-  const io = new IntersectionObserver(
-    (entries) =>
-      entries.forEach((en) => {
-        if (!en.isIntersecting) return;
-        const el = en.target as HTMLElement;
-        const sibs = [...el.parentElement!.children].filter((n) => n.classList.contains("rise"));
-        el.style.transitionDelay = `${sibs.indexOf(el) * 70}ms`;
-        el.classList.add("in");
-        io.unobserve(el);
+  <script>
+    // Each block rises once when it comes into view
+    const io = new IntersectionObserver(
+      (entries) => entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
       }),
-    { threshold: 0.15 },
-  );
-  document.querySelectorAll(".rise").forEach((n) => io.observe(n));
-</script>
+      { rootMargin: "0px 0px -8% 0px" },
+    );
+    document.querySelectorAll(".rise").forEach((el) => io.observe(el));
+
+    // My local time, so whoever reads this knows if I'm awake
+    const clock = document.querySelector<HTMLTimeElement>("[data-clock]");
+    if (clock) {
+      const fmt = new Intl.DateTimeFormat("es-AR", { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone: "America/Argentina/Buenos_Aires" });
+      const tick = () => { clock.textContent = fmt.format(new Date()); };
+      tick();
+      setInterval(tick, 30_000);
+    }
+
+    // Copy the address; if the clipboard is blocked, select the text so it can be copied by hand
+    document.querySelectorAll<HTMLButtonElement>("[data-copy]").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const text = btn.querySelector(".label");
+        if (!text) return;
+        const label = text.textContent;
+        try {
+          await navigator.clipboard.writeText(btn.dataset.copy ?? "");
+          text.textContent = "Copiado";
+          btn.dataset.done = "";
+        } catch {
+          const mail = document.querySelector(".mail");
+          if (mail) window.getSelection()?.selectAllChildren(mail);
+          text.textContent = "Seleccionado, copialo";
+        }
+        setTimeout(() => { text.textContent = label; delete btn.dataset.done; }, 1800);
+      });
+    });
+  </script>
+</Site>
